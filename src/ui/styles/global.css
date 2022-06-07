@@ -1,0 +1,19 @@
+.controls-control-box {
+  padding: 20px;
+}
+
+.controls-control-box:not(:empty) {
+  margin-top: 12px;
+}
+
+.controls-control-box:not(:empty) > span,
+.controls-control-box:not(:empty) > div {
+  margin-top: 12px;
+}
+
+.controls-control-select-box
+  .my-select-container
+  .ant-select
+  .ant-select-selector {
+  border-radius: 0;
+}

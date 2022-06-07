@@ -1,0 +1,8 @@
+import React from 'react'
+import CommonControls, { CommonControlsProps } from './common-controls'
+
+const ObjectControls: React.FC<CommonControlsProps> = ({ ...props }) => {
+  return <CommonControls {...props} />
+}
+
+export default ObjectControls
