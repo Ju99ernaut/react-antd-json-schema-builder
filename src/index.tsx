@@ -1,1 +1,1 @@
-export { default as JSONSchemaBuilder } from '@ui/components/schema-builder';
+export { default as JSONSchemaBuilder } from './ui/components/schema-builder'

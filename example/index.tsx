@@ -1,14 +1,14 @@
-import 'react-app-polyfill/ie11';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Thing } from '../.';
+import * as React from 'react'
+import 'react-app-polyfill/ie11'
+import * as ReactDOM from 'react-dom'
+import { JSONSchemaBuilder } from '../.'
 
 const App = () => {
   return (
-    <div>
-      <Thing />
+    <div style={{ padding: 16 }}>
+      <JSONSchemaBuilder />
     </div>
-  );
-};
+  )
+}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))

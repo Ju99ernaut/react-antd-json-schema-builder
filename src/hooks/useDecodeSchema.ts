@@ -1,10 +1,10 @@
+import { useMemo } from 'react'
 import {
   getSchemaProperties,
   getSchemaTitle,
   getSchemaType
-} from '@helpers/schema'
-import { Schema, SchemaType } from '@helpers/types'
-import { useMemo } from 'react'
+} from '../helpers/schema'
+import { Schema, SchemaType } from '../helpers/types'
 
 interface UseDecodeSchemaReturn {
   schemaTitle: string

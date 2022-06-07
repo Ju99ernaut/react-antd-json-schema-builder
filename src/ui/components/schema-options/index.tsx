@@ -1,13 +1,15 @@
+import { Form, Input, InputNumber, Modal, Select, Switch } from 'antd'
+import React, { PropsWithChildren, useMemo } from 'react'
 import {
   getSchemaField,
   getSchemaMenuOptions,
   getSchemaType,
-  setSchemaField,
-  stringsToOptions
-} from '@helpers/schema'
-import { SchemaFieldOptionType, SchemaOptionsProps } from '@helpers/types'
-import { Form, Input, InputNumber, Modal, Select, Switch } from 'antd'
-import React, { PropsWithChildren, useMemo } from 'react'
+  setSchemaField
+} from '../../../helpers/schema'
+import {
+  SchemaFieldOptionType,
+  SchemaOptionsProps
+} from '../../../helpers/types'
 
 const SchemaOptions = ({
   showModal,
@@ -61,9 +63,6 @@ const SchemaOptions = ({
       />
     ),
     multi: props => {
-      const multiSelected = getSchemaField(props.option.value, props.schema)
-      const multiSelectOptions = stringsToOptions(multiSelected)
-
       return (
         <Select
           mode="tags"
@@ -100,7 +99,7 @@ const SchemaOptions = ({
         {allOptions &&
           allOptions.map(option => {
             return (
-              <Form.Item key={option.label} label={option.label}>
+              <Form.Item key={option.value} label={option.label}>
                 {[typeToField[option.type]({ option, schema, onChange })]}
               </Form.Item>
             )

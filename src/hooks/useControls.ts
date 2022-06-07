@@ -1,12 +1,12 @@
-import { schemaTypes } from '@helpers/constants'
+import entries from 'lodash/entries'
+import React, { useState } from 'react'
+import { schemaTypes } from '../helpers/constants'
 import {
   findOption,
   getSchemaType,
   setSchemaTypeAndRemoveWrongFields
-} from '@helpers/schema'
-import { Schema } from '@helpers/types'
-import entries from 'lodash/entries'
-import React, { useState } from 'react'
+} from '../helpers/schema'
+import { Schema } from '../helpers/types'
 import useDecodeSchema from './useDecodeSchema'
 
 interface UseControlProps {

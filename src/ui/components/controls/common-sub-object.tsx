@@ -1,6 +1,6 @@
-import { CommonSubObjectProps, Schema } from '@helpers/types'
-import useControls from '@src/hooks/useControls'
 import React from 'react'
+import { CommonSubObjectProps, Schema } from '../../../helpers/types'
+import useControls from '../../../hooks/useControls'
 import SchemaCreator from '../schema-creator'
 
 const CommonSubObject = ({

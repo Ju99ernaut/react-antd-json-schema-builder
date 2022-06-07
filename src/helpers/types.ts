@@ -120,3 +120,25 @@ export interface CommonSubObjectProps {
   onChangeKey: (oldKey: string, newKey: string) => void
   onChange: (key: string, schema: Schema) => void
 }
+
+export interface ArrayControlsProps {
+  schema: Schema
+  schemaKey: string
+  rootNode?: boolean
+  controlType: 'object' | 'array' | 'primitive'
+  onAdd: () => void
+  onDelete: () => void
+  onChange: (schema: Schema) => void
+  onChangeKey: (key: string) => void
+}
+
+export interface CommonControlsProps {
+  schema: Schema
+  schemaKey: string
+  rootNode?: boolean
+  controlType: 'object' | 'array' | 'primitive'
+  onAdd: () => void
+  onDelete: () => void
+  onChange: (schema: Schema) => void
+  onChangeKey: (key: string) => void
+}

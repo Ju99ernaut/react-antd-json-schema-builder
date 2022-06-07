@@ -5,33 +5,22 @@ import {
   PlusCircleOutlined,
   SettingOutlined
 } from '@ant-design/icons'
-import { schemaTypes } from '@helpers/constants'
+import { Button, Col, Input, Row, Select } from 'antd'
+import isFunction from 'lodash/isFunction'
+import React from 'react'
+import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
   getSchemaItems,
   renameSchemaProperty,
   setSchemaItems,
   setSchemaProperty
-} from '@helpers/schema'
-import { Schema } from '@helpers/types'
-import useControls from '@src/hooks/useControls'
-import { Button, Col, Input, Row, Select } from 'antd'
-import isFunction from 'lodash/isFunction'
-import React from 'react'
+} from '../../../helpers/schema'
+import { CommonControlsProps } from '../../../helpers/types'
+import useControls from '../../../hooks/useControls'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
-
-export interface CommonControlsProps {
-  schema: Schema
-  schemaKey: string
-  rootNode?: boolean
-  controlType: 'object' | 'array' | 'primitive'
-  onAdd: () => void
-  onDelete: () => void
-  onChange: (schema: Schema) => void
-  onChangeKey: (key: string) => void
-}
 
 const CommonControls: React.FC<CommonControlsProps> = ({
   schema,
