@@ -1,4 +1,3 @@
-import 'antd/dist/antd.css'
 import React, { useState } from 'react'
 import { defaultSchema } from '../../../helpers/constants'
 import { JSONSchemaEditor, Schema } from '../../../helpers/types'
