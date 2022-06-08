@@ -18,6 +18,8 @@ $ npm -v && node -v
 v8.16.0
 ```
 
+This project has been created using Ant Design, Ant Design Icons and Lodash and will therefore require these packages when installing.
+
 ## Table of contents
 
 - [Project Name](#project-name)
