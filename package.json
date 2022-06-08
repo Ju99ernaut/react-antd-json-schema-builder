@@ -3,6 +3,13 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "keywords": [
+    "react",
+    "react-component",
+    "ant design",
+    "json",
+    "json-schema"
+  ],
   "files": [
     "dist",
     "src"
@@ -10,6 +17,11 @@
   "engines": {
     "node": ">=10"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackgospel/react-antd-json-schema-builder.git"
+  },
+  "homepage": "https://github.com/blackgospel/react-antd-json-schema-builder.git#readme",
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
@@ -70,5 +82,8 @@
     "antd": "^4.21.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
