@@ -3,7 +3,7 @@ import { defaultSchema } from '../../../helpers/constants'
 import { JSONSchemaEditor, Schema } from '../../../helpers/types'
 import SchemaCreator from '../schema-creator'
 
-const SchemaBuilder: React.FC<JSONSchemaEditor> = ({ data }) => {
+const SchemaBuilder = ({ data }: JSONSchemaEditor) => {
   const initial = data || defaultSchema
   const [schema, setSchema] = useState<Schema>(initial)
 
