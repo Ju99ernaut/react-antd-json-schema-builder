@@ -97,9 +97,9 @@ const SchemaOptions = ({
         wrapperCol={{ span: 18 }}
       >
         {allOptions &&
-          allOptions.map(option => {
+          allOptions.map((option, index) => {
             return (
-              <Form.Item key={option.value} label={option.label}>
+              <Form.Item key={`${option.value}${index}`} label={option.label}>
                 {[typeToField[option.type]({ option, schema, onChange })]}
               </Form.Item>
             )
