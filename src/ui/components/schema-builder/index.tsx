@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
-import { defaultSchema } from '../../../helpers/constants'
-import { JSONSchemaEditor, Schema } from '../../../helpers/types'
+import React from 'react'
+import { JSONSchemaEditor } from '../../../helpers/types'
 import SchemaCreator from '../schema-creator'
 
-const SchemaBuilder = ({ data }: JSONSchemaEditor) => {
-  const initial = data || defaultSchema
-  const [schema, setSchema] = useState<Schema>(initial)
-
+const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const css = `
   .controls-control-box {
     padding-left: 20px;
@@ -33,7 +29,7 @@ const SchemaBuilder = ({ data }: JSONSchemaEditor) => {
   return (
     <>
       <style>{css}</style>
-      <SchemaCreator schema={schema} onChange={setSchema} />
+      <SchemaCreator schema={data} onChange={onChange} />
     </>
   )
 }

@@ -5,10 +5,9 @@ export type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean'
 export type SchemaTypeOption = { value: SchemaType; label: string }
 
 export type JSONSchemaEditor = {
-  data?: Schema
+  data: Schema
+  onChange: (...args: any[]) => void
 }
-
-export type JSONSchemaVisual = JSONSchemaEditor
 
 export type CommonSchemaField = 'description'
 

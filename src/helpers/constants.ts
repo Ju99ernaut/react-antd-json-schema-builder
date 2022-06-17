@@ -13,66 +13,66 @@ import {
   SchemaType,
   SchemaTypeOption,
   StringSchemaFieldOption,
-  StringValidSchemaField,
-} from './types';
+  StringValidSchemaField
+} from './types'
 
-export const ROOT_KEY = '__root__';
+export const ROOT_KEY = '__root__'
 
 export const schemaTypes: SchemaTypeOption[] = [
   {
     value: 'string',
-    label: 'String',
+    label: 'String'
   },
   {
     value: 'number',
-    label: 'Number',
+    label: 'Number'
   },
   {
     value: 'boolean',
-    label: 'Boolean',
+    label: 'Boolean'
   },
   {
     value: 'object',
-    label: 'Object',
+    label: 'Object'
   },
   {
     value: 'array',
-    label: 'Array',
-  },
-];
+    label: 'Array'
+  }
+]
 
 export const formatOptions = [
   {
     value: 'date-time',
-    label: 'Date/Time',
+    label: 'Date/Time'
   },
   {
     value: 'email',
-    label: 'Email',
+    label: 'Email'
   },
   {
     value: 'hostname',
-    label: 'Hostname',
+    label: 'Hostname'
   },
   {
     value: 'ipv4',
-    label: 'IPv4',
+    label: 'IPv4'
   },
   {
     value: 'ipv6',
-    label: 'IPv6',
+    label: 'IPv6'
   },
   {
     value: 'uri',
-    label: 'URI',
-  },
-];
+    label: 'URI'
+  }
+]
 
 const commonValidProperties: CommonValidSchemaField[] = [
   'description',
   'type',
-  'title',
-];
+  'title'
+]
 
 export const stringValidSchemaProperties: StringValidSchemaField[] = [
   ...commonValidProperties,
@@ -80,35 +80,35 @@ export const stringValidSchemaProperties: StringValidSchemaField[] = [
   'format',
   'maxLength',
   'minLength',
-  'pattern',
-];
+  'pattern'
+]
 
 export const numberValidSchemaProperties: NumberValidSchemaField[] = [
   ...commonValidProperties,
   'maximum',
-  'minimum',
-];
+  'minimum'
+]
 
 export const boolValidSchemaProperties: BoolValidSchemaField[] = [
-  ...commonValidProperties,
-];
+  ...commonValidProperties
+]
 
 export const arrayValidSchemaProperties: ArrayValidSchemaField[] = [
   ...commonValidProperties,
   'maxItems',
   'minItems',
   'uniqueItems',
-  'items',
-];
+  'items'
+]
 
 export const objectValidSchemaProperties: ObjectValidSchemaField[] = [
   ...commonValidProperties,
-  'properties',
-];
+  'properties'
+]
 
 const commonSchemaOptions: CommonSchemaFieldOption[] = [
-  { value: 'description', label: 'Description', type: 'text' },
-];
+  { value: 'description', label: 'Description', type: 'text' }
+]
 
 export const stringSchemaOptions: StringSchemaFieldOption[] = [
   ...commonSchemaOptions,
@@ -120,50 +120,43 @@ export const stringSchemaOptions: StringSchemaFieldOption[] = [
     value: 'format',
     label: 'Format',
     type: 'select',
-    optionList: formatOptions,
-  },
-];
+    optionList: formatOptions
+  }
+]
 
 export const numberSchemaOptions: NumberSchemaFieldOption[] = [
   ...commonSchemaOptions,
   { value: 'minimum', label: 'Min Number', type: 'number' },
-  { value: 'maximum', label: 'Max Number', type: 'number' },
-];
+  { value: 'maximum', label: 'Max Number', type: 'number' }
+]
 
 export const boolSchemaOptions: BoolSchemaFieldOption[] = [
-  ...commonSchemaOptions,
-];
+  ...commonSchemaOptions
+]
 
 export const objectSchemaOptions: ObjectSchemaFieldOption[] = [
-  ...commonSchemaOptions,
-];
+  ...commonSchemaOptions
+]
 
 export const arraySchemaOptions: ArraySchemaFieldOption[] = [
   ...commonSchemaOptions,
   { value: 'minItems', label: 'Min Items', type: 'number' },
   { value: 'maxItems', label: 'Max Items', type: 'number' },
-  { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' },
-];
+  { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' }
+]
 
 export const typeToOptions: Record<SchemaType, SchemaMenuOption[]> = {
   string: stringSchemaOptions,
   number: numberSchemaOptions,
   boolean: boolSchemaOptions,
   array: arraySchemaOptions,
-  object: objectSchemaOptions,
-};
+  object: objectSchemaOptions
+}
 
 export const typeToValidFields: Record<SchemaType, string[]> = {
   string: stringValidSchemaProperties,
   number: numberValidSchemaProperties,
   boolean: boolValidSchemaProperties,
   object: objectValidSchemaProperties,
-  array: arrayValidSchemaProperties,
-};
-
-export const defaultSchema = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
-  type: 'object',
-  title: 'root',
-  properties: {},
-};
+  array: arrayValidSchemaProperties
+}
