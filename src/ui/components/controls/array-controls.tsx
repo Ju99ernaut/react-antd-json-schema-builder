@@ -86,7 +86,7 @@ const ArrayControls: React.FC<ArrayControlsProps> = ({
             xl={isSchemaObject(schema) ? 10 : 11}
           >
             <Select
-              style={{ width: '100%', borderRadius: '0px' }}
+              style={{ width: '100%' }}
               className="controls-control-select-box"
               value={getTypeOptions}
               options={schemaTypes}

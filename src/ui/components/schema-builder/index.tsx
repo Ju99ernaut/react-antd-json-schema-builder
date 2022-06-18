@@ -17,10 +17,7 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
     margin-top: 12px;
   }
   
-  .controls-control-select-box
-    .my-select-container
-    .ant-select
-    .ant-select-selector {
+  .controls-control-select-box .ant-select-selector {
     border-radius: 0;
   }
   
