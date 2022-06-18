@@ -18,7 +18,7 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   }
   
   .controls-control-select-box .ant-select-selector {
-    border-radius: 0;
+    border-radius: 0!important;
   }
   
   `
