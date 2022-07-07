@@ -8,7 +8,7 @@ import {
 import { Button, Col, Input, Row, Select } from 'antd'
 import isFunction from 'lodash/isFunction'
 import React from 'react'
-import { schemaTypes } from '../../../helpers/constants'
+import { ROOT_KEY, schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
   getSchemaItems,
@@ -27,6 +27,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   schemaKey,
   rootNode,
   controlType,
+  disabledInput,
   onAdd,
   onDelete,
   onChange,
@@ -49,75 +50,83 @@ const CommonControls: React.FC<CommonControlsProps> = ({
 
   return (
     <div>
-      <Input.Group>
-        <Row align="middle">
-          <Col xs={isObject ? 9 : 10} xl={11}>
-            <Row justify="space-around" align="middle">
-              <Col span={2}>
-                {isCollection && (
+      {schemaKey !== ROOT_KEY && (
+        <>
+          <Input.Group>
+            <Row align="middle">
+              <Col xs={isObject ? 9 : 10} xl={11}>
+                <Row justify="space-around" align="middle">
+                  <Col span={2}>
+                    {isCollection && (
+                      <Button
+                        type="text"
+                        onClick={handleShow}
+                        style={{ width: '100%' }}
+                        icon={show ? <CaretDownFilled /> : <CaretRightFilled />}
+                      />
+                    )}
+                  </Col>
+                  <Col span={22}>
+                    <Input
+                      style={{ borderRadius: '0px', borderRight: '0px' }}
+                      defaultValue={schemaKey}
+                      disabled={rootNode || disabledInput}
+                      onBlur={onChangeFieldName}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={isObject ? 9 : 10} xl={isObject ? 10 : 11}>
+                <Select
+                  style={{ width: '100%', borderRadius: '0px' }}
+                  className="controls-control-select-box"
+                  value={getTypeOptions}
+                  options={schemaTypes}
+                  disabled={rootNode}
+                  onChange={onChangeFieldType}
+                  filterOption={false}
+                />
+              </Col>
+              <Col xs={2} xl={1}>
+                <Button
+                  type="text"
+                  style={{ width: '100%' }}
+                  onClick={openModal}
+                  icon={<SettingOutlined style={{ color: '#3182ce' }} />}
+                  disabled={!getTypeOptions}
+                />
+              </Col>
+              {isObject && (
+                <Col xs={2} xl={1}>
                   <Button
                     type="text"
-                    onClick={handleShow}
+                    disabled={!isFunction(onAdd)}
+                    onClick={onAdd}
                     style={{ width: '100%' }}
-                    icon={show ? <CaretDownFilled /> : <CaretRightFilled />}
+                    icon={<PlusCircleOutlined style={{ color: '#38a169' }} />}
                   />
-                )}
-              </Col>
-              <Col span={22}>
-                <Input
-                  style={{ borderRadius: '0px', borderRight: '0px' }}
-                  defaultValue={schemaKey}
-                  /* TODO: figure out way to disable array items without explictly using items as disable control */
-                  disabled={rootNode || schemaKey === 'items'}
-                  onBlur={onChangeFieldName}
+                </Col>
+              )}
+              <Col xs={2} xl={1}>
+                <Button
+                  type="text"
+                  style={{ width: '100%' }}
+                  onClick={onDelete}
+                  icon={<DeleteOutlined style={{ color: '#e53e3e' }} />}
+                  disabled={rootNode}
                 />
               </Col>
             </Row>
-          </Col>
-          <Col xs={isObject ? 9 : 10} xl={isObject ? 10 : 11}>
-            <Select
-              style={{ width: '100%', borderRadius: '0px' }}
-              className="controls-control-select-box"
-              value={getTypeOptions}
-              options={schemaTypes}
-              disabled={rootNode}
-              onChange={onChangeFieldType}
-            />
-          </Col>
-          <Col xs={2} xl={1}>
-            <Button
-              type="text"
-              style={{ width: '100%' }}
-              onClick={openModal}
-              icon={<SettingOutlined style={{ color: '#3182ce' }} />}
-              disabled={!getTypeOptions}
-            />
-          </Col>
-          {isObject && (
-            <Col xs={2} xl={1}>
-              <Button
-                type="text"
-                disabled={!isFunction(onAdd)}
-                onClick={onAdd}
-                style={{ width: '100%' }}
-                icon={<PlusCircleOutlined style={{ color: '#38a169' }} />}
-              />
-            </Col>
-          )}
-          <Col xs={2} xl={1}>
-            <Button
-              type="text"
-              style={{ width: '100%' }}
-              onClick={onDelete}
-              icon={<DeleteOutlined style={{ color: '#e53e3e' }} />}
-              disabled={rootNode}
-            />
-          </Col>
-        </Row>
-      </Input.Group>
-      <SchemaOptions
-        {...{ showModal, onClose: closeModal, schema, onChange }}
-      />
+          </Input.Group>
+          <SchemaOptions
+            showModal={showModal}
+            onClose={closeModal}
+            schema={schema}
+            schemaKey={schemaKey}
+            onChange={onChange}
+          />
+        </>
+      )}
       {isCollection && show && (
         <div className="controls-control-box">
           {isObject && (

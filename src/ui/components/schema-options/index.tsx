@@ -15,6 +15,7 @@ const SchemaOptions = ({
   showModal,
   onClose,
   schema,
+  schemaKey,
   onChange
 }: SchemaOptionsProps) => {
   const type = getSchemaType(schema)
@@ -99,7 +100,10 @@ const SchemaOptions = ({
         {allOptions &&
           allOptions.map((option, index) => {
             return (
-              <Form.Item key={`${option.value}${index}`} label={option.label}>
+              <Form.Item
+                key={`${schemaKey}${option.value}${index}`}
+                label={option.label}
+              >
                 {[typeToField[option.type]({ option, schema, onChange })]}
               </Form.Item>
             )

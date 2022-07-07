@@ -5,10 +5,16 @@ import {
   BoolValidSchemaField,
   CommonSchemaFieldOption,
   CommonValidSchemaField,
+  CurrencySchemaFieldOption,
+  CurrencyValidSchemaField,
+  DateSchemaFieldOption,
+  DateValidSchemaField,
   NumberSchemaFieldOption,
   NumberValidSchemaField,
   ObjectSchemaFieldOption,
   ObjectValidSchemaField,
+  PercentSchemaFieldOption,
+  PercentValidSchemaField,
   SchemaMenuOption,
   SchemaType,
   SchemaTypeOption,
@@ -38,6 +44,18 @@ export const schemaTypes: SchemaTypeOption[] = [
   {
     value: 'array',
     label: 'Array'
+  },
+  {
+    value: 'currency',
+    label: 'Currency'
+  },
+  {
+    value: 'percent',
+    label: 'Percent'
+  },
+  {
+    value: 'date',
+    label: 'Date'
   }
 ]
 
@@ -106,6 +124,18 @@ export const objectValidSchemaProperties: ObjectValidSchemaField[] = [
   'properties'
 ]
 
+export const currencyValidSchemaProperties: CurrencyValidSchemaField[] = [
+  ...commonValidProperties
+]
+
+export const percentValidSchemaProperties: PercentValidSchemaField[] = [
+  ...commonValidProperties
+]
+
+export const dateValidSchemaProperties: DateValidSchemaField[] = [
+  ...commonValidProperties
+]
+
 const commonSchemaOptions: CommonSchemaFieldOption[] = [
   { value: 'description', label: 'Description', type: 'text' }
 ]
@@ -145,12 +175,27 @@ export const arraySchemaOptions: ArraySchemaFieldOption[] = [
   { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' }
 ]
 
+export const currencySchemaOptions: CurrencySchemaFieldOption[] = [
+  ...commonSchemaOptions
+]
+
+export const percentSchemaOptions: PercentSchemaFieldOption[] = [
+  ...commonSchemaOptions
+]
+
+export const dateSchemaOptions: DateSchemaFieldOption[] = [
+  ...commonSchemaOptions
+]
+
 export const typeToOptions: Record<SchemaType, SchemaMenuOption[]> = {
   string: stringSchemaOptions,
   number: numberSchemaOptions,
   boolean: boolSchemaOptions,
   array: arraySchemaOptions,
-  object: objectSchemaOptions
+  object: objectSchemaOptions,
+  percent: percentSchemaOptions,
+  currency: currencySchemaOptions,
+  date: dateSchemaOptions
 }
 
 export const typeToValidFields: Record<SchemaType, string[]> = {
@@ -158,5 +203,8 @@ export const typeToValidFields: Record<SchemaType, string[]> = {
   number: numberValidSchemaProperties,
   boolean: boolValidSchemaProperties,
   object: objectValidSchemaProperties,
-  array: arrayValidSchemaProperties
+  array: arrayValidSchemaProperties,
+  percent: percentValidSchemaProperties,
+  currency: currencyValidSchemaProperties,
+  date: dateValidSchemaProperties
 }

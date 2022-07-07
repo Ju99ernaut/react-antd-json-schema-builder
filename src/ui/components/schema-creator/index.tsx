@@ -14,12 +14,16 @@ const typeToControl: Record<SchemaType | 'default', React.FC<any>> = {
   string: props => <PrimitiveControls controlType="primitive" {...props} />,
   number: props => <PrimitiveControls controlType="primitive" {...props} />,
   boolean: props => <PrimitiveControls controlType="primitive" {...props} />,
+  percent: props => <PrimitiveControls controlType="primitive" {...props} />,
+  currency: props => <PrimitiveControls controlType="primitive" {...props} />,
+  date: props => <PrimitiveControls controlType="primitive" {...props} />,
   default: props => <PrimitiveControls controlType="primitive" {...props} />
 }
 
 const SchemaCreator: React.FC<SchemaCreatorProps> = ({
   schema,
   schemaKey = ROOT_KEY,
+  disabledInput,
   onChange = noop,
   onDelete = noop,
   onChangeKey = noop
@@ -34,6 +38,7 @@ const SchemaCreator: React.FC<SchemaCreatorProps> = ({
     schema,
     schemaKey,
     rootNode: schemaKey === ROOT_KEY,
+    disabledInput,
     onDelete: () => onDelete(schemaKey),
     onAdd,
     onChangeKey,

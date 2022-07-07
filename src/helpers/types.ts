@@ -1,6 +1,14 @@
 export type Schema = Record<string, unknown>
 
-export type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean'
+export type SchemaType =
+  | 'string'
+  | 'number'
+  | 'object'
+  | 'array'
+  | 'boolean'
+  | 'currency'
+  | 'percent'
+  | 'date'
 
 export type SchemaTypeOption = { value: SchemaType; label: string }
 
@@ -21,22 +29,11 @@ export type StringSchemaField =
 
 export type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum'
 
-export type BoolSchemaField = CommonSchemaField
-
-export type ObjectSchemaField = CommonSchemaField
-
 export type ArraySchemaField =
   | CommonSchemaField
   | 'uniqueItems'
   | 'minItems'
   | 'maxItems'
-
-export type SchemaFieldOptionType =
-  | 'text'
-  | 'number'
-  | 'boolean'
-  | 'multi'
-  | 'select'
 
 export type CommonValidSchemaField = CommonSchemaField | 'title' | 'type'
 
@@ -44,7 +41,15 @@ export type StringValidSchemaField = StringSchemaField | CommonValidSchemaField
 
 export type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField
 
-export type BoolValidSchemaField = BoolSchemaField | CommonValidSchemaField
+export type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField
+
+export type CurrencyValidSchemaField =
+  | CommonSchemaField
+  | CommonValidSchemaField
+
+export type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField
+
+export type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField
 
 export type ArrayValidSchemaField =
   | ArraySchemaField
@@ -52,9 +57,16 @@ export type ArrayValidSchemaField =
   | 'items'
 
 export type ObjectValidSchemaField =
-  | ObjectSchemaField
+  | CommonSchemaField
   | CommonValidSchemaField
   | 'properties'
+
+export type SchemaFieldOptionType =
+  | 'text'
+  | 'number'
+  | 'boolean'
+  | 'multi'
+  | 'select'
 
 export type SchemaFieldOption = {
   label: string
@@ -75,15 +87,27 @@ export type NumberSchemaFieldOption = SchemaFieldOption & {
 }
 
 export type BoolSchemaFieldOption = SchemaFieldOption & {
-  value: BoolSchemaField
+  value: CommonSchemaField
 }
 
 export type ObjectSchemaFieldOption = SchemaFieldOption & {
-  value: ObjectSchemaField
+  value: CommonSchemaField
 }
 
 export type ArraySchemaFieldOption = SchemaFieldOption & {
   value: ArraySchemaField
+}
+
+export type PercentSchemaFieldOption = SchemaFieldOption & {
+  value: CommonSchemaField
+}
+
+export type CurrencySchemaFieldOption = SchemaFieldOption & {
+  value: CommonSchemaField
+}
+
+export type DateSchemaFieldOption = SchemaFieldOption & {
+  value: CommonSchemaField
 }
 
 export type SchemaMenuOption =
@@ -92,10 +116,14 @@ export type SchemaMenuOption =
   | BoolSchemaFieldOption
   | ObjectSchemaFieldOption
   | ArraySchemaFieldOption
+  | PercentSchemaFieldOption
+  | CurrencySchemaFieldOption
+  | DateSchemaFieldOption
 
 export interface SchemaCreatorProps {
   schema: Schema
   schemaKey?: string
+  disabledInput?: boolean
   onChange?: (schema: Schema) => void
   onChangeKey?: (key: string) => void
   onDelete?: (key: string) => void
@@ -105,6 +133,7 @@ export interface SchemaOptionsProps {
   showModal: boolean
   onClose: () => void
   schema: Schema
+  schemaKey: string
   onChange: (schema: Schema) => void
 }
 
@@ -120,7 +149,7 @@ export interface CommonSubObjectProps {
   onChange: (key: string, schema: Schema) => void
 }
 
-export interface ArrayControlsProps {
+export type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean
@@ -131,7 +160,7 @@ export interface ArrayControlsProps {
   onChangeKey: (key: string) => void
 }
 
-export interface CommonControlsProps {
+export type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean

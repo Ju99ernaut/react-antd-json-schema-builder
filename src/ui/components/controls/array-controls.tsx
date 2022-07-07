@@ -19,27 +19,17 @@ import {
   setSchemaItems,
   setSchemaProperty
 } from '../../../helpers/schema'
-import { Schema } from '../../../helpers/types'
+import { ArrayControlsProps } from '../../../helpers/types'
 import useControls from '../../../hooks/useControls'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
 
-export interface ArrayControlsProps {
-  schema: Schema
-  schemaKey: string
-  rootNode?: boolean
-  controlType: 'object' | 'array' | 'primitive'
-  onAdd: () => void
-  onDelete: () => void
-  onChange: (schema: Schema) => void
-  onChangeKey: (key: string) => void
-}
-
 const ArrayControls: React.FC<ArrayControlsProps> = ({
   schema,
   schemaKey,
   rootNode,
+  disabledInput,
   onAdd,
   onDelete,
   onChange,
@@ -74,8 +64,7 @@ const ArrayControls: React.FC<ArrayControlsProps> = ({
                 <Input
                   style={{ borderRadius: '0px', borderRight: '0px' }}
                   defaultValue={schemaKey}
-                  /* TODO: figure out way to disable array items without explictly using items as disable control */
-                  disabled={rootNode || schemaKey === 'items'}
+                  disabled={rootNode || disabledInput}
                   onBlur={onChangeFieldName}
                 />
               </Col>
@@ -92,6 +81,7 @@ const ArrayControls: React.FC<ArrayControlsProps> = ({
               options={schemaTypes}
               disabled={rootNode}
               onChange={onChangeFieldType}
+              filterOption={false}
             />
           </Col>
           <Col xs={2} xl={1}>
@@ -126,7 +116,11 @@ const ArrayControls: React.FC<ArrayControlsProps> = ({
         </Row>
       </Input.Group>
       <SchemaOptions
-        {...{ showModal, onClose: closeModal, schema, onChange }}
+        showModal={showModal}
+        onClose={closeModal}
+        schema={schema}
+        schemaKey={schemaKey}
+        onChange={onChange}
       />
       {(isSchemaObject(schema) || isSchemaArray(schema)) && show && (
         <div className="controls-control-box">
