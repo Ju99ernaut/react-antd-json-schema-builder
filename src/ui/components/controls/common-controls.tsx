@@ -88,7 +88,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 <Select
                   style={{ width: '100%', borderRadius: '0px' }}
                   className="controls-control-select-box"
-                  value={getTypeOptions.value}
+                  value={getTypeOptions}
                   options={schemaTypes}
                   disabled={rootNode}
                   onChange={onChangeFieldType}
@@ -147,7 +147,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         <Button
                           type="dashed"
                           disabled={!isFunction(onAdd)}
-                          onClick={onAdd}
+                          onClick={() => {
+                            console.log({ onAdd })
+                            onAdd()
+                          }}
                           style={{
                             width: '100%',
                             backgroundColor: 'transparent',
