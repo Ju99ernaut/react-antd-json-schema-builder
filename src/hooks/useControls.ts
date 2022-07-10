@@ -31,7 +31,7 @@ const useControls = ({
 
   const getTypeOptions = (findOption(getSchemaType(schema))(
     schemaTypes
-  ) as unknown) as { label: string; value: string }
+  ) as unknown) as string
 
   const openModal = () => setShowModal(true)
 
