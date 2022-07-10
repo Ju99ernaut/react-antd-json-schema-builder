@@ -20,9 +20,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blackgospel/react-antd-json-schema-builder.git"
+    "url": "git+https://github.com/documint-me/react-antd-json-schema-builder.git"
   },
-  "homepage": "https://github.com/blackgospel/react-antd-json-schema-builder.git#readme",
+  "homepage": "https://github.com/documint-me/react-antd-json-schema-builder.git#readme",
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
@@ -53,14 +53,14 @@
     "tabWidth": 2
   },
   "author": "Seun Adesina",
-  "module": "dist/@omnixenon/react-antd-json-schema-builder.esm.js",
+  "module": "dist/@documint/react-antd-json-schema-builder.esm.js",
   "size-limit": [
     {
-      "path": "dist/@omnixenon/react-antd-json-schema-builder.cjs.production.min.js",
+      "path": "dist/@documint/react-antd-json-schema-builder.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/@omnixenon/react-antd-json-schema-builder.esm.js",
+      "path": "dist/@documint/react-antd-json-schema-builder.esm.js",
       "limit": "10 KB"
     }
   ],
