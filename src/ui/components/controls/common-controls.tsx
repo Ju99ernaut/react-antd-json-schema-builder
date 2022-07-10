@@ -2,13 +2,13 @@ import {
   CaretDownFilled,
   CaretRightFilled,
   DeleteOutlined,
-  PlusCircleOutlined,
+  PlusSquareFilled,
   SettingOutlined
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
-import isFunction from 'lodash/isFunction'
+import { isFunction } from 'lodash'
 import React from 'react'
-import { ROOT_KEY, schemaTypes } from '../../../helpers/constants'
+import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
   getSchemaItems,
@@ -37,24 +37,32 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     getTypeOptions,
     show,
     showModal,
+    schemaType,
     openModal,
     closeModal,
     handleShow,
     onChangeFieldName,
     onChangeFieldType
-  } = useControls({ schema, onChange, onChangeKey })
+  } = useControls({ schema, onChange, onChangeKey, rootNode })
 
   const isCollection = controlType !== 'primitive'
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
 
   return (
-    <div>
-      {schemaKey !== ROOT_KEY && (
+    <div
+      data-schema-type={schemaType}
+      data-schema-title={schemaKey}
+      className={rootNode ? 'rsc-controls-root' : 'rsc-controls-child'}
+      {...(rootNode && {
+        'data-root-node': rootNode
+      })}
+    >
+      {!rootNode && (
         <>
           <Input.Group>
             <Row align="middle">
-              <Col xs={isObject ? 9 : 10} xl={11}>
+              <Col xs={10} xl={11}>
                 <Row justify="space-around" align="middle">
                   <Col span={2}>
                     {isCollection && (
@@ -76,11 +84,11 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={isObject ? 9 : 10} xl={isObject ? 10 : 11}>
+              <Col xs={10} xl={11}>
                 <Select
                   style={{ width: '100%', borderRadius: '0px' }}
                   className="controls-control-select-box"
-                  value={getTypeOptions}
+                  value={getTypeOptions.value}
                   options={schemaTypes}
                   disabled={rootNode}
                   onChange={onChangeFieldType}
@@ -96,17 +104,6 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   disabled={!getTypeOptions}
                 />
               </Col>
-              {isObject && (
-                <Col xs={2} xl={1}>
-                  <Button
-                    type="text"
-                    disabled={!isFunction(onAdd)}
-                    onClick={onAdd}
-                    style={{ width: '100%' }}
-                    icon={<PlusCircleOutlined style={{ color: '#38a169' }} />}
-                  />
-                </Col>
-              )}
               <Col xs={2} xl={1}>
                 <Button
                   type="text"
@@ -128,18 +125,43 @@ const CommonControls: React.FC<CommonControlsProps> = ({
         </>
       )}
       {isCollection && show && (
-        <div className="controls-control-box">
+        <div className="rsc-controls-control-box">
           {isObject && (
-            <CommonSubObject
-              schema={schema}
-              onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
-              onChange={(key, newSchema) =>
-                onChange(setSchemaProperty(key)(newSchema, schema))
-              }
-              onChangeKey={(oldKey, newKey) =>
-                onChange(renameSchemaProperty(oldKey, newKey, schema))
-              }
-            />
+            <>
+              <CommonSubObject
+                schema={schema}
+                onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
+                onChange={(key, newSchema) =>
+                  onChange(setSchemaProperty(key)(newSchema, schema))
+                }
+                onChangeKey={(oldKey, newKey) =>
+                  onChange(renameSchemaProperty(oldKey, newKey, schema))
+                }
+              />
+              <div className="rsc-controls-add-button">
+                <Row>
+                  <Col xs={20} xl={22}>
+                    <Row>
+                      <Col span={1}></Col>
+                      <Col span={23}>
+                        <Button
+                          type="dashed"
+                          disabled={!isFunction(onAdd)}
+                          onClick={onAdd}
+                          style={{
+                            width: '100%',
+                            backgroundColor: 'transparent',
+                            borderColor: 'black',
+                            borderRadius: '3px'
+                          }}
+                          icon={<PlusSquareFilled style={{ color: 'black' }} />}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
+            </>
           )}
           {isArray && (
             <CommonSubArray

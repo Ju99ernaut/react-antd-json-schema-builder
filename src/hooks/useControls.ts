@@ -13,10 +13,16 @@ interface UseControlProps {
   schema: Schema
   onChange?: any
   onChangeKey?: any
+  rootNode?: boolean
 }
 
-const useControls = ({ schema, onChange, onChangeKey }: UseControlProps) => {
-  const [show, setShow] = useState(true)
+const useControls = ({
+  schema,
+  onChange,
+  onChangeKey,
+  rootNode
+}: UseControlProps) => {
+  const [show, setShow] = useState(rootNode)
   const [showModal, setShowModal] = useState(false)
   const { schemaType, schemaTitle, schemaProperties } = useDecodeSchema(schema)
   const schemaEntries = entries(schemaProperties)
@@ -25,7 +31,7 @@ const useControls = ({ schema, onChange, onChangeKey }: UseControlProps) => {
 
   const getTypeOptions = (findOption(getSchemaType(schema))(
     schemaTypes
-  ) as unknown) as string
+  ) as unknown) as { label: string; value: string }
 
   const openModal = () => setShowModal(true)
 

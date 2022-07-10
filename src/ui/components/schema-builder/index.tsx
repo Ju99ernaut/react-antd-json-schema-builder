@@ -4,20 +4,29 @@ import SchemaCreator from '../schema-creator'
 
 const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const css = `
-  .controls-control-box {
-    padding-left: 20px;
+  .rsc-controls-root {
+  }
+
+  .rsc-controls-root > div.rsc-controls-control-box {
+    padding: 16px;
+    margin: 0;
+    border: none;
+    background-color: none;
+  }
+
+  .rsc-controls-control-box {
+    margin: 6px 0;
+    border: solid 1px rgba(0, 0, 0, 0.07);
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    padding: 16px 0 16px 16px;
+  }
+
+  .rsc-controls-child {
+    margin: 6px 0;
   }
   
-  .controls-control-box:not(:empty) {
-    margin-top: 12px;
-  }
-  
-  .controls-control-box:not(:empty) > span,
-  .controls-control-box:not(:empty) > div {
-    margin-top: 12px;
-  }
-  
-  .controls-control-select-box .ant-select-selector {
+  .rsc-controls-control-select-box .ant-select-selector {
     border-radius: 0!important;
   }
 `

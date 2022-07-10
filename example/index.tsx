@@ -21,7 +21,17 @@ const App = () => {
             type: 'string'
           },
           zip: {
-            type: 'string'
+            type: 'object',
+            properties: {
+              code: {
+                type: 'object',
+                properties: {
+                  code: {
+                    type: 'string'
+                  }
+                }
+              }
+            }
           }
         }
       },
