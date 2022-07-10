@@ -49,11 +49,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
 
+  const switcherStateClass= isCollection ? (show ? 'schema-builder-switcher-open' : 'schema-builder-switcher-close') : ''
+
   return (
     <div
       data-schema-type={schemaType}
       data-schema-title={schemaKey}
-      className={rootNode ? 'rsc-controls-root' : 'rsc-controls-child'}
+      className={`${rootNode ? 'rsc-controls-root' : 'rsc-controls-child'} ${switcherStateClass}`}
       {...(rootNode && {
         'data-root-node': rootNode
       })}
