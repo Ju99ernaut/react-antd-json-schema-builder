@@ -1,4 +1,5 @@
 {
+  "name": "@documint/react-antd-json-schema-builder",
   "version": "0.10.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -51,7 +52,6 @@
     "endOfLine": "lf",
     "tabWidth": 2
   },
-  "name": "@omnixenon/react-antd-json-schema-builder",
   "author": "Seun Adesina",
   "module": "dist/@omnixenon/react-antd-json-schema-builder.esm.js",
   "size-limit": [
