@@ -40,6 +40,8 @@ export const setSchemaType = setSchemaField('type')
 
 export const setSchemaTitle = setSchemaField('title')
 
+export const setSchemaId = setSchemaField('id')
+
 export const setSchemaProperties = setSchemaField('properties')
 
 export const setSchemaProperty = (key: string) =>
@@ -58,7 +60,12 @@ export const addSchemaProperty = (schema: Schema) =>
 export const renameSchemaField = (oldKey: string, newKey: string) =>
   flow([
     entries,
-    map(([k, v]) => ({ [k === oldKey ? newKey : k]: v })),
+    map(([k, v]) => ({
+      [k === oldKey ? newKey : k]: {
+        ...v,
+        id: k === oldKey ? newKey : v.id
+      }
+    })),
     reduce(assign, {})
   ])
 

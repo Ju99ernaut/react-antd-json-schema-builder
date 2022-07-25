@@ -148,10 +148,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         <Button
                           type="dashed"
                           disabled={!isFunction(onAdd)}
-                          onClick={() => {
-                            console.log({ onAdd })
-                            onAdd()
-                          }}
+                          onClick={onAdd}
                           style={{
                             width: '100%',
                             backgroundColor: 'transparent',
