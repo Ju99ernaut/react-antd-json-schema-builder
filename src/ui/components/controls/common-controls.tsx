@@ -53,6 +53,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     <div
       data-schema-type={schemaType}
       data-schema-title={schemaKey}
+      data-schema-id={schemaKey}
       className={rootNode ? 'rsc-controls-root' : 'rsc-controls-child'}
       {...(rootNode && {
         'data-root-node': rootNode
