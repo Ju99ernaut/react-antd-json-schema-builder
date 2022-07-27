@@ -7,41 +7,33 @@ import { JSONSchemaBuilder } from '../.'
 const App = () => {
   const [data, setData] = React.useState({
     type: 'object',
-    id: 'root',
     properties: {
       address: {
         type: 'object',
-        id: 'address',
         properties: {
           street: {
-            type: 'string',
-            id: 'street'
+            type: 'string'
           },
           city: {
-            type: 'string',
-            id: 'city'
+            type: 'string'
           },
           state: {
-            type: 'string',
-            id: 'state'
+            type: 'string'
           }
         }
       },
       product_name: {
         type: 'array',
-        id: 'product_name',
         items: {
           type: 'string'
         }
       },
       product_object: {
         type: 'array',
-        id: 'product_object',
         items: {
           type: 'object',
           properties: {
             address: {
-              id: 'address',
               type: 'string'
             }
           }
@@ -49,7 +41,6 @@ const App = () => {
       },
       product_items: {
         type: 'array',
-        id: 'product_items',
         items: {
           type: 'array',
           items: {
@@ -58,12 +49,10 @@ const App = () => {
         }
       },
       product_description: {
-        type: 'string',
-        id: 'product_description'
+        type: 'string'
       },
       msrp: {
-        type: 'string',
-        id: 'msrp'
+        type: 'string'
       }
     }
   })
