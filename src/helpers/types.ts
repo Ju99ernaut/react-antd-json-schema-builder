@@ -124,6 +124,7 @@ export interface SchemaCreatorProps {
   schema: Schema
   schemaKey?: string
   disabledInput?: boolean
+  autoExpand?: boolean
   onChange?: (schema: Schema) => void
   onChangeKey?: (key: string) => void
   onDelete?: (key: string) => void
@@ -164,6 +165,7 @@ export type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean
+  autoExpand?: boolean
   controlType: 'object' | 'array' | 'primitive'
   onAdd: () => void
   onDelete: () => void

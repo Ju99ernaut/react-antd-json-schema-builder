@@ -14,15 +14,17 @@ interface UseControlProps {
   onChange?: any
   onChangeKey?: any
   rootNode?: boolean
+  autoExpand?: boolean
 }
 
 const useControls = ({
   schema,
   onChange,
   onChangeKey,
-  rootNode
+  rootNode,
+  autoExpand
 }: UseControlProps) => {
-  const [show, setShow] = useState(rootNode)
+  const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
   const { schemaType, schemaTitle, schemaProperties } = useDecodeSchema(schema)
   const schemaEntries = entries(schemaProperties)
