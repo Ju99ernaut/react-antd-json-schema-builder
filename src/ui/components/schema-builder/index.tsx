@@ -1,4 +1,5 @@
 import React from 'react'
+import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../helpers/types'
 import SchemaCreator from '../schema-creator'
 
@@ -32,10 +33,10 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
 `
 
   return (
-    <>
+    <SchemaProvider>
       <style>{css}</style>
       <SchemaCreator schema={data} onChange={onChange} />
-    </>
+    </SchemaProvider>
   )
 }
 

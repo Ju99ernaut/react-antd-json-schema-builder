@@ -43,7 +43,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     handleShow,
     onChangeFieldName,
     onChangeFieldType
-  } = useControls({ schema, onChange, onChangeKey, rootNode })
+  } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
 
   const isCollection = controlType !== 'primitive'
   const isObject = controlType === 'object'
