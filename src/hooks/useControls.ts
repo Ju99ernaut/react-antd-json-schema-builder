@@ -12,7 +12,7 @@ import useDecodeSchema from './useDecodeSchema'
 
 interface UseControlProps {
   schema: Schema
-  schemaKey: string
+  schemaKey?: string
   onChange?: any
   onChangeKey?: any
   rootNode?: boolean
@@ -20,7 +20,7 @@ interface UseControlProps {
 
 const useControls = ({
   schema,
-  schemaKey,
+  schemaKey = '',
   onChange,
   onChangeKey,
   rootNode
