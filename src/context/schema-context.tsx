@@ -9,13 +9,11 @@ export const SchemaContext = React.createContext<{
   changes: [],
   handlePushToChanges: _id => {},
   handleGetIsInChanges: _id => false,
-  handleChangesIdKey: (_old, _new) => {}
+  handleChangesIdKey: (_old, _new) => {},
 })
 
 const SchemaProvider = ({ children }: PropsWithChildren) => {
   const [changes, setChanges] = useState<string[]>([])
-
-  console.log(changes)
 
   const handlePushToChanges = (id: string) =>
     setChanges(value => [...value, id])
@@ -31,11 +29,8 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
 
   const handleGetIsInChanges = (id: string) => {
     const isInChanges = changes.includes(id)
-
     if (!isInChanges) return false
-
     setChanges(value => value.filter(item => item !== id))
-
     return isInChanges
   }
 
@@ -45,7 +40,7 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
         changes,
         handlePushToChanges,
         handleChangesIdKey,
-        handleGetIsInChanges
+        handleGetIsInChanges,
       }}
     >
       {children}

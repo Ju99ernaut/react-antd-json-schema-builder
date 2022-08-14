@@ -15,6 +15,7 @@ export type SchemaTypeOption = { value: SchemaType; label: string }
 export type JSONSchemaEditor = {
   data: Schema
   onChange: (...args: any[]) => void
+  initializeWithIds?: boolean
 }
 
 export type CommonSchemaField = 'description'
@@ -124,7 +125,6 @@ export interface SchemaCreatorProps {
   schema: Schema
   schemaKey?: string
   disabledInput?: boolean
-  autoExpand?: boolean
   onChange?: (schema: Schema) => void
   onChangeKey?: (key: string) => void
   onDelete?: (key: string) => void
@@ -165,7 +165,6 @@ export type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean
-  autoExpand?: boolean
   controlType: 'object' | 'array' | 'primitive'
   onAdd: () => void
   onDelete: () => void

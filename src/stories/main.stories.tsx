@@ -2,6 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react'
 import 'antd/dist/antd.css'
 import React from 'react'
 import { JSONSchemaBuilder } from '../index'
+import { EMPTY_STATE } from './test/data'
 
 export default {
   title: 'Main',
@@ -12,57 +13,9 @@ export default {
 } as ComponentMeta<typeof JSONSchemaBuilder>
 
 const Template: ComponentStory<typeof JSONSchemaBuilder> = args => {
-  const [data, setData] = React.useState({
-    type: 'object',
-    properties: {
-      address: {
-        type: 'object',
-        properties: {
-          street: {
-            type: 'string',
-          },
-          city: {
-            type: 'string',
-          },
-          state: {
-            type: 'string',
-          },
-        },
-      },
-      product_name: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
-      product_object: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            address: {
-              type: 'string',
-            },
-          },
-        },
-      },
-      product_items: {
-        type: 'array',
-        items: {
-          type: 'array',
-          items: {
-            type: 'string',
-          },
-        },
-      },
-      product_description: {
-        type: 'string',
-      },
-      msrp: {
-        type: 'string',
-      },
-    },
-  })
+  const [data, setData] = React.useState(EMPTY_STATE)
+
+  console.log({ data })
 
   return <JSONSchemaBuilder {...args} data={data} onChange={setData} />
 }

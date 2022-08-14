@@ -76,19 +76,21 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     )}
                   </Col>
                   <Col span={22}>
-                    <Input
-                      style={{ borderRadius: '0px', borderRight: '0px' }}
-                      defaultValue={schemaKey}
-                      disabled={rootNode || disabledInput}
-                      onBlur={onChangeFieldName}
-                    />
+                    {isFunction(onChangeKey) && (
+                      <Input
+                        style={{ borderRadius: '0px', borderRight: '0px' }}
+                        defaultValue={schemaKey}
+                        disabled={rootNode || disabledInput}
+                        onBlur={onChangeFieldName}
+                      />
+                    )}
                   </Col>
                 </Row>
               </Col>
               <Col xs={10} xl={11}>
                 <Select
                   style={{ width: '100%', borderRadius: '0px' }}
-                  className="controls-control-select-box"
+                  className="rsc-controls-control-select-box"
                   value={getTypeOptions}
                   options={schemaTypes}
                   disabled={rootNode}
@@ -135,9 +137,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 onChange={(key, newSchema) =>
                   onChange(setSchemaProperty(key)(newSchema, schema))
                 }
-                onChangeKey={(oldKey, newKey) =>
+                onChangeKey={(oldKey, newKey) => {
                   onChange(renameSchemaProperty(oldKey, newKey, schema))
-                }
+                }}
               />
               <div className="rsc-controls-add-button">
                 <Row>

@@ -23,7 +23,6 @@ const typeToControl: Record<SchemaType | 'default', React.FC<any>> = {
 const SchemaCreator: React.FC<SchemaCreatorProps> = ({
   schema,
   schemaKey = ROOT_KEY,
-  autoExpand = false,
   disabledInput,
   onChange = noop,
   onDelete = noop,
@@ -40,7 +39,6 @@ const SchemaCreator: React.FC<SchemaCreatorProps> = ({
     schemaKey,
     rootNode: schemaKey === ROOT_KEY,
     disabledInput,
-    autoExpand,
     onDelete: () => onDelete(schemaKey),
     onAdd,
     onChangeKey,

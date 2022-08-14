@@ -1,4 +1,3 @@
-import entries from 'lodash/entries'
 import React, { useState } from 'react'
 import { useSchemaContext } from '../context/schema-context'
 import { schemaTypes } from '../helpers/constants'
@@ -30,8 +29,7 @@ const useControls = ({
   const autoExpand = handleGetIsInChanges(schemaKey)
   const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
-  const { schemaType, schemaTitle, schemaProperties } = useDecodeSchema(schema)
-  const schemaEntries = entries(schemaProperties)
+  const { schemaType } = useDecodeSchema(schema)
 
   const handleShow = () => setShow(state => !state)
 
@@ -43,27 +41,19 @@ const useControls = ({
 
   const closeModal = () => setShowModal(false)
 
-  const onChangeFieldName = (event: React.FocusEvent<HTMLInputElement>) => {
-    return onChangeKey
-      ? () => {
-          handleChangesIdKey(schemaKey, event.target.value)
-          onChangeKey(event.target.value)
-        }
-      : undefined
+  const onChangeFieldName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChangesIdKey(schemaKey, event.target.value)
+    onChangeKey(event.target.value)
   }
 
   const onChangeFieldType = (option: string) => {
     const collectionTypes = ['object', 'array']
-    if (collectionTypes.includes(option)) {
-      handlePushToChanges(schemaKey)
-    }
+    collectionTypes.includes(option) && handlePushToChanges(schemaKey)
     onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
   }
 
   return {
     schemaType,
-    schemaTitle,
-    schemaEntries,
     getTypeOptions,
     show,
     showModal,
