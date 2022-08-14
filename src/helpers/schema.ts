@@ -12,8 +12,8 @@ import reduce from 'lodash/fp/reduce'
 import set from 'lodash/fp/set'
 import uniqueId from 'lodash/fp/uniqueId'
 import unset from 'lodash/fp/unset'
+import { Schema, SchemaType } from '../types'
 import { typeToOptions, typeToValidFields } from './constants'
-import { Schema, SchemaType } from './types'
 
 export const returnUndefined = noop
 
@@ -63,10 +63,10 @@ export const renameSchemaField = (oldKey: string, newKey: string) =>
     map(([k, v]) => ({
       [k === oldKey ? newKey : k]: {
         ...v,
-        id: k === oldKey ? newKey : v.id
-      }
+        id: k === oldKey ? newKey : v.id,
+      },
     })),
-    reduce(assign, {})
+    reduce(assign, {}),
   ])
 
 export const renameSchemaProperty = (
@@ -77,7 +77,7 @@ export const renameSchemaProperty = (
   flow([
     getSchemaProperties,
     renameSchemaField(oldKey, newKey),
-    p => setSchemaProperties(p, schema)
+    p => setSchemaProperties(p, schema),
   ])(schema)
 
 export const isSchemaObject = (schema: Schema) =>
@@ -107,7 +107,7 @@ export const getSchemaMenuOptions = (type: SchemaType) =>
 
 export const setSchemaTypeAndRemoveWrongFields = flow([
   setSchemaType,
-  removeWrongFields
+  removeWrongFields,
 ])
 
 export const stringsToOptions = map(s => ({ label: s, value: s }))

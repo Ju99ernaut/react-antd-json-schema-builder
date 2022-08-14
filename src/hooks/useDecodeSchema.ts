@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 import {
   getSchemaProperties,
   getSchemaTitle,
-  getSchemaType
+  getSchemaType,
 } from '../helpers/schema'
-import { Schema, SchemaType } from '../helpers/types'
+import { Schema, SchemaType } from '../types'
 
 interface UseDecodeSchemaReturn {
   schemaTitle: string
@@ -20,7 +20,7 @@ const useDecodeSchema = (schema: Schema): UseDecodeSchemaReturn => {
   return {
     schemaType,
     schemaTitle,
-    schemaProperties
+    schemaProperties,
   }
 }
 

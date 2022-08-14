@@ -1,5 +1,5 @@
 import React from 'react'
-import { CommonControlsProps } from '../../../helpers/types'
+import { CommonControlsProps } from '../../../types'
 import CommonControls from './common-controls'
 
 const ArrayControls: React.FC<CommonControlsProps> = ({ ...props }) => {

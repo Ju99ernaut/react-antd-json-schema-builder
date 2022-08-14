@@ -1,15 +1,16 @@
-import React from 'react'
-import { CommonSubObjectProps, Schema } from '../../../helpers/types'
-import useControls from '../../../hooks/useControls'
+import useDecodeSchema from 'hooks/useDecodeSchema'
+import entries from 'lodash/entries'
+import { CommonSubObjectProps, Schema } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
 const CommonSubObject = ({
   schema,
   onDelete,
   onChangeKey,
-  onChange
+  onChange,
 }: CommonSubObjectProps) => {
-  const { schemaEntries } = useControls({ schema })
+  const { schemaProperties } = useDecodeSchema(schema)
+  const schemaEntries = entries(schemaProperties)
 
   return (
     <>

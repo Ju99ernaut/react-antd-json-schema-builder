@@ -1,91 +1,69 @@
 {
+  "name": "@omnixenon/react-antd-json-schema-builder",
+  "author": "Seun Adesina",
   "version": "0.13.0",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "keywords": [
-    "react",
-    "react-component",
-    "ant design",
-    "json",
-    "json-schema"
-  ],
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
-  "engines": {
-    "node": ">=10"
-  },
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blackgospel/react-antd-json-schema-builder.git"
   },
   "homepage": "https://github.com/blackgospel/react-antd-json-schema-builder.git#readme",
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "rollup": "rollup --config config/rollup/rollup.config.ts --configPlugin typescript",
+    "storybook": "start-storybook -p 6006 -c ./config/storybook --no-manager-cache",
+    "build:storybook": "build-storybook -c ./config/storybook",
+    "build": "rm -rf dist && yarn rollup",
+    "watch": "yarn storybook"
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.7.0",
     "antd": ">=4.21.0",
     "lodash": ">=4.17.21",
-    "react": ">=16",
-    "json-schema-traverse": ">=1.0.0"
+    "react": ">=16"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "singleQuote": true,
-    "semi": false,
-    "arrowParens": "avoid",
-    "bracketSpacing": true,
-    "printWidth": 80,
-    "endOfLine": "lf",
-    "tabWidth": 2
-  },
-  "name": "@omnixenon/react-antd-json-schema-builder",
-  "author": "Seun Adesina",
-  "module": "dist/@omnixenon/react-antd-json-schema-builder.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/@omnixenon/react-antd-json-schema-builder.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/@omnixenon/react-antd-json-schema-builder.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^7.0.8",
+    "@ant-design/icons": "^4.7.0",
+    "@babel/core": "^7.18.10",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.4",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-interactions": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-webpack4": "^6.5.10",
+    "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/manager-webpack4": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.10",
+    "@storybook/react": "^6.5.10",
+    "@storybook/testing-library": "^0.0.13",
     "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
-    "husky": "^8.0.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "size-limit": "^7.0.8",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.3"
-  },
-  "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "antd": "^4.21.5",
+    "@types/rollup-plugin-peer-deps-external": "^2.2.1",
+    "antd": "^4.22.4",
+    "babel-loader": "^8.2.5",
     "json-schema-traverse": "^1.0.0",
     "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "rollup": "^2.78.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
+    "typescript": "^4.7.3",
+    "webpack": "^5.74.0"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "dependencies": {}
 }

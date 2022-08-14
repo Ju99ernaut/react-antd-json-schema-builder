@@ -1,12 +1,10 @@
-import React from 'react'
 import SchemaProvider from '../../../context/schema-context'
-import { JSONSchemaEditor } from '../../../helpers/types'
+import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
 const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const css = `
-  .rsc-controls-root {
-  }
+  .rsc-controls-root {}
 
   .rsc-controls-root > div.rsc-controls-control-box {
     padding: 16px;

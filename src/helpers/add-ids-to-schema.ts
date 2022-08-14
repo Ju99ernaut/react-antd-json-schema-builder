@@ -1,7 +1,7 @@
 import traverse from 'json-schema-traverse'
 import { Schema } from '../types'
 
-const formatSchemaData = (schema: Schema) => {
+const addIdsToSchema = (schema: Schema) => {
   const newSchema = { ...schema } as Record<string, any>
 
   traverse(
@@ -19,7 +19,7 @@ const formatSchemaData = (schema: Schema) => {
 
       newSchema['properties'][keyIndex] = {
         ...schema,
-        ...(!schema?.id && { id: keyIndex })
+        ...(!schema?.id && { id: keyIndex }),
       }
     }
   )
@@ -27,4 +27,4 @@ const formatSchemaData = (schema: Schema) => {
   return newSchema
 }
 
-export default formatSchemaData
+export default addIdsToSchema
