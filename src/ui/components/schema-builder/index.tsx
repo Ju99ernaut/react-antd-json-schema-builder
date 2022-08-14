@@ -1,6 +1,5 @@
-import React from 'react'
 import SchemaProvider from '../../../context/schema-context'
-import { JSONSchemaEditor } from '../../../helpers/types'
+import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
 const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {

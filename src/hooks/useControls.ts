@@ -5,9 +5,9 @@ import { schemaTypes } from '../helpers/constants'
 import {
   findOption,
   getSchemaType,
-  setSchemaTypeAndRemoveWrongFields
+  setSchemaTypeAndRemoveWrongFields,
 } from '../helpers/schema'
-import { Schema } from '../helpers/types'
+import { Schema } from '../types'
 import useDecodeSchema from './useDecodeSchema'
 
 interface UseControlProps {
@@ -23,13 +23,10 @@ const useControls = ({
   schemaKey = '',
   onChange,
   onChangeKey,
-  rootNode
+  rootNode,
 }: UseControlProps) => {
-  const {
-    handlePushToChanges,
-    handleChangesIdKey,
-    handleGetIsInChanges
-  } = useSchemaContext()
+  const { handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } =
+    useSchemaContext()
   const autoExpand = handleGetIsInChanges(schemaKey)
   const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
@@ -38,9 +35,9 @@ const useControls = ({
 
   const handleShow = () => setShow(state => !state)
 
-  const getTypeOptions = (findOption(getSchemaType(schema))(
+  const getTypeOptions = findOption(getSchemaType(schema))(
     schemaTypes
-  ) as unknown) as string
+  ) as unknown as string
 
   const openModal = () => setShowModal(true)
 
@@ -74,7 +71,7 @@ const useControls = ({
     closeModal,
     handleShow,
     onChangeFieldName,
-    onChangeFieldType
+    onChangeFieldType,
   }
 }
 

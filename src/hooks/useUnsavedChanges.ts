@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Schema } from '../helpers/types'
+import { Schema } from '../types'
 
 const useUnsavedChanges = (data: Schema) => {
   const [isDirty, setDirty] = useState(false)

@@ -3,7 +3,7 @@ import {
   CaretRightFilled,
   DeleteOutlined,
   PlusSquareFilled,
-  SettingOutlined
+  SettingOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
 import { isFunction } from 'lodash'
@@ -14,10 +14,10 @@ import {
   getSchemaItems,
   renameSchemaProperty,
   setSchemaItems,
-  setSchemaProperty
+  setSchemaProperty,
 } from '../../../helpers/schema'
-import { CommonControlsProps } from '../../../helpers/types'
 import useControls from '../../../hooks/useControls'
+import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
@@ -31,7 +31,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   onAdd,
   onDelete,
   onChange,
-  onChangeKey
+  onChangeKey,
 }) => {
   const {
     getTypeOptions,
@@ -42,7 +42,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     closeModal,
     handleShow,
     onChangeFieldName,
-    onChangeFieldType
+    onChangeFieldType,
   } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
 
   const isCollection = controlType !== 'primitive'
@@ -56,7 +56,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
       data-schema-id={schemaKey}
       className={rootNode ? 'rsc-controls-root' : 'rsc-controls-child'}
       {...(rootNode && {
-        'data-root-node': rootNode
+        'data-root-node': rootNode,
       })}
     >
       {!rootNode && (
@@ -153,7 +153,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                             width: '100%',
                             backgroundColor: 'transparent',
                             borderColor: 'black',
-                            borderRadius: '3px'
+                            borderRadius: '3px',
                           }}
                           icon={<PlusSquareFilled style={{ color: 'black' }} />}
                         />
