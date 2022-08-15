@@ -1,3 +1,4 @@
+import React from 'react'
 import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'

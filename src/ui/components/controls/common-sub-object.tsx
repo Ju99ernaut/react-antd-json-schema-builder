@@ -1,5 +1,6 @@
 import useDecodeSchema from 'hooks/useDecodeSchema'
 import entries from 'lodash/entries'
+import React from 'react'
 import { CommonSubObjectProps, Schema } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
