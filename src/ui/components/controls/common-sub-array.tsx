@@ -1,5 +1,5 @@
 import React from 'react'
-import { CommonSubArrayProps } from '../../../helpers/types'
+import { CommonSubArrayProps } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
 const CommonSubArray = ({ schema, onChange }: CommonSubArrayProps) => {

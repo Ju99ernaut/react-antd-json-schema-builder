@@ -1,16 +1,17 @@
-import entries from 'lodash/entries'
 import React, { useState } from 'react'
+import { useSchemaContext } from '../context/schema-context'
 import { schemaTypes } from '../helpers/constants'
 import {
   findOption,
   getSchemaType,
-  setSchemaTypeAndRemoveWrongFields
+  setSchemaTypeAndRemoveWrongFields,
 } from '../helpers/schema'
-import { Schema } from '../helpers/types'
+import { Schema } from '../types'
 import useDecodeSchema from './useDecodeSchema'
 
 interface UseControlProps {
   schema: Schema
+  schemaKey?: string
   onChange?: any
   onChangeKey?: any
   rootNode?: boolean
@@ -18,35 +19,41 @@ interface UseControlProps {
 
 const useControls = ({
   schema,
+  schemaKey = '',
   onChange,
   onChangeKey,
-  rootNode
+  rootNode,
 }: UseControlProps) => {
-  const [show, setShow] = useState(rootNode)
+  const { handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } =
+    useSchemaContext()
+  const autoExpand = handleGetIsInChanges(schemaKey)
+  const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
-  const { schemaType, schemaTitle, schemaProperties } = useDecodeSchema(schema)
-  const schemaEntries = entries(schemaProperties)
+  const { schemaType } = useDecodeSchema(schema)
 
   const handleShow = () => setShow(state => !state)
 
-  const getTypeOptions = (findOption(getSchemaType(schema))(
+  const getTypeOptions = findOption(getSchemaType(schema))(
     schemaTypes
-  ) as unknown) as string
+  ) as unknown as string
 
   const openModal = () => setShowModal(true)
 
   const closeModal = () => setShowModal(false)
 
-  const onChangeFieldName = (event: React.FocusEvent<HTMLInputElement>) =>
-    onChangeKey ? onChangeKey(event.target.value) : undefined
+  const onChangeFieldName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChangesIdKey(schemaKey, event.target.value)
+    onChangeKey(event.target.value)
+  }
 
-  const onChangeFieldType = (option: string) =>
+  const onChangeFieldType = (option: string) => {
+    const collectionTypes = ['object', 'array']
+    collectionTypes.includes(option) && handlePushToChanges(schemaKey)
     onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
+  }
 
   return {
     schemaType,
-    schemaTitle,
-    schemaEntries,
     getTypeOptions,
     show,
     showModal,
@@ -54,7 +61,7 @@ const useControls = ({
     closeModal,
     handleShow,
     onChangeFieldName,
-    onChangeFieldType
+    onChangeFieldType,
   }
 }
 

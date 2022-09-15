@@ -15,6 +15,7 @@ export type SchemaTypeOption = { value: SchemaType; label: string }
 export type JSONSchemaEditor = {
   data: Schema
   onChange: (...args: any[]) => void
+  initializeWithIds?: boolean
 }
 
 export type CommonSchemaField = 'description'

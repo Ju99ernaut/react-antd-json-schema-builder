@@ -4,19 +4,16 @@ import {
   getSchemaField,
   getSchemaMenuOptions,
   getSchemaType,
-  setSchemaField
+  setSchemaField,
 } from '../../../helpers/schema'
-import {
-  SchemaFieldOptionType,
-  SchemaOptionsProps
-} from '../../../helpers/types'
+import { SchemaFieldOptionType, SchemaOptionsProps } from '../../../types'
 
 const SchemaOptions = ({
   showModal,
   onClose,
   schema,
   schemaKey,
-  onChange
+  onChange,
 }: SchemaOptionsProps) => {
   const type = getSchemaType(schema)
   const allOptions = useMemo(() => getSchemaMenuOptions(type), [type])
@@ -24,19 +21,17 @@ const SchemaOptions = ({
   const getDefaultValue = (props: PropsWithChildren<any>) =>
     getSchemaField(props.option.value, props.schema) as string
 
-  const onChangeText = (props: any) => (
-    event: React.FocusEvent<HTMLInputElement>
-  ) =>
-    props.onChange(
-      setSchemaField(props.option.value, event.target.value, props.schema)
-    )
+  const onChangeText =
+    (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
+      props.onChange(
+        setSchemaField(props.option.value, event.target.value, props.schema)
+      )
 
-  const onChangeNumber = (props: any) => (
-    event: React.FocusEvent<HTMLInputElement>
-  ) =>
-    props.onChange(
-      setSchemaField(props.option.value, event.target.value, props.schema)
-    )
+  const onChangeNumber =
+    (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
+      props.onChange(
+        setSchemaField(props.option.value, event.target.value, props.schema)
+      )
 
   const onChangeBoolean = (props: any) => (checked: boolean) =>
     props.onChange(setSchemaField(props.option.value, checked, props.schema))
@@ -59,7 +54,7 @@ const SchemaOptions = ({
     ),
     boolean: props => (
       <Switch
-        defaultChecked={(getDefaultValue(props) as unknown) as boolean}
+        defaultChecked={getDefaultValue(props) as unknown as boolean}
         onClick={onChangeBoolean(props)}
       />
     ),
@@ -82,7 +77,7 @@ const SchemaOptions = ({
         options={props.option.optionList}
         onChange={onChangeSelect(props)}
       />
-    )
+    ),
   }
 
   return (
