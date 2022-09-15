@@ -1,6 +1,6 @@
 {
   "name": "@documint/react-antd-json-schema-builder",
-  "author": "Seun Adesina",
+  "author": "Documint LLC",
   "version": "0.16.1",
   "license": "MIT",
   "main": "dist/cjs/index.js",
