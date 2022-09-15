@@ -18,8 +18,8 @@ const addIdsToSchema = (schema: Schema) => {
       if (!keyIndex) return
 
       newSchema['properties'][keyIndex] = {
+        id: keyIndex,
         ...schema,
-        ...(!schema?.id && { id: keyIndex }),
       }
     }
   )

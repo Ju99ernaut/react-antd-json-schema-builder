@@ -1,5 +1,5 @@
 {
-  "name": "@omnixenon/react-antd-json-schema-builder",
+  "name": "@documint/react-antd-json-schema-builder",
   "author": "Seun Adesina",
   "version": "0.16.0",
   "license": "MIT",
@@ -11,9 +11,9 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blackgospel/react-antd-json-schema-builder.git"
+    "url": "git+https://github.com/documint-me/react-antd-json-schema-builder.git"
   },
-  "homepage": "https://github.com/blackgospel/react-antd-json-schema-builder.git#readme",
+  "homepage": "https://github.com/documint-me/react-antd-json-schema-builder.git#readme",
   "scripts": {
     "rollup": "rollup --config config/rollup/rollup.config.ts --configPlugin typescript",
     "storybook": "start-storybook -p 6006 -c ./config/storybook --no-manager-cache",
