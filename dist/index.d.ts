@@ -1,61 +1,61 @@
-type Schema = Record<string, unknown>;
-type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean' | 'currency' | 'percent' | 'date';
-type SchemaTypeOption = {
+declare type Schema = Record<string, unknown>;
+declare type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean' | 'currency' | 'percent' | 'date';
+declare type SchemaTypeOption = {
     value: SchemaType;
     label: string;
 };
-type JSONSchemaEditor = {
+declare type JSONSchemaEditor = {
     data: Schema;
     onChange: (...args: any[]) => void;
     initializeWithIds?: boolean;
 };
-type CommonSchemaField = 'description';
-type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
-type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum';
-type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
-type CommonValidSchemaField = CommonSchemaField | 'title' | 'type';
-type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
-type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
-type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
-type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
-type SchemaFieldOptionType = 'text' | 'number' | 'boolean' | 'multi' | 'select';
-type SchemaFieldOption = {
+declare type CommonSchemaField = 'description';
+declare type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
+declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum';
+declare type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
+declare type CommonValidSchemaField = CommonSchemaField | 'title' | 'type';
+declare type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
+declare type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
+declare type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+declare type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+declare type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+declare type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+declare type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
+declare type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
+declare type SchemaFieldOptionType = 'text' | 'number' | 'boolean' | 'multi' | 'select';
+declare type SchemaFieldOption = {
     label: string;
     type: SchemaFieldOptionType;
     optionList?: any;
 };
-type CommonSchemaFieldOption = SchemaFieldOption & {
+declare type CommonSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type StringSchemaFieldOption = SchemaFieldOption & {
+declare type StringSchemaFieldOption = SchemaFieldOption & {
     value: StringSchemaField;
 };
-type NumberSchemaFieldOption = SchemaFieldOption & {
+declare type NumberSchemaFieldOption = SchemaFieldOption & {
     value: NumberSchemaField;
 };
-type BoolSchemaFieldOption = SchemaFieldOption & {
+declare type BoolSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type ObjectSchemaFieldOption = SchemaFieldOption & {
+declare type ObjectSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type ArraySchemaFieldOption = SchemaFieldOption & {
+declare type ArraySchemaFieldOption = SchemaFieldOption & {
     value: ArraySchemaField;
 };
-type PercentSchemaFieldOption = SchemaFieldOption & {
+declare type PercentSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type CurrencySchemaFieldOption = SchemaFieldOption & {
+declare type CurrencySchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type DateSchemaFieldOption = SchemaFieldOption & {
+declare type DateSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-type SchemaMenuOption = StringSchemaFieldOption | NumberSchemaFieldOption | BoolSchemaFieldOption | ObjectSchemaFieldOption | ArraySchemaFieldOption | PercentSchemaFieldOption | CurrencySchemaFieldOption | DateSchemaFieldOption;
+declare type SchemaMenuOption = StringSchemaFieldOption | NumberSchemaFieldOption | BoolSchemaFieldOption | ObjectSchemaFieldOption | ArraySchemaFieldOption | PercentSchemaFieldOption | CurrencySchemaFieldOption | DateSchemaFieldOption;
 interface SchemaCreatorProps {
     schema: Schema;
     schemaKey?: string;
@@ -81,7 +81,7 @@ interface CommonSubObjectProps {
     onChangeKey: (oldKey: string, newKey: string) => void;
     onChange: (key: string, schema: Schema) => void;
 }
-type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
+declare type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
     schema: Schema;
     schemaKey: string;
     rootNode?: boolean;
@@ -91,7 +91,7 @@ type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
     onChange: (schema: Schema) => void;
     onChangeKey: (key: string) => void;
 };
-type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
+declare type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
     schema: Schema;
     schemaKey: string;
     rootNode?: boolean;
