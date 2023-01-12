@@ -412,7 +412,7 @@ const setSchemaProperty = (key) => setSchemaField(['properties', key]);
 const setSchemaItems = setSchemaField('items');
 const deleteSchemaField = unset__default["default"];
 const deleteSchemaProperty = (key) => deleteSchemaField(['properties', key]);
-const addSchemaProperty = (schema) => setSchemaProperty(uniqueId('field_', schema))({ type: 'string' }, schema);
+const addSchemaProperty = (schema) => setSchemaProperty(uniqueId('field_', schema))({ type: 'string', items: { type: 'string' } }, schema);
 const renameSchemaField = (oldKey, newKey) => flow__default["default"]([
     entries__default["default"],
     map__default["default"](([k, v]) => ({
