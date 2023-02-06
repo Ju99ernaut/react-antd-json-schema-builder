@@ -285,9 +285,12 @@ const formatOptions = [
     },
 ];
 const commonValidProperties = [
+    'id',
+    'uuid',
     'description',
     'type',
     'title',
+    'items',
 ];
 const stringValidSchemaProperties = [
     ...commonValidProperties,
@@ -403,7 +406,9 @@ const setSchemaProperty = (key) => setSchemaField(['properties', key]);
 const setSchemaItems = setSchemaField('items');
 const deleteSchemaField = unset;
 const deleteSchemaProperty = (key) => deleteSchemaField(['properties', key]);
-const addSchemaProperty = (schema) => setSchemaProperty(uniqueId('field_', schema))({ type: 'string', items: { type: 'string' } }, schema);
+const addSchemaProperty = (schema) => {
+    return setSchemaProperty(uniqueId('field_', schema))({ uuid: uuidv4(), type: 'string', items: { uuid: uuidv4(), type: 'string' } }, schema);
+};
 const renameSchemaField = (oldKey, newKey) => flow([
     entries,
     map(([k, v]) => ({
