@@ -36,7 +36,7 @@ export type ArraySchemaField =
   | 'minItems'
   | 'maxItems'
 
-export type CommonValidSchemaField = CommonSchemaField | 'title' | 'type'
+export type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id' | 'uuid' | 'items'
 
 export type StringValidSchemaField = StringSchemaField | CommonValidSchemaField
 
