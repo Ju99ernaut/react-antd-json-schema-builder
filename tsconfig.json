@@ -7,7 +7,7 @@
       "@types/*": ["./types/*"],
       "@theme/*": ["./theme/*"]
     },
-    "target": "ESNext",
+    "target": "es5",
     "lib": ["DOM", "DOM.Iterable", "ESNext", "ESNext.AsyncIterable"],
     "declaration": true,
     "declarationDir": "types",
