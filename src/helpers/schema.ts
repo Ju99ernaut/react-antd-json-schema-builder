@@ -10,7 +10,7 @@ import noop from 'lodash/fp/noop'
 import pick from 'lodash/fp/pick'
 import reduce from 'lodash/fp/reduce'
 import set from 'lodash/fp/set'
-import uniqueId from './unique'
+import uniqueId, { uuidv4 } from './unique'
 import unset from 'lodash/fp/unset'
 import { Schema, SchemaType } from '../types'
 import { typeToOptions, typeToValidFields } from './constants'
@@ -54,11 +54,12 @@ export const deleteSchemaField = unset
 export const deleteSchemaProperty = (key: string) =>
   deleteSchemaField(['properties', key])
 
-export const addSchemaProperty = (schema: Schema) =>
-  setSchemaProperty(uniqueId('field_', schema))(
-    { type: 'string', items: { type: 'string' } },
+export const addSchemaProperty = (schema: Schema) => {
+  return setSchemaProperty(uniqueId('field_', schema))(
+    { uuid: uuidv4(), type: 'string', items: { uuid: uuidv4(), type: 'string' } },
     schema
   )
+}
 
 export const renameSchemaField = (oldKey: string, newKey: string) =>
   flow([

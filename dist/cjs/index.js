@@ -132,12 +132,54 @@ function escapeJsonPtr(str) {
   return str.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
+const uuidv4Fallback = () => {
+    // @ts-ignore
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => {
+        return (c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16);
+    });
+};
+const uuidv4 = () => {
+    return crypto?.randomUUID ? crypto.randomUUID() : uuidv4Fallback();
+};
+const getAllKeys = (obj, startKeys = []) => {
+    const result = startKeys;
+    Object.keys(obj).forEach(key => {
+        // @ts-ignore
+        const val = obj[key];
+        result.push(key);
+        if (typeof val === 'object') {
+            getAllKeys(val, result);
+        }
+    });
+    return result;
+};
+const unique = (prefix, obj = {}) => {
+    const usedIDs = getAllKeys(obj)
+        .map(key => {
+        return parseInt(key.split(prefix)[1]);
+    })
+        .filter(val => {
+        return Boolean(val);
+    });
+    return usedIDs.length ? Math.max(...usedIDs) + 1 : 0;
+};
+const idCounter = {};
+const uniqueId = (prefix, obj = {}) => {
+    if (!idCounter[prefix]) {
+        idCounter[prefix] = unique(prefix, obj);
+    }
+    const id = ++idCounter[prefix];
+    return prefix + id;
+};
+
 const addIdsToSchema = (schema) => {
     const newSchema = { ...schema };
     jsonSchemaTraverse.exports(schema, (schema, _parent, _root, _parentJSONParent, _parentKeyword, _parentSchema, keyIndex) => {
         if (!keyIndex)
             return;
         newSchema['properties'][keyIndex] = {
+            cid: schema.cid ? schema.cid : uuidv4(),
             id: keyIndex,
             ...schema,
         };
@@ -263,9 +305,12 @@ const formatOptions = [
     },
 ];
 const commonValidProperties = [
+    'id',
+    'uuid',
     'description',
     'type',
     'title',
+    'items',
 ];
 const stringValidSchemaProperties = [
     ...commonValidProperties,
@@ -366,37 +411,6 @@ const typeToValidFields = {
     date: dateValidSchemaProperties,
 };
 
-const getAllKeys = (obj, startKeys = []) => {
-    const result = startKeys;
-    Object.keys(obj).forEach(key => {
-        // @ts-ignore
-        const val = obj[key];
-        result.push(key);
-        if (typeof val === 'object') {
-            getAllKeys(val, result);
-        }
-    });
-    return result;
-};
-const unique = (prefix, obj = {}) => {
-    const usedIDs = getAllKeys(obj)
-        .map(key => {
-        return parseInt(key.split(prefix)[1]);
-    })
-        .filter(val => {
-        return Boolean(val);
-    });
-    return usedIDs.length ? Math.max(...usedIDs) + 1 : 0;
-};
-const idCounter = {};
-const uniqueId = (prefix, obj = {}) => {
-    if (!idCounter[prefix]) {
-        idCounter[prefix] = unique(prefix, obj);
-    }
-    const id = ++idCounter[prefix];
-    return prefix + id;
-};
-
 const getSchemaField = get__default["default"];
 const getSchemaFields = pick__default["default"];
 const getSchemaType = getSchemaField('type');
@@ -412,7 +426,9 @@ const setSchemaProperty = (key) => setSchemaField(['properties', key]);
 const setSchemaItems = setSchemaField('items');
 const deleteSchemaField = unset__default["default"];
 const deleteSchemaProperty = (key) => deleteSchemaField(['properties', key]);
-const addSchemaProperty = (schema) => setSchemaProperty(uniqueId('field_', schema))({ type: 'string', items: { type: 'string' } }, schema);
+const addSchemaProperty = (schema) => {
+    return setSchemaProperty(uniqueId('field_', schema))({ uuid: uuidv4(), type: 'string', items: { uuid: uuidv4(), type: 'string' } }, schema);
+};
 const renameSchemaField = (oldKey, newKey) => flow__default["default"]([
     entries__default["default"],
     map__default["default"](([k, v]) => ({

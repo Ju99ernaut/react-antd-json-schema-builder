@@ -87,9 +87,12 @@ export const formatOptions = [
 ]
 
 const commonValidProperties: CommonValidSchemaField[] = [
+  'id',
+  'uuid',
   'description',
   'type',
   'title',
+  'items',
 ]
 
 export const stringValidSchemaProperties: StringValidSchemaField[] = [
