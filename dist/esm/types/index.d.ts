@@ -1,61 +1,61 @@
-export declare type Schema = Record<string, unknown>;
-export declare type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean' | 'currency' | 'percent' | 'date';
-export declare type SchemaTypeOption = {
+export type Schema = Record<string, unknown>;
+export type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boolean' | 'currency' | 'percent' | 'date';
+export type SchemaTypeOption = {
     value: SchemaType;
     label: string;
 };
-export declare type JSONSchemaEditor = {
+export type JSONSchemaEditor = {
     data: Schema;
     onChange: (...args: any[]) => void;
     initializeWithIds?: boolean;
 };
-export declare type CommonSchemaField = 'description';
-export declare type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
-export declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum';
-export declare type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
-export declare type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id' | 'uuid' | 'items';
-export declare type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
-export declare type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
-export declare type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
-export declare type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
-export declare type SchemaFieldOptionType = 'text' | 'number' | 'boolean' | 'multi' | 'select';
-export declare type SchemaFieldOption = {
+export type CommonSchemaField = 'description';
+export type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
+export type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum';
+export type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
+export type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id' | 'uuid' | 'items';
+export type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
+export type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
+export type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+export type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+export type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+export type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+export type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
+export type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
+export type SchemaFieldOptionType = 'text' | 'number' | 'boolean' | 'multi' | 'select';
+export type SchemaFieldOption = {
     label: string;
     type: SchemaFieldOptionType;
     optionList?: any;
 };
-export declare type CommonSchemaFieldOption = SchemaFieldOption & {
+export type CommonSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type StringSchemaFieldOption = SchemaFieldOption & {
+export type StringSchemaFieldOption = SchemaFieldOption & {
     value: StringSchemaField;
 };
-export declare type NumberSchemaFieldOption = SchemaFieldOption & {
+export type NumberSchemaFieldOption = SchemaFieldOption & {
     value: NumberSchemaField;
 };
-export declare type BoolSchemaFieldOption = SchemaFieldOption & {
+export type BoolSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type ObjectSchemaFieldOption = SchemaFieldOption & {
+export type ObjectSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type ArraySchemaFieldOption = SchemaFieldOption & {
+export type ArraySchemaFieldOption = SchemaFieldOption & {
     value: ArraySchemaField;
 };
-export declare type PercentSchemaFieldOption = SchemaFieldOption & {
+export type PercentSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type CurrencySchemaFieldOption = SchemaFieldOption & {
+export type CurrencySchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type DateSchemaFieldOption = SchemaFieldOption & {
+export type DateSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
 };
-export declare type SchemaMenuOption = StringSchemaFieldOption | NumberSchemaFieldOption | BoolSchemaFieldOption | ObjectSchemaFieldOption | ArraySchemaFieldOption | PercentSchemaFieldOption | CurrencySchemaFieldOption | DateSchemaFieldOption;
+export type SchemaMenuOption = StringSchemaFieldOption | NumberSchemaFieldOption | BoolSchemaFieldOption | ObjectSchemaFieldOption | ArraySchemaFieldOption | PercentSchemaFieldOption | CurrencySchemaFieldOption | DateSchemaFieldOption;
 export interface SchemaCreatorProps {
     schema: Schema;
     schemaKey?: string;
@@ -81,7 +81,7 @@ export interface CommonSubObjectProps {
     onChangeKey: (oldKey: string, newKey: string) => void;
     onChange: (key: string, schema: Schema) => void;
 }
-export declare type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
+export type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
     schema: Schema;
     schemaKey: string;
     rootNode?: boolean;
@@ -91,7 +91,7 @@ export declare type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput
     onChange: (schema: Schema) => void;
     onChangeKey: (key: string) => void;
 };
-export declare type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
+export type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
     schema: Schema;
     schemaKey: string;
     rootNode?: boolean;
