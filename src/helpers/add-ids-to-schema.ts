@@ -3,8 +3,6 @@ import { Schema } from '../types'
 import { uuidv4 } from './unique'
 
 const addIdsToSchema = (schema: Schema) => {
-  const newSchema = { ...schema } as Record<string, any>
-
   traverse(
     schema,
     (
@@ -13,20 +11,20 @@ const addIdsToSchema = (schema: Schema) => {
       _root: any,
       _parentJSONParent: any,
       _parentKeyword: any,
-      _parentSchema: any,
+      parentSchema: any,
       keyIndex: any
     ) => {
       if (!keyIndex) return
 
-      newSchema['properties'][keyIndex] = {
-        cid: schema.cid ? schema.cid : uuidv4(),
+      parentSchema['properties'][keyIndex] = {
+        uuid: schema.uuid ? schema.uuid : uuidv4(),
         id: keyIndex,
         ...schema,
       }
     }
   )
 
-  return newSchema
+  return schema
 }
 
 export default addIdsToSchema
