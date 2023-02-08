@@ -1,3 +1,3 @@
 import { Schema } from '../types';
-declare const addIdsToSchema: (schema: Schema) => Record<string, any>;
+declare const addIdsToSchema: (schema: Schema) => Schema;
 export default addIdsToSchema;

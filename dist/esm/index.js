@@ -160,15 +160,12 @@ function escapeJsonPtr(str) {
   return str.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
-var uuidv4Fallback = function () {
+var uuidv4 = function () {
     // @ts-ignore
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
         return (c ^
             (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16);
     });
-};
-var uuidv4 = function () {
-    return (crypto === null || crypto === void 0 ? void 0 : crypto.randomUUID) ? crypto.randomUUID() : uuidv4Fallback();
 };
 var getAllKeys = function (obj, startKeys) {
     if (startKeys === void 0) { startKeys = []; }
@@ -205,13 +202,12 @@ var uniqueId = function (prefix, obj) {
 };
 
 var addIdsToSchema = function (schema) {
-    var newSchema = __assign({}, schema);
-    jsonSchemaTraverse.exports(schema, function (schema, _parent, _root, _parentJSONParent, _parentKeyword, _parentSchema, keyIndex) {
+    jsonSchemaTraverse.exports(schema, function (schema, _parent, _root, _parentJSONParent, _parentKeyword, parentSchema, keyIndex) {
         if (!keyIndex)
             return;
-        newSchema['properties'][keyIndex] = __assign({ cid: schema.cid ? schema.cid : uuidv4(), id: keyIndex }, schema);
+        parentSchema['properties'][keyIndex] = __assign({ uuid: schema.uuid ? schema.uuid : uuidv4(), id: keyIndex }, schema);
     });
-    return newSchema;
+    return schema;
 };
 
 var defaultSchema = {
