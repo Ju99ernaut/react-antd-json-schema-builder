@@ -4,10 +4,11 @@ import {
   DeleteOutlined,
   PlusSquareFilled,
   SettingOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
 import { isFunction } from 'lodash'
-import React from 'react'
+import React, { useState } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
@@ -44,6 +45,8 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     onChangeFieldName,
     onChangeFieldType,
   } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
+  const [arrayToggle, setArrayToggle] = useState(false)
+  const toggleArray = () => setArrayToggle(!arrayToggle)
 
   const isCollection = controlType !== 'primitive'
   const isObject = controlType === 'object'
@@ -87,7 +90,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={10} xl={11}>
+              <Col xs={8} xl={10}>
                 <Select
                   style={{ width: '100%', borderRadius: '0px' }}
                   className="rsc-controls-control-select-box"
@@ -96,6 +99,14 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   disabled={rootNode}
                   onChange={onChangeFieldType}
                   filterOption={false}
+                />
+              </Col>
+              <Col xs={2} xl={1}>
+                <Button
+                  type={arrayToggle ? 'primary' : 'text'}
+                  style={{ width: '100%' }}
+                  onClick={toggleArray}
+                  icon={<UnorderedListOutlined style={{ color: arrayToggle ? '#ffffff' : '#3182ce' }} />}
                 />
               </Col>
               <Col xs={2} xl={1}>
@@ -143,7 +154,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               />
               <div className="rsc-controls-add-button">
                 <Row>
-                  <Col xs={20} xl={22}>
+                  <Col xs={18} xl={21}>
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
