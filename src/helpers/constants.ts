@@ -42,10 +42,6 @@ export const schemaTypes: SchemaTypeOption[] = [
     label: 'Object',
   },
   {
-    value: 'array',
-    label: 'Array',
-  },
-  {
     value: 'currency',
     label: 'Currency',
   },
