@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
 import { isFunction } from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
@@ -45,12 +45,24 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     onChangeFieldName,
     onChangeFieldType,
   } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
-  const [arrayToggle, setArrayToggle] = useState(false)
-  const toggleArray = () => setArrayToggle(!arrayToggle)
 
   const isCollection = controlType !== 'primitive'
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
+
+  const [arrayToggle, setArrayToggle] = useState(isArray)
+  const didMount = useRef(false);
+  const toggleArray = () => {
+    setArrayToggle(!arrayToggle)
+  }
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    onChangeFieldType(arrayToggle ? 'array' : 'string')
+  }, [arrayToggle])
 
   return (
     <div
@@ -103,10 +115,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               </Col>
               <Col xs={2} xl={1}>
                 <Button
-                  type={arrayToggle ? 'primary' : 'text'}
+                  type={isArray || arrayToggle ? 'primary' : 'text'}
                   style={{ width: '100%' }}
                   onClick={toggleArray}
-                  icon={<UnorderedListOutlined style={{ color: arrayToggle ? '#ffffff' : '#3182ce' }} />}
+                  icon={<UnorderedListOutlined style={{ color: isArray || arrayToggle ? '#ffffff' : '#3182ce' }} />}
                 />
               </Col>
               <Col xs={2} xl={1}>
