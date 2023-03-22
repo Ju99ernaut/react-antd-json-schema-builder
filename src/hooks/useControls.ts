@@ -52,6 +52,8 @@ const useControls = ({
     onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
   }
 
+  const isParentArray = () => false
+
   return {
     schemaType,
     getTypeOptions,
@@ -62,6 +64,7 @@ const useControls = ({
     handleShow,
     onChangeFieldName,
     onChangeFieldType,
+    isParentArray,
   }
 }
 

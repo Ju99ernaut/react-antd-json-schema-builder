@@ -3,7 +3,7 @@ import {
   CaretRightFilled,
   DeleteOutlined,
   PlusSquareFilled,
-  SettingOutlined,
+  // SettingOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
@@ -39,11 +39,12 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     show,
     showModal,
     schemaType,
-    openModal,
+    // openModal,
     closeModal,
     handleShow,
     onChangeFieldName,
     onChangeFieldType,
+    isParentArray,
   } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
 
   const isCollection = controlType !== 'primitive'
@@ -102,7 +103,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={8} xl={10}>
+              <Col xs={10} xl={11}>
                 <Select
                   style={{ width: '100%', borderRadius: '0px' }}
                   className="rsc-controls-control-select-box"
@@ -119,9 +120,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   style={{ width: '100%' }}
                   onClick={toggleArray}
                   icon={<UnorderedListOutlined style={{ color: isArray || arrayToggle ? '#ffffff' : '#3182ce' }} />}
+                  disabled={isParentArray()}
                 />
               </Col>
-              <Col xs={2} xl={1}>
+              {/* <Col xs={2} xl={1}>
                 <Button
                   type="text"
                   style={{ width: '100%' }}
@@ -129,7 +131,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   icon={<SettingOutlined style={{ color: '#3182ce' }} />}
                   disabled={!getTypeOptions}
                 />
-              </Col>
+              </Col> */}
               <Col xs={2} xl={1}>
                 <Button
                   type="text"
@@ -166,7 +168,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               />
               <div className="rsc-controls-add-button">
                 <Row>
-                  <Col xs={18} xl={21}>
+                  <Col xs={20} xl={22}>
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
