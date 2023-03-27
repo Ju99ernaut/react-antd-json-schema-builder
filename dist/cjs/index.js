@@ -304,14 +304,6 @@ var schemaTypes = [
         label: 'Boolean',
     },
     {
-        value: 'object',
-        label: 'Object',
-    },
-    {
-        value: 'array',
-        label: 'Array',
-    },
-    {
         value: 'currency',
         label: 'Currency',
     },
@@ -524,6 +516,7 @@ var useControls = function (_a) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
         onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
     };
+    var isParentArray = function () { return false; };
     return {
         schemaType: schemaType,
         getTypeOptions: getTypeOptions,
@@ -534,6 +527,7 @@ var useControls = function (_a) {
         handleShow: handleShow,
         onChangeFieldName: onChangeFieldName,
         onChangeFieldType: onChangeFieldType,
+        isParentArray: isParentArray,
     };
 };
 
@@ -589,26 +583,56 @@ var CommonSubObject = function (_a) {
 
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
-    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, openModal = _b.openModal, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType;
+    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, 
+    // openModal,
+    closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
+    var _c = React.useState(isArray), arrayToggle = _c[0], setArrayToggle = _c[1];
+    var _d = React.useState(isObject), objectToggle = _d[0], setObjectToggle = _d[1];
+    var didMount = React.useRef(false);
+    var toggleArray = function () {
+        !arrayToggle && setObjectToggle(arrayToggle);
+        setArrayToggle(!arrayToggle);
+    };
+    var toggleObject = function () {
+        !objectToggle && setArrayToggle(objectToggle);
+        setObjectToggle(!objectToggle);
+    };
+    React.useEffect(function () {
+        if (!didMount.current) {
+            didMount.current = true;
+            return;
+        }
+        onChangeFieldType(arrayToggle ? 'array' : objectToggle ? 'object' : 'string');
+    }, [arrayToggle, objectToggle]);
     return (React__default["default"].createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
     })),
         !rootNode && (React__default["default"].createElement(React__default["default"].Fragment, null,
             React__default["default"].createElement(antd.Input.Group, null,
                 React__default["default"].createElement(antd.Row, { align: "middle" },
-                    React__default["default"].createElement(antd.Col, { xs: 10, xl: 11 },
+                    React__default["default"].createElement(antd.Col, { xs: !isCollection ? 9 : 19, xl: !isCollection ? 10 : 21 },
                         React__default["default"].createElement(antd.Row, { justify: "space-around", align: "middle" },
-                            React__default["default"].createElement(antd.Col, { span: 2 }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React__default["default"].createElement(icons.CaretDownFilled, null) : React__default["default"].createElement(icons.CaretRightFilled, null) }))),
-                            React__default["default"].createElement(antd.Col, { span: 22 }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(antd.Input, { style: { borderRadius: '0px', borderRight: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    React__default["default"].createElement(antd.Col, { xs: 10, xl: 11 },
-                        React__default["default"].createElement(antd.Select, { style: { width: '100%', borderRadius: '0px' }, className: "rsc-controls-control-select-box", value: getTypeOptions, options: schemaTypes, disabled: rootNode, onChange: onChangeFieldType, filterOption: false })),
+                            React__default["default"].createElement(antd.Col, { span: !isCollection ? 2 : 1 }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React__default["default"].createElement(icons.CaretDownFilled, null) : React__default["default"].createElement(icons.CaretRightFilled, null) }))),
+                            React__default["default"].createElement(antd.Col, { span: !isCollection ? 22 : 23 }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(antd.Input, { style: { borderRadius: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
+                    !isCollection && (React__default["default"].createElement(antd.Col, { xs: 9, xl: 11 },
+                        React__default["default"].createElement(antd.Select, { style: {
+                                width: '100%',
+                                borderRadius: '0px',
+                                borderLeft: '0px',
+                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, options: schemaTypes, disabled: rootNode, onChange: onChangeFieldType, filterOption: false }))),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: { color: '#3182ce' } }), disabled: !getTypeOptions })),
+                        React__default["default"].createElement(antd.Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, icon: React__default["default"].createElement(icons.ContainerOutlined, { style: {
+                                    color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                                } }) })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: { color: '#e53e3e' } }), disabled: rootNode })))),
+                        React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, icon: React__default["default"].createElement(icons.UnorderedListOutlined, { style: {
+                                    color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                                } }), disabled: isParentArray() })),
+                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: { color: '#e53e3e' } }), disabled: isParentArray() || rootNode })))),
             React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React__default["default"].createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -619,7 +643,7 @@ var CommonControls = function (_a) {
                     } }),
                 React__default["default"].createElement("div", { className: "rsc-controls-add-button" },
                     React__default["default"].createElement(antd.Row, null,
-                        React__default["default"].createElement(antd.Col, { xs: 20, xl: 22 },
+                        React__default["default"].createElement(antd.Col, { xs: 18, xl: 21 },
                             React__default["default"].createElement(antd.Row, null,
                                 React__default["default"].createElement(antd.Col, { span: 1 }),
                                 React__default["default"].createElement(antd.Col, { span: 23 },

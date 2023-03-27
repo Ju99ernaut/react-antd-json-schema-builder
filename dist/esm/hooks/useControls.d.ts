@@ -17,5 +17,6 @@ declare const useControls: ({ schema, schemaKey, onChange, onChangeKey, rootNode
     handleShow: () => void;
     onChangeFieldName: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onChangeFieldType: (option: string) => void;
+    isParentArray: () => boolean;
 };
 export default useControls;
