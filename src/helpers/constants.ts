@@ -38,10 +38,6 @@ export const schemaTypes: SchemaTypeOption[] = [
     label: 'Boolean',
   },
   {
-    value: 'object',
-    label: 'Object',
-  },
-  {
     value: 'currency',
     label: 'Currency',
   },

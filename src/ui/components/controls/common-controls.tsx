@@ -5,6 +5,7 @@ import {
   PlusSquareFilled,
   // SettingOutlined,
   UnorderedListOutlined,
+  ContainerOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select } from 'antd'
 import { isFunction } from 'lodash'
@@ -52,18 +53,26 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const isArray = controlType === 'array'
 
   const [arrayToggle, setArrayToggle] = useState(isArray)
-  const didMount = useRef(false);
+  const [objectToggle, setObjectToggle] = useState(isObject)
+  const didMount = useRef(false)
   const toggleArray = () => {
+    !arrayToggle && setObjectToggle(arrayToggle)
     setArrayToggle(!arrayToggle)
+  }
+  const toggleObject = () => {
+    !objectToggle && setArrayToggle(objectToggle)
+    setObjectToggle(!objectToggle)
   }
 
   useEffect(() => {
     if (!didMount.current) {
-      didMount.current = true;
-      return;
+      didMount.current = true
+      return
     }
-    onChangeFieldType(arrayToggle ? 'array' : 'string')
-  }, [arrayToggle])
+    onChangeFieldType(
+      arrayToggle ? 'array' : objectToggle ? 'object' : 'string'
+    )
+  }, [arrayToggle, objectToggle])
 
   return (
     <div
@@ -79,9 +88,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({
         <>
           <Input.Group>
             <Row align="middle">
-              <Col xs={10} xl={11}>
+              <Col xs={!isCollection ? 9 : 19} xl={!isCollection ? 10 : 21}>
                 <Row justify="space-around" align="middle">
-                  <Col span={2}>
+                  <Col span={!isCollection ? 2 : 1}>
                     {isCollection && (
                       <Button
                         type="text"
@@ -91,10 +100,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                       />
                     )}
                   </Col>
-                  <Col span={22}>
+                  <Col span={!isCollection ? 22 : 23}>
                     {isFunction(onChangeKey) && (
                       <Input
-                        style={{ borderRadius: '0px', borderRight: '0px' }}
+                        style={{ borderRadius: '0px' }}
                         defaultValue={schemaKey}
                         disabled={rootNode || disabledInput}
                         onBlur={onChangeFieldName}
@@ -103,15 +112,35 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={10} xl={11}>
-                <Select
-                  style={{ width: '100%', borderRadius: '0px' }}
-                  className="rsc-controls-control-select-box"
-                  value={getTypeOptions}
-                  options={schemaTypes}
-                  disabled={rootNode}
-                  onChange={onChangeFieldType}
-                  filterOption={false}
+              {!isCollection && (
+                <Col xs={9} xl={11}>
+                  <Select
+                    style={{
+                      width: '100%',
+                      borderRadius: '0px',
+                      borderLeft: '0px',
+                    }}
+                    className="rsc-controls-control-select-box"
+                    value={getTypeOptions}
+                    options={schemaTypes}
+                    disabled={rootNode}
+                    onChange={onChangeFieldType}
+                    filterOption={false}
+                  />
+                </Col>
+              )}
+              <Col xs={2} xl={1}>
+                <Button
+                  type={isObject || objectToggle ? 'primary' : 'text'}
+                  style={{ width: '100%' }}
+                  onClick={toggleObject}
+                  icon={
+                    <ContainerOutlined
+                      style={{
+                        color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                      }}
+                    />
+                  }
                 />
               </Col>
               <Col xs={2} xl={1}>
@@ -119,7 +148,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type={isArray || arrayToggle ? 'primary' : 'text'}
                   style={{ width: '100%' }}
                   onClick={toggleArray}
-                  icon={<UnorderedListOutlined style={{ color: isArray || arrayToggle ? '#ffffff' : '#3182ce' }} />}
+                  icon={
+                    <UnorderedListOutlined
+                      style={{
+                        color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                      }}
+                    />
+                  }
                   disabled={isParentArray()}
                 />
               </Col>
@@ -138,7 +173,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   style={{ width: '100%' }}
                   onClick={onDelete}
                   icon={<DeleteOutlined style={{ color: '#e53e3e' }} />}
-                  disabled={rootNode}
+                  disabled={isParentArray() || rootNode}
                 />
               </Col>
             </Row>
@@ -168,7 +203,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               />
               <div className="rsc-controls-add-button">
                 <Row>
-                  <Col xs={20} xl={22}>
+                  <Col xs={18} xl={21}>
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
