@@ -52,7 +52,7 @@ const useControls = ({
     onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
   }
 
-  const isParentArray = () => false
+  const isParentArray = () => schemaKey === 'items'
 
   return {
     schemaType,

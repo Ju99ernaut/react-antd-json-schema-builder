@@ -134,10 +134,12 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type={isObject || objectToggle ? 'primary' : 'text'}
                   style={{ width: '100%' }}
                   onClick={toggleObject}
+                  disabled={!isParentArray()}
+                  title='Toggle Collection'
                   icon={
                     <ContainerOutlined
                       style={{
-                        color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                        color: isObject || objectToggle ? '#ffffff' : !isParentArray() ? 'rgba(0, 0, 0, 0.25)' : '#3182ce',
                       }}
                     />
                   }
@@ -148,10 +150,11 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type={isArray || arrayToggle ? 'primary' : 'text'}
                   style={{ width: '100%' }}
                   onClick={toggleArray}
+                  title='Toggle List'
                   icon={
                     <UnorderedListOutlined
                       style={{
-                        color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                        color: isArray || arrayToggle ? '#ffffff' : isParentArray() ? 'rgba(0, 0, 0, 0.25)' : '#3182ce',
                       }}
                     />
                   }
@@ -172,7 +175,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type="text"
                   style={{ width: '100%' }}
                   onClick={onDelete}
-                  icon={<DeleteOutlined style={{ color: '#e53e3e' }} />}
+                  icon={
+                    <DeleteOutlined 
+                      style={{
+                        color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
+                      }}
+                    />
+                  }
                   disabled={isParentArray() || rootNode}
                 />
               </Col>
