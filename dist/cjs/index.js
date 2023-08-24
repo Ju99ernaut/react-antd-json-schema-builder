@@ -516,7 +516,7 @@ var useControls = function (_a) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
         onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
     };
-    var isParentArray = function () { return false; };
+    var isParentArray = function () { return schemaKey === 'items'; };
     return {
         schemaType: schemaType,
         getTypeOptions: getTypeOptions,
@@ -624,15 +624,17 @@ var CommonControls = function (_a) {
                                 borderLeft: '0px',
                             }, className: "rsc-controls-control-select-box", value: getTypeOptions, options: schemaTypes, disabled: rootNode, onChange: onChangeFieldType, filterOption: false }))),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, icon: React__default["default"].createElement(icons.ContainerOutlined, { style: {
-                                    color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                        React__default["default"].createElement(antd.Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, disabled: !isParentArray(), title: 'Toggle Collection', icon: React__default["default"].createElement(icons.ContainerOutlined, { style: {
+                                    color: isObject || objectToggle ? '#ffffff' : !isParentArray() ? 'rgba(0, 0, 0, 0.25)' : '#3182ce',
                                 } }) })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, icon: React__default["default"].createElement(icons.UnorderedListOutlined, { style: {
-                                    color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                        React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, title: 'Toggle List', icon: React__default["default"].createElement(icons.UnorderedListOutlined, { style: {
+                                    color: isArray || arrayToggle ? '#ffffff' : isParentArray() ? 'rgba(0, 0, 0, 0.25)' : '#3182ce',
                                 } }), disabled: isParentArray() })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: { color: '#e53e3e' } }), disabled: isParentArray() || rootNode })))),
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
+                                    color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
+                                } }), disabled: isParentArray() || rootNode })))),
             React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React__default["default"].createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React__default["default"].createElement(React__default["default"].Fragment, null,
