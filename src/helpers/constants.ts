@@ -121,10 +121,14 @@ export const objectValidSchemaProperties: ObjectValidSchemaField[] = [
 
 export const currencyValidSchemaProperties: CurrencyValidSchemaField[] = [
   ...commonValidProperties,
+  'maximum',
+  'minimum',
 ]
 
 export const percentValidSchemaProperties: PercentValidSchemaField[] = [
   ...commonValidProperties,
+  'maximum',
+  'minimum',
 ]
 
 export const dateValidSchemaProperties: DateValidSchemaField[] = [
@@ -172,10 +176,14 @@ export const arraySchemaOptions: ArraySchemaFieldOption[] = [
 
 export const currencySchemaOptions: CurrencySchemaFieldOption[] = [
   ...commonSchemaOptions,
+  { value: 'minimum', label: 'Min Number', type: 'number' },
+  { value: 'maximum', label: 'Max Number', type: 'number' },
 ]
 
 export const percentSchemaOptions: PercentSchemaFieldOption[] = [
   ...commonSchemaOptions,
+  { value: 'minimum', label: 'Min Number', type: 'number' },
+  { value: 'maximum', label: 'Max Number', type: 'number' },
 ]
 
 export const dateSchemaOptions: DateSchemaFieldOption[] = [

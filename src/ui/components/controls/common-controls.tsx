@@ -3,7 +3,7 @@ import {
   CaretRightFilled,
   DeleteOutlined,
   PlusSquareFilled,
-  // SettingOutlined,
+  SettingOutlined,
   UnorderedListOutlined,
   ContainerOutlined,
 } from '@ant-design/icons'
@@ -40,7 +40,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     show,
     showModal,
     schemaType,
-    // openModal,
+    openModal,
     closeModal,
     handleShow,
     onChangeFieldName,
@@ -88,7 +88,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
         <>
           <Input.Group>
             <Row align="middle">
-              <Col xs={!isCollection ? 9 : 19} xl={!isCollection ? 10 : 21}>
+              <Col xs={!isCollection ? 10 : 16} xl={!isCollection ? 10 : 20}>
                 <Row justify="space-around" align="middle">
                   <Col span={!isCollection ? 2 : 1}>
                     {isCollection && (
@@ -113,7 +113,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 </Row>
               </Col>
               {!isCollection && (
-                <Col xs={9} xl={11}>
+                <Col xs={6} xl={10}>
                   <Select
                     style={{
                       width: '100%',
@@ -159,7 +159,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   }
                 />
               </Col>
-              {/* <Col xs={2} xl={1}>
+              <Col xs={2} xl={1}>
                 <Button
                   type="text"
                   style={{ width: '100%' }}
@@ -167,7 +167,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   icon={<SettingOutlined style={{ color: '#3182ce' }} />}
                   disabled={!getTypeOptions}
                 />
-              </Col> */}
+              </Col>
               <Col xs={2} xl={1}>
                 <Button
                   type="text"

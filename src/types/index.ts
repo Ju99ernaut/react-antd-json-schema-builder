@@ -45,10 +45,10 @@ export type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField
 export type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField
 
 export type CurrencyValidSchemaField =
-  | CommonSchemaField
+  | NumberSchemaField
   | CommonValidSchemaField
 
-export type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField
+export type PercentValidSchemaField = NumberSchemaField | CommonValidSchemaField
 
 export type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField
 
@@ -100,11 +100,11 @@ export type ArraySchemaFieldOption = SchemaFieldOption & {
 }
 
 export type PercentSchemaFieldOption = SchemaFieldOption & {
-  value: CommonSchemaField
+  value: NumberSchemaField
 }
 
 export type CurrencySchemaFieldOption = SchemaFieldOption & {
-  value: CommonSchemaField
+  value: NumberSchemaField
 }
 
 export type DateSchemaFieldOption = SchemaFieldOption & {
