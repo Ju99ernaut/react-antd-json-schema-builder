@@ -164,7 +164,12 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type="text"
                   style={{ width: '100%' }}
                   onClick={openModal}
-                  icon={<SettingOutlined style={{ color: '#3182ce' }} />}
+                  icon={
+                    <SettingOutlined style={{ 
+                        color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
+                      }} 
+                    />
+                  }
                   disabled={!getTypeOptions}
                 />
               </Col>

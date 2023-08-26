@@ -642,7 +642,9 @@ var CommonControls = function (_a) {
                                     color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
                                 } }) })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: { color: '#3182ce' } }), disabled: !getTypeOptions })),
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: {
+                                    color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
+                                } }), disabled: !getTypeOptions })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
                         React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
                                     color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'

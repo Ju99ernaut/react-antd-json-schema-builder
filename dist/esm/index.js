@@ -622,7 +622,9 @@ var CommonControls = function (_a) {
                                     color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
                                 } }) })),
                     React.createElement(Col, { xs: 2, xl: 1 },
-                        React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React.createElement(SettingOutlined, { style: { color: '#3182ce' } }), disabled: !getTypeOptions })),
+                        React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React.createElement(SettingOutlined, { style: {
+                                    color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
+                                } }), disabled: !getTypeOptions })),
                     React.createElement(Col, { xs: 2, xl: 1 },
                         React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React.createElement(DeleteOutlined, { style: {
                                     color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
