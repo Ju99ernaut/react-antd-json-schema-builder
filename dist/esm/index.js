@@ -13,7 +13,7 @@ import pick from 'lodash/fp/pick';
 import reduce from 'lodash/fp/reduce';
 import set from 'lodash/fp/set';
 import unset from 'lodash/fp/unset';
-import { CaretDownFilled, CaretRightFilled, ContainerOutlined, UnorderedListOutlined, DeleteOutlined, PlusSquareFilled } from '@ant-design/icons';
+import { CaretDownFilled, CaretRightFilled, ContainerOutlined, UnorderedListOutlined, SettingOutlined, DeleteOutlined, PlusSquareFilled } from '@ant-design/icons';
 import { Modal, Form, Input, InputNumber, Switch, Select, Row, Col, Button } from 'antd';
 import { isFunction } from 'lodash';
 import entries$1 from 'lodash/entries';
@@ -351,8 +351,14 @@ var arrayValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProp
 var objectValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'properties',
 ], false);
-var currencyValidSchemaProperties = __spreadArray([], commonValidProperties, true);
-var percentValidSchemaProperties = __spreadArray([], commonValidProperties, true);
+var currencyValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
+    'maximum',
+    'minimum',
+], false);
+var percentValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
+    'maximum',
+    'minimum',
+], false);
 var dateValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
@@ -380,8 +386,14 @@ var arraySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, tr
     { value: 'maxItems', label: 'Max Items', type: 'number' },
     { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' },
 ], false);
-var currencySchemaOptions = __spreadArray([], commonSchemaOptions, true);
-var percentSchemaOptions = __spreadArray([], commonSchemaOptions, true);
+var currencySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+    { value: 'minimum', label: 'Min Number', type: 'number' },
+    { value: 'maximum', label: 'Max Number', type: 'number' },
+], false);
+var percentSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+    { value: 'minimum', label: 'Min Number', type: 'number' },
+    { value: 'maximum', label: 'Max Number', type: 'number' },
+], false);
 var dateSchemaOptions = __spreadArray([], commonSchemaOptions, true);
 var typeToOptions = {
     string: stringSchemaOptions,
@@ -563,9 +575,7 @@ var CommonSubObject = function (_a) {
 
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
-    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, 
-    // openModal,
-    closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, openModal = _b.openModal, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
@@ -593,11 +603,11 @@ var CommonControls = function (_a) {
         !rootNode && (React.createElement(React.Fragment, null,
             React.createElement(Input.Group, null,
                 React.createElement(Row, { align: "middle" },
-                    React.createElement(Col, { xs: !isCollection ? 9 : 19, xl: !isCollection ? 10 : 21 },
+                    React.createElement(Col, { xs: !isCollection ? 10 : 16, xl: !isCollection ? 10 : 20 },
                         React.createElement(Row, { justify: "space-around", align: "middle" },
                             React.createElement(Col, { span: !isCollection ? 2 : 1 }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React.createElement(CaretDownFilled, null) : React.createElement(CaretRightFilled, null) }))),
                             React.createElement(Col, { span: !isCollection ? 22 : 23 }, isFunction(onChangeKey) && (React.createElement(Input, { style: { borderRadius: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    !isCollection && (React.createElement(Col, { xs: 9, xl: 11 },
+                    !isCollection && (React.createElement(Col, { xs: 6, xl: 10 },
                         React.createElement(Select, { style: {
                                 width: '100%',
                                 borderRadius: '0px',
@@ -611,6 +621,8 @@ var CommonControls = function (_a) {
                         React.createElement(Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, title: 'Toggle Array', icon: React.createElement(UnorderedListOutlined, { style: {
                                     color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
                                 } }) })),
+                    React.createElement(Col, { xs: 2, xl: 1 },
+                        React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React.createElement(SettingOutlined, { style: { color: '#3182ce' } }), disabled: !getTypeOptions })),
                     React.createElement(Col, { xs: 2, xl: 1 },
                         React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React.createElement(DeleteOutlined, { style: {
                                     color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'

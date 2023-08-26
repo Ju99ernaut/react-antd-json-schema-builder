@@ -17,8 +17,8 @@ export declare type CommonValidSchemaField = CommonSchemaField | 'title' | 'type
 export declare type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
 export declare type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
 export declare type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-export declare type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+export declare type CurrencyValidSchemaField = NumberSchemaField | CommonValidSchemaField;
+export declare type PercentValidSchemaField = NumberSchemaField | CommonValidSchemaField;
 export declare type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
 export declare type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
 export declare type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
@@ -47,10 +47,10 @@ export declare type ArraySchemaFieldOption = SchemaFieldOption & {
     value: ArraySchemaField;
 };
 export declare type PercentSchemaFieldOption = SchemaFieldOption & {
-    value: CommonSchemaField;
+    value: NumberSchemaField;
 };
 export declare type CurrencySchemaFieldOption = SchemaFieldOption & {
-    value: CommonSchemaField;
+    value: NumberSchemaField;
 };
 export declare type DateSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;

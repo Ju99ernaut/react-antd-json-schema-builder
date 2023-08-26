@@ -371,8 +371,14 @@ var arrayValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProp
 var objectValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'properties',
 ], false);
-var currencyValidSchemaProperties = __spreadArray([], commonValidProperties, true);
-var percentValidSchemaProperties = __spreadArray([], commonValidProperties, true);
+var currencyValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
+    'maximum',
+    'minimum',
+], false);
+var percentValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
+    'maximum',
+    'minimum',
+], false);
 var dateValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
@@ -400,8 +406,14 @@ var arraySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, tr
     { value: 'maxItems', label: 'Max Items', type: 'number' },
     { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' },
 ], false);
-var currencySchemaOptions = __spreadArray([], commonSchemaOptions, true);
-var percentSchemaOptions = __spreadArray([], commonSchemaOptions, true);
+var currencySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+    { value: 'minimum', label: 'Min Number', type: 'number' },
+    { value: 'maximum', label: 'Max Number', type: 'number' },
+], false);
+var percentSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+    { value: 'minimum', label: 'Min Number', type: 'number' },
+    { value: 'maximum', label: 'Max Number', type: 'number' },
+], false);
 var dateSchemaOptions = __spreadArray([], commonSchemaOptions, true);
 var typeToOptions = {
     string: stringSchemaOptions,
@@ -583,9 +595,7 @@ var CommonSubObject = function (_a) {
 
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
-    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, 
-    // openModal,
-    closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, openModal = _b.openModal, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
@@ -613,11 +623,11 @@ var CommonControls = function (_a) {
         !rootNode && (React__default["default"].createElement(React__default["default"].Fragment, null,
             React__default["default"].createElement(antd.Input.Group, null,
                 React__default["default"].createElement(antd.Row, { align: "middle" },
-                    React__default["default"].createElement(antd.Col, { xs: !isCollection ? 9 : 19, xl: !isCollection ? 10 : 21 },
+                    React__default["default"].createElement(antd.Col, { xs: !isCollection ? 10 : 16, xl: !isCollection ? 10 : 20 },
                         React__default["default"].createElement(antd.Row, { justify: "space-around", align: "middle" },
                             React__default["default"].createElement(antd.Col, { span: !isCollection ? 2 : 1 }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React__default["default"].createElement(icons.CaretDownFilled, null) : React__default["default"].createElement(icons.CaretRightFilled, null) }))),
                             React__default["default"].createElement(antd.Col, { span: !isCollection ? 22 : 23 }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(antd.Input, { style: { borderRadius: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    !isCollection && (React__default["default"].createElement(antd.Col, { xs: 9, xl: 11 },
+                    !isCollection && (React__default["default"].createElement(antd.Col, { xs: 6, xl: 10 },
                         React__default["default"].createElement(antd.Select, { style: {
                                 width: '100%',
                                 borderRadius: '0px',
@@ -631,6 +641,8 @@ var CommonControls = function (_a) {
                         React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, title: 'Toggle Array', icon: React__default["default"].createElement(icons.UnorderedListOutlined, { style: {
                                     color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
                                 } }) })),
+                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: { color: '#3182ce' } }), disabled: !getTypeOptions })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
                         React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
                                     color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'

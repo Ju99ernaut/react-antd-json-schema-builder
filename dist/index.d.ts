@@ -17,8 +17,8 @@ declare type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id
 declare type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;
 declare type NumberValidSchemaField = NumberSchemaField | CommonValidSchemaField;
 declare type BoolValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-declare type CurrencyValidSchemaField = CommonSchemaField | CommonValidSchemaField;
-declare type PercentValidSchemaField = CommonSchemaField | CommonValidSchemaField;
+declare type CurrencyValidSchemaField = NumberSchemaField | CommonValidSchemaField;
+declare type PercentValidSchemaField = NumberSchemaField | CommonValidSchemaField;
 declare type DateValidSchemaField = CommonSchemaField | CommonValidSchemaField;
 declare type ArrayValidSchemaField = ArraySchemaField | CommonValidSchemaField | 'items';
 declare type ObjectValidSchemaField = CommonSchemaField | CommonValidSchemaField | 'properties';
@@ -47,10 +47,10 @@ declare type ArraySchemaFieldOption = SchemaFieldOption & {
     value: ArraySchemaField;
 };
 declare type PercentSchemaFieldOption = SchemaFieldOption & {
-    value: CommonSchemaField;
+    value: NumberSchemaField;
 };
 declare type CurrencySchemaFieldOption = SchemaFieldOption & {
-    value: CommonSchemaField;
+    value: NumberSchemaField;
 };
 declare type DateSchemaFieldOption = SchemaFieldOption & {
     value: CommonSchemaField;
