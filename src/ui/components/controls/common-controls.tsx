@@ -164,6 +164,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type="text"
                   style={{ width: '100%' }}
                   onClick={openModal}
+                  title='Preview Input Settings'
                   icon={
                     <SettingOutlined style={{ 
                         color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
@@ -178,6 +179,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   type="text"
                   style={{ width: '100%' }}
                   onClick={onDelete}
+                  title='Delete'
                   icon={
                     <DeleteOutlined 
                       style={{

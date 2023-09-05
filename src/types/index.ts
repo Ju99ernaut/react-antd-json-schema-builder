@@ -28,7 +28,7 @@ export type StringSchemaField =
   | 'pattern'
   | 'format'
 
-export type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum'
+export type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum' | 'step'
 
 export type ArraySchemaField =
   | CommonSchemaField

@@ -100,6 +100,7 @@ export const numberValidSchemaProperties: NumberValidSchemaField[] = [
   ...commonValidProperties,
   'maximum',
   'minimum',
+  'step',
 ]
 
 export const boolValidSchemaProperties: BoolValidSchemaField[] = [
@@ -120,15 +121,11 @@ export const objectValidSchemaProperties: ObjectValidSchemaField[] = [
 ]
 
 export const currencyValidSchemaProperties: CurrencyValidSchemaField[] = [
-  ...commonValidProperties,
-  'maximum',
-  'minimum',
+  ...numberValidSchemaProperties
 ]
 
 export const percentValidSchemaProperties: PercentValidSchemaField[] = [
-  ...commonValidProperties,
-  'maximum',
-  'minimum',
+  ...numberValidSchemaProperties
 ]
 
 export const dateValidSchemaProperties: DateValidSchemaField[] = [
@@ -157,6 +154,7 @@ export const numberSchemaOptions: NumberSchemaFieldOption[] = [
   ...commonSchemaOptions,
   { value: 'minimum', label: 'Min Number', type: 'number' },
   { value: 'maximum', label: 'Max Number', type: 'number' },
+  { value: 'step', label: 'Step', type: 'number' },
 ]
 
 export const boolSchemaOptions: BoolSchemaFieldOption[] = [
@@ -175,15 +173,11 @@ export const arraySchemaOptions: ArraySchemaFieldOption[] = [
 ]
 
 export const currencySchemaOptions: CurrencySchemaFieldOption[] = [
-  ...commonSchemaOptions,
-  { value: 'minimum', label: 'Min Number', type: 'number' },
-  { value: 'maximum', label: 'Max Number', type: 'number' },
+  ...numberSchemaOptions
 ]
 
 export const percentSchemaOptions: PercentSchemaFieldOption[] = [
-  ...commonSchemaOptions,
-  { value: 'minimum', label: 'Min Number', type: 'number' },
-  { value: 'maximum', label: 'Max Number', type: 'number' },
+  ...numberSchemaOptions
 ]
 
 export const dateSchemaOptions: DateSchemaFieldOption[] = [
