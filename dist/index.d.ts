@@ -11,7 +11,7 @@ declare type JSONSchemaEditor = {
 };
 declare type CommonSchemaField = 'description';
 declare type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
-declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum';
+declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum' | 'step';
 declare type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
 declare type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id' | 'uuid' | 'items';
 declare type StringValidSchemaField = StringSchemaField | CommonValidSchemaField;

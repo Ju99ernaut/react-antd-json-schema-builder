@@ -360,6 +360,7 @@ var stringValidSchemaProperties = __spreadArray(__spreadArray([], commonValidPro
 var numberValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'maximum',
     'minimum',
+    'step',
 ], false);
 var boolValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var arrayValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
@@ -371,14 +372,8 @@ var arrayValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProp
 var objectValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'properties',
 ], false);
-var currencyValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
-    'maximum',
-    'minimum',
-], false);
-var percentValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
-    'maximum',
-    'minimum',
-], false);
+var currencyValidSchemaProperties = __spreadArray([], numberValidSchemaProperties, true);
+var percentValidSchemaProperties = __spreadArray([], numberValidSchemaProperties, true);
 var dateValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
@@ -398,6 +393,7 @@ var stringSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, t
 var numberSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
     { value: 'minimum', label: 'Min Number', type: 'number' },
     { value: 'maximum', label: 'Max Number', type: 'number' },
+    { value: 'step', label: 'Step', type: 'number' },
 ], false);
 var boolSchemaOptions = __spreadArray([], commonSchemaOptions, true);
 var objectSchemaOptions = __spreadArray([], commonSchemaOptions, true);
@@ -406,14 +402,8 @@ var arraySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, tr
     { value: 'maxItems', label: 'Max Items', type: 'number' },
     { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' },
 ], false);
-var currencySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
-    { value: 'minimum', label: 'Min Number', type: 'number' },
-    { value: 'maximum', label: 'Max Number', type: 'number' },
-], false);
-var percentSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
-    { value: 'minimum', label: 'Min Number', type: 'number' },
-    { value: 'maximum', label: 'Max Number', type: 'number' },
-], false);
+var currencySchemaOptions = __spreadArray([], numberSchemaOptions, true);
+var percentSchemaOptions = __spreadArray([], numberSchemaOptions, true);
 var dateSchemaOptions = __spreadArray([], commonSchemaOptions, true);
 var typeToOptions = {
     string: stringSchemaOptions,
@@ -642,11 +632,11 @@ var CommonControls = function (_a) {
                                     color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
                                 } }) })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: {
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, title: 'Preview Input Settings', icon: React__default["default"].createElement(icons.SettingOutlined, { style: {
                                     color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
                                 } }), disabled: !getTypeOptions })),
                     React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
+                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, title: 'Delete', icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
                                     color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
                                 } }), disabled: isParentArray() || rootNode })))),
             React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
