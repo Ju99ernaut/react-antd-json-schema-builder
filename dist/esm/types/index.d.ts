@@ -3,13 +3,14 @@ export declare type SchemaType = 'string' | 'number' | 'object' | 'array' | 'boo
 export declare type SchemaTypeOption = {
     value: SchemaType;
     label: string;
+    description: string;
 };
 export declare type JSONSchemaEditor = {
     data: Schema;
     onChange: (...args: any[]) => void;
     initializeWithIds?: boolean;
 };
-export declare type CommonSchemaField = 'description';
+export declare type CommonSchemaField = 'description' | 'required';
 export declare type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
 export declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum' | 'step';
 export declare type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';

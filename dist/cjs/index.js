@@ -294,26 +294,32 @@ var schemaTypes = [
     {
         value: 'string',
         label: 'String',
+        description: 'Simple text, multi-line text, markdown, etc.',
     },
     {
         value: 'number',
         label: 'Number',
+        description: 'An integer, float, quantity, etc.',
     },
     {
         value: 'boolean',
         label: 'Boolean',
+        description: 'Toggle for true/false values',
     },
     {
         value: 'currency',
         label: 'Currency',
+        description: 'Number with currency formatting.',
     },
     {
         value: 'percent',
         label: 'Percent',
+        description: 'Number with percent formatting',
     },
     {
         value: 'date',
         label: 'Date',
+        description: 'Date for an event.',
     },
 ];
 var formatOptions = [
@@ -349,6 +355,7 @@ var commonValidProperties = [
     'type',
     'title',
     'items',
+    'required',
 ];
 var stringValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'enum',
@@ -377,6 +384,7 @@ var percentValidSchemaProperties = __spreadArray([], numberValidSchemaProperties
 var dateValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
+    { value: 'required', label: 'Required', type: 'boolean' },
 ];
 var stringSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
     { value: 'minLength', label: 'Min Length', type: 'number' },
@@ -561,7 +569,7 @@ var SchemaOptions = function (_a) {
         },
         select: function (props) { return (React__default["default"].createElement(antd.Select, { defaultValue: getDefaultValue(props), placeholder: "Please select option", options: props.option.optionList, onChange: onChangeSelect(props) })); },
     };
-    return (React__default["default"].createElement(antd.Modal, { title: "Additional Settings", visible: showModal, onOk: onClose, onCancel: onClose },
+    return (React__default["default"].createElement(antd.Modal, { title: "Field Settings", visible: showModal, onOk: onClose, onCancel: onClose },
         React__default["default"].createElement(antd.Form, { name: "initialSettings", labelCol: { span: 6 }, wrapperCol: { span: 18 } }, allOptions &&
             allOptions.map(function (option, index) {
                 return (React__default["default"].createElement(antd.Form.Item, { key: "".concat(schemaKey).concat(option.value).concat(index), label: option.label }, [typeToField[option.type]({ option: option, schema: schema, onChange: onChange })]));
@@ -583,6 +591,31 @@ var CommonSubObject = function (_a) {
     })));
 };
 
+var Icon = function (_a) {
+    var types = _a.types, props = __rest(_a, ["types"]);
+    switch (types) {
+        case 'array':
+            return React__default["default"].createElement(icons.BarsOutlined, __assign({}, props));
+        case 'boolean':
+            return React__default["default"].createElement(icons.CheckOutlined, __assign({}, props));
+        case 'number':
+            return React__default["default"].createElement(icons.NumberOutlined, __assign({}, props));
+        case 'percent':
+            return React__default["default"].createElement(icons.PercentageOutlined, __assign({}, props));
+        case 'currency':
+            return React__default["default"].createElement(icons.DollarOutlined, __assign({}, props));
+        case 'date':
+            return React__default["default"].createElement(icons.CalendarOutlined, __assign({}, props));
+        case 'duration':
+            return React__default["default"].createElement(icons.ClockCircleOutlined, __assign({}, props));
+        case 'object':
+            return React__default["default"].createElement(icons.AppstoreOutlined, __assign({}, props));
+        default:
+            return React__default["default"].createElement(icons.FontSizeOutlined, __assign({}, props));
+    }
+};
+
+var Title = antd.Typography.Title, Text = antd.Typography.Text;
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
     var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, openModal = _b.openModal, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
@@ -600,6 +633,7 @@ var CommonControls = function (_a) {
         !objectToggle && setArrayToggle(objectToggle);
         setObjectToggle(!objectToggle);
     };
+    var doNothing = function () { };
     React.useEffect(function () {
         if (!didMount.current) {
             didMount.current = true;
@@ -613,32 +647,51 @@ var CommonControls = function (_a) {
         !rootNode && (React__default["default"].createElement(React__default["default"].Fragment, null,
             React__default["default"].createElement(antd.Input.Group, null,
                 React__default["default"].createElement(antd.Row, { align: "middle" },
-                    React__default["default"].createElement(antd.Col, { xs: !isCollection ? 10 : 16, xl: !isCollection ? 10 : 20 },
+                    React__default["default"].createElement(antd.Col, { xs: !isCollection ? 9 : 16, xl: !isCollection ? 10 : 20 },
                         React__default["default"].createElement(antd.Row, { justify: "space-around", align: "middle" },
                             React__default["default"].createElement(antd.Col, { span: !isCollection ? 2 : 1 }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React__default["default"].createElement(icons.CaretDownFilled, null) : React__default["default"].createElement(icons.CaretRightFilled, null) }))),
                             React__default["default"].createElement(antd.Col, { span: !isCollection ? 22 : 23 }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(antd.Input, { style: { borderRadius: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    !isCollection && (React__default["default"].createElement(antd.Col, { xs: 6, xl: 10 },
+                    !isCollection && (React__default["default"].createElement(antd.Col, { xs: 7, xl: 10 },
                         React__default["default"].createElement(antd.Select, { style: {
                                 width: '100%',
                                 borderRadius: '0px',
                                 borderLeft: '0px',
-                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, options: schemaTypes, disabled: rootNode, onChange: onChangeFieldType, filterOption: false }))),
-                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, title: 'Toggle Object', icon: React__default["default"].createElement(icons.ContainerOutlined, { style: {
-                                    color: isObject || objectToggle ? '#ffffff' : '#3182ce',
-                                } }) })),
-                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, title: 'Toggle Array', icon: React__default["default"].createElement(icons.UnorderedListOutlined, { style: {
-                                    color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
-                                } }) })),
-                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: openModal, title: 'Preview Input Settings', icon: React__default["default"].createElement(icons.SettingOutlined, { style: {
-                                    color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
-                                } }), disabled: !getTypeOptions })),
-                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                        React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: onDelete, title: 'Delete', icon: React__default["default"].createElement(icons.DeleteOutlined, { style: {
-                                    color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
-                                } }), disabled: isParentArray() || rootNode })))),
+                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false }, schemaTypes.map(function (_a) {
+                            var value = _a.value, label = _a.label, description = _a.description;
+                            return (React__default["default"].createElement(antd.Select.Option, { value: value, label: label },
+                                React__default["default"].createElement("div", null,
+                                    React__default["default"].createElement(Title, { level: 5 },
+                                        React__default["default"].createElement(Icon, { types: value }),
+                                        " ",
+                                        label),
+                                    React__default["default"].createElement(Text, { style: { paddingLeft: "10px" } }, description))));
+                        })))),
+                    React__default["default"].createElement(antd.Tooltip, { title: 'Toggle field to object' },
+                        React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                            React__default["default"].createElement(antd.Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, icon: React__default["default"].createElement(icons.AppstoreOutlined, { style: {
+                                        color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                                    } }) }))),
+                    React__default["default"].createElement(antd.Tooltip, { title: 'Toggle field to list' },
+                        React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                            React__default["default"].createElement(antd.Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, icon: React__default["default"].createElement(icons.BarsOutlined, { style: {
+                                        color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                                    } }) }))),
+                    React__default["default"].createElement(antd.Tooltip, { title: 'Field Settings' },
+                        React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                            React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: !getTypeOptions ? doNothing : openModal, icon: React__default["default"].createElement(icons.SettingOutlined, { style: !getTypeOptions ? {
+                                        color: 'rgba(0, 0, 0, 0.25)',
+                                        cursor: 'not-allowed',
+                                    } : {
+                                        color: '#3182ce'
+                                    } }) }))),
+                    React__default["default"].createElement(antd.Tooltip, { title: 'Delete' },
+                        React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
+                            React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: isParentArray() || rootNode ? doNothing : onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: isParentArray() || rootNode ? {
+                                        color: 'rgba(0, 0, 0, 0.25)',
+                                        cursor: 'not-allowed',
+                                    } : {
+                                        color: '#e53e3e'
+                                    } }) }))))),
             React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React__default["default"].createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -652,13 +705,14 @@ var CommonControls = function (_a) {
                         React__default["default"].createElement(antd.Col, { xs: 18, xl: 21 },
                             React__default["default"].createElement(antd.Row, null,
                                 React__default["default"].createElement(antd.Col, { span: 1 }),
-                                React__default["default"].createElement(antd.Col, { span: 23 },
+                                React__default["default"].createElement(antd.Col, { span: 22 },
                                     React__default["default"].createElement(antd.Button, { type: "dashed", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: {
                                             width: '100%',
                                             backgroundColor: 'transparent',
                                             borderColor: 'black',
                                             borderRadius: '3px',
-                                        }, icon: React__default["default"].createElement(icons.PlusSquareFilled, { style: { color: 'black' } }) })))))))),
+                                        }, icon: React__default["default"].createElement(icons.PlusSquareFilled, { style: { color: 'black' } }) })),
+                                React__default["default"].createElement(antd.Col, { span: 1 }))))))),
             isArray && (React__default["default"].createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
@@ -713,6 +767,16 @@ var SchemaBuilder = function (_a) {
     var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border: solid 1px rgba(0, 0, 0, 0.07);\n    background-color: rgba(0, 0, 0, 0.03);\n    border-radius: 10px;\n    padding: 16px 0 16px 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n  \n  .rsc-controls-control-select-box .ant-select-selector {\n    border-radius: 0!important;\n  }\n";
     return (React__default["default"].createElement(SchemaProvider, null,
         React__default["default"].createElement("style", null, css),
+        React__default["default"].createElement(antd.Row, { align: "middle", style: { padding: "16px" } },
+            React__default["default"].createElement(antd.Col, { xs: 9, xl: 10 },
+                React__default["default"].createElement(antd.Row, { justify: "space-around", align: "middle" },
+                    React__default["default"].createElement(antd.Col, { span: 2 }),
+                    React__default["default"].createElement(antd.Col, { span: 22 }, "Name"))),
+            React__default["default"].createElement(antd.Col, { xs: 7, xl: 10 }, "Type"),
+            React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 }),
+            React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 }),
+            React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 }),
+            React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 })),
         React__default["default"].createElement(SchemaCreator, { schema: data, onChange: onChange })));
 };
 
