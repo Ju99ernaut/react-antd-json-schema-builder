@@ -660,7 +660,7 @@ var CommonControls = function (_a) {
                             var value = _a.value, label = _a.label, description = _a.description;
                             return (React__default["default"].createElement(antd.Select.Option, { value: value, label: label },
                                 React__default["default"].createElement("div", null,
-                                    React__default["default"].createElement(Title, { level: 5 },
+                                    React__default["default"].createElement(Title, { level: 5, style: { fontSize: "15px" } },
                                         React__default["default"].createElement(Icon, { types: value }),
                                         " ",
                                         label),

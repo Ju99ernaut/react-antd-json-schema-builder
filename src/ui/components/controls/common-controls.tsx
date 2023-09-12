@@ -134,7 +134,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                       return (
                         <Select.Option value={value} label={label}>
                           <div>
-                            <Title level={5}><Icon types={value} /> {label}</Title>
+                            <Title level={5} style={{ fontSize: "15px" }}><Icon types={value} /> {label}</Title>
                             <Text style={{ paddingLeft: "10px" }}>{description}</Text>
                           </div>
                         </Select.Option>

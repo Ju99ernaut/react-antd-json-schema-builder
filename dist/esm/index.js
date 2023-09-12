@@ -640,7 +640,7 @@ var CommonControls = function (_a) {
                             var value = _a.value, label = _a.label, description = _a.description;
                             return (React.createElement(Select.Option, { value: value, label: label },
                                 React.createElement("div", null,
-                                    React.createElement(Title, { level: 5 },
+                                    React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
                                         React.createElement(Icon, { types: value }),
                                         " ",
                                         label),
