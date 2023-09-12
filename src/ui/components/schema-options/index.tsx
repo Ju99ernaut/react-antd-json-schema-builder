@@ -82,7 +82,7 @@ const SchemaOptions = ({
 
   return (
     <Modal
-      title="Additional Settings"
+      title="Field Settings"
       visible={showModal}
       onOk={onClose}
       onCancel={onClose}

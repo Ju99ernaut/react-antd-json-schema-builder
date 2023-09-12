@@ -28,26 +28,32 @@ export const schemaTypes: SchemaTypeOption[] = [
   {
     value: 'string',
     label: 'String',
+    description: 'Simple text, multi-line text, markdown, etc.',
   },
   {
     value: 'number',
     label: 'Number',
+    description: 'An integer, float, quantity, etc.',
   },
   {
     value: 'boolean',
     label: 'Boolean',
+    description: 'Toggle for true/false values',
   },
   {
     value: 'currency',
     label: 'Currency',
+    description: 'Number with currency formatting.',
   },
   {
     value: 'percent',
     label: 'Percent',
+    description: 'Number with percent formatting',
   },
   {
     value: 'date',
     label: 'Date',
+    description: 'Date for an event.',
   },
 ]
 
@@ -85,6 +91,7 @@ const commonValidProperties: CommonValidSchemaField[] = [
   'type',
   'title',
   'items',
+  'required',
 ]
 
 export const stringValidSchemaProperties: StringValidSchemaField[] = [
@@ -134,6 +141,7 @@ export const dateValidSchemaProperties: DateValidSchemaField[] = [
 
 const commonSchemaOptions: CommonSchemaFieldOption[] = [
   { value: 'description', label: 'Description', type: 'text' },
+  { value: 'required', label: 'Required', type: 'boolean' },
 ]
 
 export const stringSchemaOptions: StringSchemaFieldOption[] = [

@@ -4,10 +4,10 @@ import {
   DeleteOutlined,
   PlusSquareFilled,
   SettingOutlined,
-  UnorderedListOutlined,
-  ContainerOutlined,
+  AppstoreOutlined,
+  BarsOutlined,
 } from '@ant-design/icons'
-import { Button, Col, Input, Row, Select } from 'antd'
+import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
 import React, { useState, useRef, useEffect } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
@@ -23,6 +23,9 @@ import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
+import Icon from '../type-icons'
+
+const { Title, Text } = Typography
 
 const CommonControls: React.FC<CommonControlsProps> = ({
   schema,
@@ -63,6 +66,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     !objectToggle && setArrayToggle(objectToggle)
     setObjectToggle(!objectToggle)
   }
+  const doNothing = () => {}
 
   useEffect(() => {
     if (!didMount.current) {
@@ -88,7 +92,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
         <>
           <Input.Group>
             <Row align="middle">
-              <Col xs={!isCollection ? 10 : 16} xl={!isCollection ? 10 : 20}>
+              <Col xs={!isCollection ? 9 : 16} xl={!isCollection ? 10 : 20}>
                 <Row justify="space-around" align="middle">
                   <Col span={!isCollection ? 2 : 1}>
                     {isCollection && (
@@ -113,7 +117,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 </Row>
               </Col>
               {!isCollection && (
-                <Col xs={6} xl={10}>
+                <Col xs={7} xl={10}>
                   <Select
                     style={{
                       width: '100%',
@@ -122,74 +126,92 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     }}
                     className="rsc-controls-control-select-box"
                     value={getTypeOptions}
-                    options={schemaTypes}
                     disabled={rootNode}
                     onChange={onChangeFieldType}
                     filterOption={false}
-                  />
+                  >
+                    {schemaTypes.map(({ value, label, description }) => {
+                      return (
+                        <Select.Option value={value} label={label}>
+                          <div>
+                            <Title level={5}><Icon types={value} /> {label}</Title>
+                            <Text style={{ paddingLeft: "10px" }}>{description}</Text>
+                          </div>
+                        </Select.Option>
+                      )
+                    })}
+                  </Select>
                 </Col>
               )}
-              <Col xs={2} xl={1}>
-                <Button
-                  type={isObject || objectToggle ? 'primary' : 'text'}
-                  style={{ width: '100%' }}
-                  onClick={toggleObject}
-                  title='Toggle Object'
-                  icon={
-                    <ContainerOutlined
-                      style={{
-                        color: isObject || objectToggle ? '#ffffff' : '#3182ce',
-                      }}
-                    />
-                  }
-                />
-              </Col>
-              <Col xs={2} xl={1}>
-                <Button
-                  type={isArray || arrayToggle ? 'primary' : 'text'}
-                  style={{ width: '100%' }}
-                  onClick={toggleArray}
-                  title='Toggle Array'
-                  icon={
-                    <UnorderedListOutlined
-                      style={{
-                        color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
-                      }}
-                    />
-                  }
-                />
-              </Col>
-              <Col xs={2} xl={1}>
-                <Button
-                  type="text"
-                  style={{ width: '100%' }}
-                  onClick={openModal}
-                  title='Preview Input Settings'
-                  icon={
-                    <SettingOutlined style={{ 
-                        color: !getTypeOptions ? 'rgba(0, 0, 0, 0.25)' : '#3182ce'
-                      }} 
-                    />
-                  }
-                  disabled={!getTypeOptions}
-                />
-              </Col>
-              <Col xs={2} xl={1}>
-                <Button
-                  type="text"
-                  style={{ width: '100%' }}
-                  onClick={onDelete}
-                  title='Delete'
-                  icon={
-                    <DeleteOutlined 
-                      style={{
-                        color: isParentArray() || rootNode ? 'rgba(0, 0, 0, 0.25)' : '#e53e3e'
-                      }}
-                    />
-                  }
-                  disabled={isParentArray() || rootNode}
-                />
-              </Col>
+              <Tooltip title='Toggle field to object'>
+                <Col xs={2} xl={1}>
+                  <Button
+                    type={isObject || objectToggle ? 'primary' : 'text'}
+                    style={{ width: '100%' }}
+                    onClick={toggleObject}
+                    icon={
+                      <AppstoreOutlined
+                        style={{
+                          color: isObject || objectToggle ? '#ffffff' : '#3182ce',
+                        }}
+                      />
+                    }
+                  />
+                </Col>
+              </Tooltip>
+              <Tooltip title='Toggle field to list'>
+                <Col xs={2} xl={1}>
+                  <Button
+                    type={isArray || arrayToggle ? 'primary' : 'text'}
+                    style={{ width: '100%' }}
+                    onClick={toggleArray}
+                    icon={
+                      <BarsOutlined
+                        style={{
+                          color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
+                        }}
+                      />
+                    }
+                  />
+                </Col>
+              </Tooltip>
+              <Tooltip title='Field Settings'>
+                <Col xs={2} xl={1}>
+                  <Button
+                    type="text"
+                    style={{ width: '100%' }}
+                    onClick={!getTypeOptions ? doNothing : openModal}
+                    icon={
+                      <SettingOutlined style={!getTypeOptions ? { 
+                          color: 'rgba(0, 0, 0, 0.25)',
+                          cursor: 'not-allowed',
+                        } : {
+                          color: '#3182ce'
+                        }} 
+                      />
+                    }
+                  />
+                </Col>
+              </Tooltip>
+              <Tooltip title='Delete'>
+                <Col xs={2} xl={1}>
+                  <Button
+                    type="text"
+                    style={{ width: '100%' }}
+                    onClick={isParentArray() || rootNode ? doNothing : onDelete}
+                    icon={
+                      <DeleteOutlined 
+                        style={isParentArray() || rootNode ? {
+                          color: 'rgba(0, 0, 0, 0.25)',
+                          cursor: 'not-allowed',
+                        } : {
+                          color: '#e53e3e'
+                        }}
+                      />
+                    }
+                  />
+                </Col>
+              </Tooltip>
             </Row>
           </Input.Group>
           <SchemaOptions
@@ -220,7 +242,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   <Col xs={18} xl={21}>
                     <Row>
                       <Col span={1}></Col>
-                      <Col span={23}>
+                      <Col span={22}>
                         <Button
                           type="dashed"
                           disabled={!isFunction(onAdd)}
@@ -234,6 +256,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                           icon={<PlusSquareFilled style={{ color: 'black' }} />}
                         />
                       </Col>
+                      <Col span={1}></Col>
                     </Row>
                   </Col>
                 </Row>

@@ -2,6 +2,7 @@ import React from 'react'
 import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
+import { Row, Col } from 'antd'
 
 const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const css = `
@@ -34,6 +35,19 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   return (
     <SchemaProvider>
       <style>{css}</style>
+      <Row align="middle" style={{ padding: "16px" }}>
+        <Col xs={9} xl={10}>
+          <Row justify="space-around" align="middle">
+            <Col span={2}></Col>
+            <Col span={22}>Name</Col>
+          </Row>
+        </Col>
+        <Col xs={7} xl={10}>Type</Col>
+        <Col xs={2} xl={1}></Col>
+        <Col xs={2} xl={1}></Col>
+        <Col xs={2} xl={1}></Col>
+        <Col xs={2} xl={1}></Col>
+      </Row>
       <SchemaCreator schema={data} onChange={onChange} />
     </SchemaProvider>
   )

@@ -10,7 +10,7 @@ export type SchemaType =
   | 'percent'
   | 'date'
 
-export type SchemaTypeOption = { value: SchemaType; label: string }
+export type SchemaTypeOption = { value: SchemaType; label: string, description: string }
 
 export type JSONSchemaEditor = {
   data: Schema
@@ -18,7 +18,7 @@ export type JSONSchemaEditor = {
   initializeWithIds?: boolean
 }
 
-export type CommonSchemaField = 'description'
+export type CommonSchemaField = 'description' | 'required'
 
 export type StringSchemaField =
   | CommonSchemaField
