@@ -18,7 +18,7 @@ export type JSONSchemaEditor = {
   initializeWithIds?: boolean
 }
 
-export type CommonSchemaField = 'description' | 'required'
+export type CommonSchemaField = 'description' | 'disabled'
 
 export type StringSchemaField =
   | CommonSchemaField

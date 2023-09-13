@@ -335,7 +335,7 @@ var commonValidProperties = [
     'type',
     'title',
     'items',
-    'required',
+    'disabled',
 ];
 var stringValidSchemaProperties = __spreadArray(__spreadArray([], commonValidProperties, true), [
     'enum',
@@ -364,7 +364,7 @@ var percentValidSchemaProperties = __spreadArray([], numberValidSchemaProperties
 var dateValidSchemaProperties = __spreadArray([], commonValidProperties, true);
 var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
-    { value: 'required', label: 'Required', type: 'boolean' },
+    { value: 'disabled', label: 'Disabled', type: 'boolean' },
 ];
 var stringSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
     { value: 'minLength', label: 'Min Length', type: 'number' },

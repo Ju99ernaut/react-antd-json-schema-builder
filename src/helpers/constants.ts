@@ -91,7 +91,7 @@ const commonValidProperties: CommonValidSchemaField[] = [
   'type',
   'title',
   'items',
-  'required',
+  'disabled',
 ]
 
 export const stringValidSchemaProperties: StringValidSchemaField[] = [
@@ -141,7 +141,7 @@ export const dateValidSchemaProperties: DateValidSchemaField[] = [
 
 const commonSchemaOptions: CommonSchemaFieldOption[] = [
   { value: 'description', label: 'Description', type: 'text' },
-  { value: 'required', label: 'Required', type: 'boolean' },
+  { value: 'disabled', label: 'Disabled', type: 'boolean' },
 ]
 
 export const stringSchemaOptions: StringSchemaFieldOption[] = [

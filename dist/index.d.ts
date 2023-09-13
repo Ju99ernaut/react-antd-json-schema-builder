@@ -10,7 +10,7 @@ declare type JSONSchemaEditor = {
     onChange: (...args: any[]) => void;
     initializeWithIds?: boolean;
 };
-declare type CommonSchemaField = 'description' | 'required';
+declare type CommonSchemaField = 'description' | 'disabled';
 declare type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
 declare type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum' | 'step';
 declare type ArraySchemaField = CommonSchemaField | 'uniqueItems' | 'minItems' | 'maxItems';
