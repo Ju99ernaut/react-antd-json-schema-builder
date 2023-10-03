@@ -47,7 +47,20 @@ export const setSchemaProperties = setSchemaField('properties')
 export const setSchemaProperty = (key: string) =>
   setSchemaField(['properties', key])
 
-export const setSchemaItems = setSchemaField('items')
+export const setSchemaItems = (oldSchema: Schema, schema: Schema) => {
+  return setSchemaField('items')(
+    { ...{ uuid: uuidv4(), type: 'string' }, ...oldSchema },
+    schema
+  )
+}
+
+export const setSchemaTempItems = (schema: Schema) => {
+  const schemaItems = getSchemaItems(schema) || {}
+  return setSchemaField('items')(
+    { uuid: uuidv4(), type: 'string', ...schemaItems },
+    schema
+  )
+}
 
 export const deleteSchemaField = unset
 
@@ -56,7 +69,7 @@ export const deleteSchemaProperty = (key: string) =>
 
 export const addSchemaProperty = (schema: Schema) => {
   return setSchemaProperty(uniqueId('field_', schema))(
-    { uuid: uuidv4(), type: 'string', items: { uuid: uuidv4(), type: 'string' } },
+    { uuid: uuidv4(), type: 'string' },
     schema
   )
 }
@@ -111,6 +124,12 @@ export const getSchemaMenuOptions = (type: SchemaType) =>
 
 export const setSchemaTypeAndRemoveWrongFields = flow([
   setSchemaType,
+  removeWrongFields,
+])
+
+export const setSchemaTypeAndSetItemsAndRemoveWrongFields = flow([
+  setSchemaType,
+  setSchemaTempItems,
   removeWrongFields,
 ])
 

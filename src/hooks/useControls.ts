@@ -5,6 +5,7 @@ import {
   findOption,
   getSchemaType,
   setSchemaTypeAndRemoveWrongFields,
+  setSchemaTypeAndSetItemsAndRemoveWrongFields,
 } from '../helpers/schema'
 import { Schema } from '../types'
 import useDecodeSchema from './useDecodeSchema'
@@ -49,7 +50,8 @@ const useControls = ({
   const onChangeFieldType = (option: string) => {
     const collectionTypes = ['object', 'array']
     collectionTypes.includes(option) && handlePushToChanges(schemaKey)
-    onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
+    option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
+    option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
   }
 
   const isParentArray = () => schemaKey === 'items'
