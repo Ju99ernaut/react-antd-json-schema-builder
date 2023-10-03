@@ -36,15 +36,13 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
     <SchemaProvider>
       <style>{css}</style>
       <Row align="middle" style={{ padding: "16px" }}>
-        <Col xs={9} xl={10}>
+        <Col xs={10} xl={11}>
           <Row justify="space-around" align="middle">
             <Col span={2}></Col>
             <Col span={22}>Name</Col>
           </Row>
         </Col>
-        <Col xs={7} xl={10}>Type</Col>
-        <Col xs={2} xl={1}></Col>
-        <Col xs={2} xl={1}></Col>
+        <Col xs={10} xl={11}>Type</Col>
         <Col xs={2} xl={1}></Col>
         <Col xs={2} xl={1}></Col>
       </Row>

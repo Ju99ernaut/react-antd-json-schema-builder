@@ -26,6 +26,16 @@ export const ROOT_KEY = '__root__'
 
 export const schemaTypes: SchemaTypeOption[] = [
   {
+    value: 'object',
+    label: 'Object',
+    description: 'Collection of key-value paired elements.',
+  },
+  {
+    value: 'array',
+    label: 'Array',
+    description: 'Collection of items of the same type.',
+  },
+  {
     value: 'string',
     label: 'String',
     description: 'Simple text, multi-line text, markdown, etc.',

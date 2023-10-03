@@ -4,12 +4,10 @@ import {
   DeleteOutlined,
   PlusSquareFilled,
   SettingOutlined,
-  AppstoreOutlined,
-  BarsOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
@@ -54,29 +52,8 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const isCollection = controlType !== 'primitive'
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
-
-  const [arrayToggle, setArrayToggle] = useState(isArray)
-  const [objectToggle, setObjectToggle] = useState(isObject)
-  const didMount = useRef(false)
-  const toggleArray = () => {
-    !arrayToggle && setObjectToggle(arrayToggle)
-    setArrayToggle(!arrayToggle)
-  }
-  const toggleObject = () => {
-    !objectToggle && setArrayToggle(objectToggle)
-    setObjectToggle(!objectToggle)
-  }
+  
   const doNothing = () => {}
-
-  useEffect(() => {
-    if (!didMount.current) {
-      didMount.current = true
-      return
-    }
-    onChangeFieldType(
-      arrayToggle ? 'array' : objectToggle ? 'object' : 'string'
-    )
-  }, [arrayToggle, objectToggle])
 
   return (
     <div
@@ -92,9 +69,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({
         <>
           <Input.Group>
             <Row align="middle">
-              <Col xs={!isCollection ? 9 : 16} xl={!isCollection ? 10 : 20}>
+              <Col xs={10} xl={11}>
                 <Row justify="space-around" align="middle">
-                  <Col span={!isCollection ? 2 : 1}>
+                  <Col span={2}>
                     {isCollection && (
                       <Button
                         type="text"
@@ -104,10 +81,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                       />
                     )}
                   </Col>
-                  <Col span={!isCollection ? 22 : 23}>
+                  <Col span={22}>
                     {isFunction(onChangeKey) && (
                       <Input
-                        style={{ borderRadius: '0px' }}
+                        style={{ borderRadius: '0px', borderRight: '0px' }}
                         defaultValue={schemaKey}
                         disabled={rootNode || disabledInput}
                         onBlur={onChangeFieldName}
@@ -116,23 +93,23 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              {!isCollection && (
-                <Col xs={7} xl={10}>
-                  <Select
-                    style={{
-                      width: '100%',
-                      borderRadius: '0px',
-                      borderLeft: '0px',
-                    }}
-                    className="rsc-controls-control-select-box"
-                    value={getTypeOptions}
-                    disabled={rootNode}
-                    onChange={onChangeFieldType}
-                    filterOption={false}
-                  >
-                    {schemaTypes.map(({ value, label, description }) => {
+              <Col xs={10} xl={11}>
+                <Select
+                  style={{
+                    width: '100%',
+                    borderRadius: '0px',
+                    borderLeft: '0px',
+                  }}
+                  className="rsc-controls-control-select-box"
+                  value={getTypeOptions}
+                  disabled={rootNode}
+                  onChange={onChangeFieldType}
+                  filterOption={false}
+                >
+                  <Select.OptGroup key="complex" label="Complex">
+                    {schemaTypes.slice(0, 2).map(({ value, label, description }, i) => {
                       return (
-                        <Select.Option value={value} label={label}>
+                        <Select.Option value={value} key={i}>
                           <div>
                             <Title level={5} style={{ fontSize: "15px" }}><Icon types={value} /> {label}</Title>
                             <Text style={{ paddingLeft: "10px" }}>{description}</Text>
@@ -140,41 +117,21 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         </Select.Option>
                       )
                     })}
-                  </Select>
-                </Col>
-              )}
-              <Tooltip title='Toggle field to object'>
-                <Col xs={2} xl={1}>
-                  <Button
-                    type={isObject || objectToggle ? 'primary' : 'text'}
-                    style={{ width: '100%' }}
-                    onClick={toggleObject}
-                    icon={
-                      <AppstoreOutlined
-                        style={{
-                          color: isObject || objectToggle ? '#ffffff' : '#3182ce',
-                        }}
-                      />
-                    }
-                  />
-                </Col>
-              </Tooltip>
-              <Tooltip title='Toggle field to list'>
-                <Col xs={2} xl={1}>
-                  <Button
-                    type={isArray || arrayToggle ? 'primary' : 'text'}
-                    style={{ width: '100%' }}
-                    onClick={toggleArray}
-                    icon={
-                      <BarsOutlined
-                        style={{
-                          color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
-                        }}
-                      />
-                    }
-                  />
-                </Col>
-              </Tooltip>
+                  </Select.OptGroup>
+                  <Select.OptGroup key="primitive" label="Primitive">
+                    {schemaTypes.slice(2).map(({ value, label, description }, i) => {
+                      return (
+                        <Select.Option value={value} key={i + 2}>
+                          <div>
+                            <Title level={5} style={{ fontSize: "15px" }}><Icon types={value} /> {label}</Title>
+                            <Text style={{ paddingLeft: "10px" }}>{description}</Text>
+                          </div>
+                        </Select.Option>
+                      )
+                    })}
+                  </Select.OptGroup>
+                </Select>
+              </Col>
               <Tooltip title='Field Settings'>
                 <Col xs={2} xl={1}>
                   <Button
@@ -239,10 +196,10 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               />
               <div className="rsc-controls-add-button">
                 <Row>
-                  <Col xs={18} xl={21}>
+                  <Col xs={20} xl={22}>
                     <Row>
                       <Col span={1}></Col>
-                      <Col span={22}>
+                      <Col span={23}>
                         <Button
                           type="dashed"
                           disabled={!isFunction(onAdd)}
@@ -256,7 +213,6 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                           icon={<PlusSquareFilled style={{ color: 'black' }} />}
                         />
                       </Col>
-                      <Col span={1}></Col>
                     </Row>
                   </Col>
                 </Row>
