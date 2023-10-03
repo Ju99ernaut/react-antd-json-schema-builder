@@ -14,7 +14,8 @@ export declare const setSchemaTitle: import("lodash/fp").LodashSet1x1;
 export declare const setSchemaId: import("lodash/fp").LodashSet1x1;
 export declare const setSchemaProperties: import("lodash/fp").LodashSet1x1;
 export declare const setSchemaProperty: (key: string) => import("lodash/fp").LodashSet1x1;
-export declare const setSchemaItems: import("lodash/fp").LodashSet1x1;
+export declare const setSchemaItems: (oldSchema: Schema, schema: Schema) => Schema;
+export declare const setSchemaTempItems: (schema: Schema) => Schema;
 export declare const deleteSchemaField: import("lodash/fp").LodashUnset;
 export declare const deleteSchemaProperty: (key: string) => import("lodash/fp").LodashUnset1x1;
 export declare const addSchemaProperty: (schema: Schema) => Schema;
@@ -29,6 +30,7 @@ export declare const hasSchemaProperties: (schema: Schema) => boolean;
 export declare const hasSchemaItems: (schema: Schema) => boolean;
 export declare const getSchemaMenuOptions: (type: SchemaType) => import("../types").SchemaMenuOption[];
 export declare const setSchemaTypeAndRemoveWrongFields: (...args: any[]) => any;
+export declare const setSchemaTypeAndSetItemsAndRemoveWrongFields: (...args: any[]) => any;
 export declare const stringsToOptions: import("lodash/fp").LodashMap1x1<unknown, {
     label: unknown;
     value: unknown;

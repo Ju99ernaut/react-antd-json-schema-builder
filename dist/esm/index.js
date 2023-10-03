@@ -272,6 +272,16 @@ var useSchemaContext = function () { return useContext(SchemaContext); };
 var ROOT_KEY = '__root__';
 var schemaTypes = [
     {
+        value: 'object',
+        label: 'Object',
+        description: 'Collection of key-value paired elements.',
+    },
+    {
+        value: 'array',
+        label: 'Array',
+        description: 'Collection of items of the same type.',
+    },
+    {
         value: 'string',
         label: 'String',
         description: 'Simple text, multi-line text, markdown, etc.',
@@ -428,13 +438,19 @@ var setSchemaProperties = setSchemaField('properties');
 var setSchemaProperty = function (key) {
     return setSchemaField(['properties', key]);
 };
-var setSchemaItems = setSchemaField('items');
+var setSchemaItems = function (oldSchema, schema) {
+    return setSchemaField('items')(__assign({ uuid: uuidv4(), type: 'string' }, oldSchema), schema);
+};
+var setSchemaTempItems = function (schema) {
+    var schemaItems = getSchemaItems(schema) || {};
+    return setSchemaField('items')(__assign({ uuid: uuidv4(), type: 'string' }, schemaItems), schema);
+};
 var deleteSchemaField = unset;
 var deleteSchemaProperty = function (key) {
     return deleteSchemaField(['properties', key]);
 };
 var addSchemaProperty = function (schema) {
-    return setSchemaProperty(uniqueId('field_', schema))({ uuid: uuidv4(), type: 'string', items: { uuid: uuidv4(), type: 'string' } }, schema);
+    return setSchemaProperty(uniqueId('field_', schema))({ uuid: uuidv4(), type: 'string' }, schema);
 };
 var renameSchemaField = function (oldKey, newKey) {
     return flow([
@@ -473,6 +489,11 @@ var setSchemaTypeAndRemoveWrongFields = flow([
     setSchemaType,
     removeWrongFields,
 ]);
+var setSchemaTypeAndSetItemsAndRemoveWrongFields = flow([
+    setSchemaType,
+    setSchemaTempItems,
+    removeWrongFields,
+]);
 map(function (s) { return ({ label: s, value: s }); });
 
 var useDecodeSchema = function (schema) {
@@ -504,7 +525,8 @@ var useControls = function (_a) {
     var onChangeFieldType = function (option) {
         var collectionTypes = ['object', 'array'];
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
-        onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
+        option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
+        option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
     };
     var isParentArray = function () { return schemaKey === 'items'; };
     return {
@@ -602,60 +624,43 @@ var CommonControls = function (_a) {
     var isCollection = controlType !== 'primitive';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
-    var _c = useState(isArray), arrayToggle = _c[0], setArrayToggle = _c[1];
-    var _d = useState(isObject), objectToggle = _d[0], setObjectToggle = _d[1];
-    var didMount = useRef(false);
-    var toggleArray = function () {
-        !arrayToggle && setObjectToggle(arrayToggle);
-        setArrayToggle(!arrayToggle);
-    };
-    var toggleObject = function () {
-        !objectToggle && setArrayToggle(objectToggle);
-        setObjectToggle(!objectToggle);
-    };
     var doNothing = function () { };
-    useEffect(function () {
-        if (!didMount.current) {
-            didMount.current = true;
-            return;
-        }
-        onChangeFieldType(arrayToggle ? 'array' : objectToggle ? 'object' : 'string');
-    }, [arrayToggle, objectToggle]);
     return (React.createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
     })),
         !rootNode && (React.createElement(React.Fragment, null,
             React.createElement(Input.Group, null,
                 React.createElement(Row, { align: "middle" },
-                    React.createElement(Col, { xs: !isCollection ? 9 : 16, xl: !isCollection ? 10 : 20 },
+                    React.createElement(Col, { xs: 10, xl: 11 },
                         React.createElement(Row, { justify: "space-around", align: "middle" },
-                            React.createElement(Col, { span: !isCollection ? 2 : 1 }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React.createElement(CaretDownFilled, null) : React.createElement(CaretRightFilled, null) }))),
-                            React.createElement(Col, { span: !isCollection ? 22 : 23 }, isFunction(onChangeKey) && (React.createElement(Input, { style: { borderRadius: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    !isCollection && (React.createElement(Col, { xs: 7, xl: 10 },
+                            React.createElement(Col, { span: 2 }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React.createElement(CaretDownFilled, null) : React.createElement(CaretRightFilled, null) }))),
+                            React.createElement(Col, { span: 22 }, isFunction(onChangeKey) && (React.createElement(Input, { style: { borderRadius: '0px', borderRight: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
+                    React.createElement(Col, { xs: 10, xl: 11 },
                         React.createElement(Select, { style: {
                                 width: '100%',
                                 borderRadius: '0px',
                                 borderLeft: '0px',
-                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false }, schemaTypes.map(function (_a) {
-                            var value = _a.value, label = _a.label, description = _a.description;
-                            return (React.createElement(Select.Option, { value: value, label: label },
-                                React.createElement("div", null,
-                                    React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
-                                        React.createElement(Icon, { types: value }),
-                                        " ",
-                                        label),
-                                    React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
-                        })))),
-                    React.createElement(Tooltip, { title: 'Toggle field to object' },
-                        React.createElement(Col, { xs: 2, xl: 1 },
-                            React.createElement(Button, { type: isObject || objectToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleObject, icon: React.createElement(AppstoreOutlined, { style: {
-                                        color: isObject || objectToggle ? '#ffffff' : '#3182ce',
-                                    } }) }))),
-                    React.createElement(Tooltip, { title: 'Toggle field to list' },
-                        React.createElement(Col, { xs: 2, xl: 1 },
-                            React.createElement(Button, { type: isArray || arrayToggle ? 'primary' : 'text', style: { width: '100%' }, onClick: toggleArray, icon: React.createElement(BarsOutlined, { style: {
-                                        color: isArray || arrayToggle ? '#ffffff' : '#3182ce',
-                                    } }) }))),
+                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false },
+                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 2).map(function (_a, i) {
+                                var value = _a.value, label = _a.label, description = _a.description;
+                                return (React.createElement(Select.Option, { value: value, key: i },
+                                    React.createElement("div", null,
+                                        React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
+                                            React.createElement(Icon, { types: value }),
+                                            " ",
+                                            label),
+                                        React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
+                            })),
+                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(2).map(function (_a, i) {
+                                var value = _a.value, label = _a.label, description = _a.description;
+                                return (React.createElement(Select.Option, { value: value, key: i + 2 },
+                                    React.createElement("div", null,
+                                        React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
+                                            React.createElement(Icon, { types: value }),
+                                            " ",
+                                            label),
+                                        React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
+                            })))),
                     React.createElement(Tooltip, { title: 'Field Settings' },
                         React.createElement(Col, { xs: 2, xl: 1 },
                             React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: !getTypeOptions ? doNothing : openModal, icon: React.createElement(SettingOutlined, { style: !getTypeOptions ? {
@@ -682,17 +687,16 @@ var CommonControls = function (_a) {
                     } }),
                 React.createElement("div", { className: "rsc-controls-add-button" },
                     React.createElement(Row, null,
-                        React.createElement(Col, { xs: 18, xl: 21 },
+                        React.createElement(Col, { xs: 20, xl: 22 },
                             React.createElement(Row, null,
                                 React.createElement(Col, { span: 1 }),
-                                React.createElement(Col, { span: 22 },
+                                React.createElement(Col, { span: 23 },
                                     React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: {
                                             width: '100%',
                                             backgroundColor: 'transparent',
                                             borderColor: 'black',
                                             borderRadius: '3px',
-                                        }, icon: React.createElement(PlusSquareFilled, { style: { color: 'black' } }) })),
-                                React.createElement(Col, { span: 1 }))))))),
+                                        }, icon: React.createElement(PlusSquareFilled, { style: { color: 'black' } }) })))))))),
             isArray && (React.createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
@@ -748,13 +752,11 @@ var SchemaBuilder = function (_a) {
     return (React.createElement(SchemaProvider, null,
         React.createElement("style", null, css),
         React.createElement(Row, { align: "middle", style: { padding: "16px" } },
-            React.createElement(Col, { xs: 9, xl: 10 },
+            React.createElement(Col, { xs: 10, xl: 11 },
                 React.createElement(Row, { justify: "space-around", align: "middle" },
                     React.createElement(Col, { span: 2 }),
                     React.createElement(Col, { span: 22 }, "Name"))),
-            React.createElement(Col, { xs: 7, xl: 10 }, "Type"),
-            React.createElement(Col, { xs: 2, xl: 1 }),
-            React.createElement(Col, { xs: 2, xl: 1 }),
+            React.createElement(Col, { xs: 10, xl: 11 }, "Type"),
             React.createElement(Col, { xs: 2, xl: 1 }),
             React.createElement(Col, { xs: 2, xl: 1 })),
         React.createElement(SchemaCreator, { schema: data, onChange: onChange })));
