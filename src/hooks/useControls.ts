@@ -43,6 +43,7 @@ const useControls = ({
   const closeModal = () => setShowModal(false)
 
   const onChangeFieldName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handlePushToChanges(schemaKey)
     handleChangesIdKey(schemaKey, event.target.value)
     onChangeKey(event.target.value)
   }

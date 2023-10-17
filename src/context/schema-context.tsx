@@ -31,7 +31,7 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
     const isInChanges = changes.includes(id)
     if (!isInChanges) return false
     setChanges(value => value.filter(item => item !== id))
-    return isInChanges
+    return true
   }
 
   return (
