@@ -258,7 +258,7 @@ var SchemaProvider = function (_a) {
         if (!isInChanges)
             return false;
         setChanges(function (value) { return value.filter(function (item) { return item !== id; }); });
-        return isInChanges;
+        return true;
     };
     return (React.createElement(SchemaContext.Provider, { value: {
             changes: changes,
@@ -519,6 +519,7 @@ var useControls = function (_a) {
     var openModal = function () { return setShowModal(true); };
     var closeModal = function () { return setShowModal(false); };
     var onChangeFieldName = function (event) {
+        handlePushToChanges(schemaKey);
         handleChangesIdKey(schemaKey, event.target.value);
         onChangeKey(event.target.value);
     };
