@@ -2,12 +2,12 @@ import {
   CaretDownFilled,
   CaretRightFilled,
   DeleteOutlined,
-  PlusSquareFilled,
-  SettingOutlined,
+  PlusSquareOutlined,
+  // SettingOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import React from 'react'
+import React, { useState } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
 import {
   deleteSchemaProperty,
@@ -55,6 +55,8 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   
   const doNothing = () => {}
 
+  const [hover, setHover] = useState(false)
+
   return (
     <div
       data-schema-type={schemaType}
@@ -93,7 +95,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Col>
                 </Row>
               </Col>
-              <Col xs={10} xl={11}>
+              <Col xs={12} xl={12}>
                 <Select
                   style={{
                     width: '100%',
@@ -132,7 +134,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   </Select.OptGroup>
                 </Select>
               </Col>
-              <Tooltip title='Field Settings'>
+              {/*<Tooltip title='Field Settings'>
                 <Col xs={2} xl={1}>
                   <Button
                     type="text"
@@ -149,7 +151,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     }
                   />
                 </Col>
-              </Tooltip>
+              </Tooltip>*/}
               <Tooltip title='Delete'>
                 <Col xs={2} xl={1}>
                   <Button
@@ -196,7 +198,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               />
               <div className="rsc-controls-add-button">
                 <Row>
-                  <Col xs={20} xl={22}>
+                  <Col xs={22} xl={23}>
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
@@ -208,9 +210,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                             width: '100%',
                             backgroundColor: 'transparent',
                             borderColor: 'black',
+                            color: 'black',
                             borderRadius: '3px',
+                            ...(hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})
                           }}
-                          icon={<PlusSquareFilled style={{ color: 'black' }} />}
+                          onMouseEnter={() => setHover(true)} 
+                          onMouseLeave={() => setHover(false)}
+                          icon={<PlusSquareOutlined style={{ color: 'inherit' }} />}
                         />
                       </Col>
                     </Row>
