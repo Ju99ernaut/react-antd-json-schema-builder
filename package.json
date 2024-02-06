@@ -18,7 +18,7 @@
     "rollup": "rollup --config config/rollup/rollup.config.ts --configPlugin typescript",
     "storybook": "start-storybook -p 6006 -c ./config/storybook --no-manager-cache",
     "build:storybook": "build-storybook -c ./config/storybook",
-    "build": "rm -rf dist && yarn rollup",
+    "build": "yarn version && rm -rf dist && yarn rollup",
     "watch": "yarn storybook"
   },
   "peerDependencies": {

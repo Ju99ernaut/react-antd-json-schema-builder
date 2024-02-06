@@ -28,12 +28,17 @@ export const schemaTypes: SchemaTypeOption[] = [
   {
     value: 'object',
     label: 'Object',
-    description: 'Collection of key-value paired elements.',
+    description: ' Key-value paired elements.',
   },
   {
     value: 'array',
-    label: 'Array',
-    description: 'Collection of items of the same type.',
+    label: 'Collection',
+    description: 'Array of objects.',
+  },
+  {
+    value: 'array',
+    label: 'List',
+    description: 'Array of items of the same primitive type.',
   },
   {
     value: 'string',
@@ -43,23 +48,23 @@ export const schemaTypes: SchemaTypeOption[] = [
   {
     value: 'number',
     label: 'Number',
-    description: 'An integer, float, quantity, etc.',
+    description: 'An integer, float, quantity, currency, percent etc.',
   },
   {
     value: 'boolean',
     label: 'Boolean',
     description: 'Toggle for true/false values',
   },
-  {
-    value: 'currency',
-    label: 'Currency',
-    description: 'Number with currency formatting.',
-  },
-  {
-    value: 'percent',
-    label: 'Percent',
-    description: 'Number with percent formatting',
-  },
+  // {
+  //   value: 'currency',
+  //   label: 'Currency',
+  //   description: 'Number with currency formatting.',
+  // },
+  // {
+  //   value: 'percent',
+  //   label: 'Percent',
+  //   description: 'Number with percent formatting',
+  // },
   {
     value: 'date',
     label: 'Date',

@@ -109,7 +109,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   filterOption={false}
                 >
                   <Select.OptGroup key="complex" label="Complex">
-                    {schemaTypes.slice(0, 2).map(({ value, label, description }, i) => {
+                    {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
                       return (
                         <Select.Option value={value} key={i}>
                           <div>
@@ -121,7 +121,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     })}
                   </Select.OptGroup>
                   <Select.OptGroup key="primitive" label="Primitive">
-                    {schemaTypes.slice(2).map(({ value, label, description }, i) => {
+                    {schemaTypes.slice(3).map(({ value, label, description }, i) => {
                       return (
                         <Select.Option value={value} key={i + 2}>
                           <div>
