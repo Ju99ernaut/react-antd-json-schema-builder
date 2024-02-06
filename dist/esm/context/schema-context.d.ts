@@ -5,7 +5,7 @@ export declare const SchemaContext: React.Context<{
     handleGetIsInChanges: (id: string) => boolean;
     handleChangesIdKey: (oldKey: string, newKey: string) => void;
 }>;
-declare const SchemaProvider: ({ children }: PropsWithChildren) => JSX.Element;
+declare const SchemaProvider: ({ children }: PropsWithChildren) => React.JSX.Element;
 export declare const useSchemaContext: () => {
     changes: string[];
     handlePushToChanges: (id: string) => void;
