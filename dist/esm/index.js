@@ -13,7 +13,7 @@ import pick from 'lodash/fp/pick';
 import reduce from 'lodash/fp/reduce';
 import set from 'lodash/fp/set';
 import unset from 'lodash/fp/unset';
-import { FontSizeOutlined, AppstoreOutlined, ClockCircleOutlined, CalendarOutlined, DollarOutlined, PercentageOutlined, NumberOutlined, CheckOutlined, BarsOutlined, CaretDownFilled, CaretRightFilled, SettingOutlined, DeleteOutlined, PlusSquareFilled } from '@ant-design/icons';
+import { FontSizeOutlined, AppstoreOutlined, ClockCircleOutlined, CalendarOutlined, DollarOutlined, PercentageOutlined, NumberOutlined, CheckOutlined, BarsOutlined, CaretDownFilled, CaretRightFilled, DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, InputNumber, Switch, Select, Typography, Row, Col, Button, Tooltip } from 'antd';
 import { isFunction } from 'lodash';
 import entries$1 from 'lodash/entries';
@@ -621,11 +621,12 @@ var Icon = function (_a) {
 var Title = Typography.Title, Text = Typography.Text;
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
-    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, openModal = _b.openModal, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
     var doNothing = function () { };
+    var _c = useState(false), hover = _c[0], setHover = _c[1];
     return (React.createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
     })),
@@ -636,7 +637,7 @@ var CommonControls = function (_a) {
                         React.createElement(Row, { justify: "space-around", align: "middle" },
                             React.createElement(Col, { span: 2 }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React.createElement(CaretDownFilled, null) : React.createElement(CaretRightFilled, null) }))),
                             React.createElement(Col, { span: 22 }, isFunction(onChangeKey) && (React.createElement(Input, { style: { borderRadius: '0px', borderRight: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    React.createElement(Col, { xs: 10, xl: 11 },
+                    React.createElement(Col, { xs: 12, xl: 12 },
                         React.createElement(Select, { style: {
                                 width: '100%',
                                 borderRadius: '0px',
@@ -662,14 +663,6 @@ var CommonControls = function (_a) {
                                             label),
                                         React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
                             })))),
-                    React.createElement(Tooltip, { title: 'Field Settings' },
-                        React.createElement(Col, { xs: 2, xl: 1 },
-                            React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: !getTypeOptions ? doNothing : openModal, icon: React.createElement(SettingOutlined, { style: !getTypeOptions ? {
-                                        color: 'rgba(0, 0, 0, 0.25)',
-                                        cursor: 'not-allowed',
-                                    } : {
-                                        color: '#3182ce'
-                                    } }) }))),
                     React.createElement(Tooltip, { title: 'Delete' },
                         React.createElement(Col, { xs: 2, xl: 1 },
                             React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: isParentArray() || rootNode ? doNothing : onDelete, icon: React.createElement(DeleteOutlined, { style: isParentArray() || rootNode ? {
@@ -688,16 +681,11 @@ var CommonControls = function (_a) {
                     } }),
                 React.createElement("div", { className: "rsc-controls-add-button" },
                     React.createElement(Row, null,
-                        React.createElement(Col, { xs: 20, xl: 22 },
+                        React.createElement(Col, { xs: 22, xl: 23 },
                             React.createElement(Row, null,
                                 React.createElement(Col, { span: 1 }),
                                 React.createElement(Col, { span: 23 },
-                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: {
-                                            width: '100%',
-                                            backgroundColor: 'transparent',
-                                            borderColor: 'black',
-                                            borderRadius: '3px',
-                                        }, icon: React.createElement(PlusSquareFilled, { style: { color: 'black' } }) })))))))),
+                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React.createElement(PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
             isArray && (React.createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
