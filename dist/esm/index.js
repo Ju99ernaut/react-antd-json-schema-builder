@@ -279,12 +279,17 @@ var schemaTypes = [
     {
         value: 'object',
         label: 'Object',
-        description: 'Collection of key-value paired elements.',
+        description: ' Key-value paired elements.',
     },
     {
         value: 'array',
-        label: 'Array',
-        description: 'Collection of items of the same type.',
+        label: 'Collection',
+        description: 'Array of objects.',
+    },
+    {
+        value: 'array',
+        label: 'List',
+        description: 'Array of items of the same primitive type.',
     },
     {
         value: 'string',
@@ -294,23 +299,23 @@ var schemaTypes = [
     {
         value: 'number',
         label: 'Number',
-        description: 'An integer, float, quantity, etc.',
+        description: 'An integer, float, quantity, currency, percent etc.',
     },
     {
         value: 'boolean',
         label: 'Boolean',
         description: 'Toggle for true/false values',
     },
-    {
-        value: 'currency',
-        label: 'Currency',
-        description: 'Number with currency formatting.',
-    },
-    {
-        value: 'percent',
-        label: 'Percent',
-        description: 'Number with percent formatting',
-    },
+    // {
+    //   value: 'currency',
+    //   label: 'Currency',
+    //   description: 'Number with currency formatting.',
+    // },
+    // {
+    //   value: 'percent',
+    //   label: 'Percent',
+    //   description: 'Number with percent formatting',
+    // },
     {
         value: 'date',
         label: 'Date',
@@ -648,7 +653,7 @@ var CommonControls = function (_a) {
                                 borderRadius: '0px',
                                 borderLeft: '0px',
                             }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false },
-                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 2).map(function (_a, i) {
+                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 3).map(function (_a, i) {
                                 var value = _a.value, label = _a.label, description = _a.description;
                                 return (React.createElement(Select.Option, { value: value, key: i },
                                     React.createElement("div", null,
@@ -658,7 +663,7 @@ var CommonControls = function (_a) {
                                             label),
                                         React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
                             })),
-                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(2).map(function (_a, i) {
+                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(3).map(function (_a, i) {
                                 var value = _a.value, label = _a.label, description = _a.description;
                                 return (React.createElement(Select.Option, { value: value, key: i + 2 },
                                     React.createElement("div", null,
