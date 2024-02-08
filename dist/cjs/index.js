@@ -54,42 +54,37 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 var __assign = function() {
-  __assign = Object.assign || function __assign(t) {
-      for (var s, i = 1, n = arguments.length; i < n; i++) {
-          s = arguments[i];
-          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-      return t;
-  };
-  return __assign.apply(this, arguments);
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
 
 function __rest(s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-      t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function")
-      for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-          if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-              t[p[i]] = s[p[i]];
-      }
-  return t;
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
 }
 
 function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-      if (ar || !(i in from)) {
-          if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-          ar[i] = from[i];
-      }
-  }
-  return to.concat(ar || Array.prototype.slice.call(from));
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 }
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-  var e = new Error(message);
-  return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};
 
 var jsonSchemaTraverse = {exports: {}};
 
@@ -302,7 +297,7 @@ var schemaTypes = [
         description: ' Key-value paired elements.',
     },
     {
-        value: 'array',
+        value: 'collection',
         label: 'Collection',
         description: 'Array of objects.',
     },
@@ -437,6 +432,7 @@ var typeToOptions = {
     string: stringSchemaOptions,
     number: numberSchemaOptions,
     boolean: boolSchemaOptions,
+    collection: arraySchemaOptions,
     array: arraySchemaOptions,
     object: objectSchemaOptions,
     percent: percentSchemaOptions,
@@ -448,6 +444,7 @@ var typeToValidFields = {
     number: numberValidSchemaProperties,
     boolean: boolValidSchemaProperties,
     object: objectValidSchemaProperties,
+    collection: arrayValidSchemaProperties,
     array: arrayValidSchemaProperties,
     percent: percentValidSchemaProperties,
     currency: currencyValidSchemaProperties,
@@ -503,7 +500,7 @@ var renameSchemaProperty = function (oldKey, newKey, schema) {
     ])(schema);
 };
 var isSchemaObject = function (schema) {
-    return getSchemaType(schema) === 'object';
+    return getSchemaType(schema) === 'object' || getSchemaType(schema) === 'collection';
 };
 var findOption = function (value) { return find__default["default"](['value', value]); };
 var getValidFields = function (type) { return get__default["default"](type, typeToValidFields); };
@@ -554,7 +551,7 @@ var useControls = function (_a) {
         onChangeKey(event.target.value);
     };
     var onChangeFieldType = function (option) {
-        var collectionTypes = ['object', 'array'];
+        var collectionTypes = ['object', 'array', 'collection'];
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
         option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
         option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
@@ -624,6 +621,16 @@ var CommonSubObject = function (_a) {
     })));
 };
 
+var CommonSubCollection = function (_a) {
+    var schema = _a.schema, onDelete = _a.onDelete, onChangeKey = _a.onChangeKey, onChange = _a.onChange;
+    var schemaProperties = useDecodeSchema(schema).schemaProperties;
+    var schemaEntries = entries__default$1["default"](schemaProperties);
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, schemaEntries.map(function (_a) {
+        var key = _a[0], properties = _a[1];
+        return (React__default["default"].createElement(SchemaCreator, { key: key, schema: properties, schemaKey: key, onDelete: onDelete, onChangeKey: function (newKey) { return onChangeKey(key, newKey); }, onChange: function (newSchema) { return onChange(key, newSchema); } }));
+    })));
+};
+
 var Icon = function (_a) {
     var types = _a.types, props = __rest(_a, ["types"]);
     switch (types) {
@@ -653,6 +660,7 @@ var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
     var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
+    var isColl = controlType === 'collection';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
     var doNothing = function () { };
@@ -716,9 +724,27 @@ var CommonControls = function (_a) {
                                 React__default["default"].createElement(antd.Col, { span: 1 }),
                                 React__default["default"].createElement(antd.Col, { span: 23 },
                                     React__default["default"].createElement(antd.Button, { type: "dashed", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React__default["default"].createElement(icons.PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
+            isColl && show && (React__default["default"].createElement(React__default["default"].Fragment, null,
+                React__default["default"].createElement(CommonSubCollection, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) {
+                        return onChange(setSchemaProperty(key)(newSchema, schema));
+                    }, onChangeKey: function (oldKey, newKey) {
+                        onChange(renameSchemaProperty(oldKey, newKey, schema));
+                    } }),
+                React__default["default"].createElement("div", { className: "rsc-controls-add-button" },
+                    React__default["default"].createElement(antd.Row, null,
+                        React__default["default"].createElement(antd.Col, { xs: 22, xl: 23 },
+                            React__default["default"].createElement(antd.Row, null,
+                                React__default["default"].createElement(antd.Col, { span: 1 }),
+                                React__default["default"].createElement(antd.Col, { span: 23 },
+                                    React__default["default"].createElement(antd.Button, { type: "dashed", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React__default["default"].createElement(icons.PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
             isArray && (React__default["default"].createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
+};
+
+var CollectionControls = function (_a) {
+    var props = __rest(_a, []);
+    return React__default["default"].createElement(CommonControls, __assign({}, props));
 };
 
 var ArrayControls = function (_a) {
@@ -738,6 +764,7 @@ var PrimitiveControls = function (_a) {
 
 var typeToControl = {
     object: function (props) { return React__default["default"].createElement(ObjectControls, __assign({ controlType: "object" }, props)); },
+    collection: function (props) { return React__default["default"].createElement(CollectionControls, __assign({ controlType: "collection" }, props)); },
     array: function (props) { return React__default["default"].createElement(ArrayControls, __assign({ controlType: "array" }, props)); },
     string: function (props) { return React__default["default"].createElement(PrimitiveControls, __assign({ controlType: "primitive" }, props)); },
     number: function (props) { return React__default["default"].createElement(PrimitiveControls, __assign({ controlType: "primitive" }, props)); },

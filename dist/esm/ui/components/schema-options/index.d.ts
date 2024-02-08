@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 import { SchemaOptionsProps } from '../../../types';
-declare const SchemaOptions: ({ showModal, onClose, schema, schemaKey, onChange, }: SchemaOptionsProps) => React.JSX.Element;
+declare const SchemaOptions: ({ showModal, onClose, schema, schemaKey, onChange, }: SchemaOptionsProps) => JSX.Element;
 export default SchemaOptions;

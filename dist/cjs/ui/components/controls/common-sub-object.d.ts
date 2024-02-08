@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 import { CommonSubObjectProps } from '../../../types';
-declare const CommonSubObject: ({ schema, onDelete, onChangeKey, onChange, }: CommonSubObjectProps) => React.JSX.Element;
+declare const CommonSubObject: ({ schema, onDelete, onChangeKey, onChange, }: CommonSubObjectProps) => JSX.Element;
 export default CommonSubObject;
