@@ -21,6 +21,7 @@ import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
+import CommonSubCollection from './common-sub-collection'
 import Icon from '../type-icons'
 
 const { Title, Text } = Typography
@@ -50,6 +51,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
 
   const isCollection = controlType !== 'primitive'
+  const isColl = controlType === 'collection'
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
   
@@ -187,6 +189,47 @@ const CommonControls: React.FC<CommonControlsProps> = ({
           {isObject && (
             <>
               <CommonSubObject
+                schema={schema}
+                onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
+                onChange={(key, newSchema) =>
+                  onChange(setSchemaProperty(key)(newSchema, schema))
+                }
+                onChangeKey={(oldKey, newKey) => {
+                  onChange(renameSchemaProperty(oldKey, newKey, schema))
+                }}
+              />
+              <div className="rsc-controls-add-button">
+                <Row>
+                  <Col xs={22} xl={23}>
+                    <Row>
+                      <Col span={1}></Col>
+                      <Col span={23}>
+                        <Button
+                          type="dashed"
+                          disabled={!isFunction(onAdd)}
+                          onClick={onAdd}
+                          style={{
+                            width: '100%',
+                            backgroundColor: 'transparent',
+                            borderColor: 'black',
+                            color: 'black',
+                            borderRadius: '3px',
+                            ...(hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})
+                          }}
+                          onMouseEnter={() => setHover(true)} 
+                          onMouseLeave={() => setHover(false)}
+                          icon={<PlusSquareOutlined style={{ color: 'inherit' }} />}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
+            </>
+          )}
+          {isColl && show && (
+            <>
+              <CommonSubCollection
                 schema={schema}
                 onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
                 onChange={(key, newSchema) =>

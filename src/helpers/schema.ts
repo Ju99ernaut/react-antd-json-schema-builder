@@ -77,7 +77,7 @@ export const addSchemaProperty = (schema: Schema) => {
 export const renameSchemaField = (oldKey: string, newKey: string) =>
   flow([
     entries,
-    map(([k, v]) => ({
+    map(([k, v]: any[]) => ({
       [k === oldKey ? newKey : k]: {
         ...v,
         id: k === oldKey ? newKey : v.id,
@@ -98,7 +98,7 @@ export const renameSchemaProperty = (
   ])(schema)
 
 export const isSchemaObject = (schema: Schema) =>
-  getSchemaType(schema) === 'object'
+  getSchemaType(schema) === 'object' || getSchemaType(schema) === 'collection'
 
 export const isSchemaArray = (schema: Schema) =>
   getSchemaType(schema) === 'array'

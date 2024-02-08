@@ -4,12 +4,14 @@ import { ROOT_KEY } from '../../../helpers/constants'
 import { addSchemaProperty, isSchemaObject } from '../../../helpers/schema'
 import useDecodeSchema from '../../../hooks/useDecodeSchema'
 import { SchemaCreatorProps, SchemaType } from '../../../types'
+import CollectionControls from '../controls/collection-controls'
 import ArrayControls from '../controls/array-controls'
 import ObjectControls from '../controls/object-controls'
 import PrimitiveControls from '../controls/primitive-controls'
 
 const typeToControl: Record<SchemaType | 'default', React.FC<any>> = {
   object: props => <ObjectControls controlType="object" {...props} />,
+  collection: props => <CollectionControls controlType="collection" {...props} />,
   array: props => <ArrayControls controlType="array" {...props} />,
   string: props => <PrimitiveControls controlType="primitive" {...props} />,
   number: props => <PrimitiveControls controlType="primitive" {...props} />,

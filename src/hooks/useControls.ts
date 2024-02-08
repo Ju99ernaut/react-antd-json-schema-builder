@@ -49,7 +49,7 @@ const useControls = ({
   }
 
   const onChangeFieldType = (option: string) => {
-    const collectionTypes = ['object', 'array']
+    const collectionTypes = ['object', 'array', 'collection']
     collectionTypes.includes(option) && handlePushToChanges(schemaKey)
     option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
     option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema))

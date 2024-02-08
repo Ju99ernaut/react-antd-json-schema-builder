@@ -4,6 +4,7 @@ export type SchemaType =
   | 'string'
   | 'number'
   | 'object'
+  | 'collection'
   | 'array'
   | 'boolean'
   | 'currency'
@@ -154,7 +155,7 @@ export type ArrayControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean
-  controlType: 'object' | 'array' | 'primitive'
+  controlType: 'object' | 'collection' | 'array' | 'primitive'
   onAdd: () => void
   onDelete: () => void
   onChange: (schema: Schema) => void
@@ -165,7 +166,7 @@ export type CommonControlsProps = Pick<SchemaCreatorProps, 'disabledInput'> & {
   schema: Schema
   schemaKey: string
   rootNode?: boolean
-  controlType: 'object' | 'array' | 'primitive'
+  controlType: 'object' | 'collection' | 'array' | 'primitive'
   onAdd: () => void
   onDelete: () => void
   onChange: (schema: Schema) => void
