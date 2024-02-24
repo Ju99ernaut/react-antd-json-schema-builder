@@ -11,7 +11,9 @@ import PrimitiveControls from '../controls/primitive-controls'
 
 const typeToControl: Record<SchemaType | 'default', React.FC<any>> = {
   object: props => <ObjectControls controlType="object" {...props} />,
-  collection: props => <CollectionControls controlType="collection" {...props} />,
+  collection: props => (
+    <CollectionControls controlType="collection" {...props} />
+  ),
   array: props => <ArrayControls controlType="array" {...props} />,
   string: props => <PrimitiveControls controlType="primitive" {...props} />,
   number: props => <PrimitiveControls controlType="primitive" {...props} />,
