@@ -14,7 +14,4 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   )
 }
 
-export { default as addIdsToSchema } from './helpers/add-ids-to-schema'
-export { default as defaultSchema } from './helpers/default-schema'
-export { default as useUnsavedChanges } from './hooks/useUnsavedChanges'
-export { SchemaBuilder as JSONSchemaBuilder }
+export default SchemaBuilder
