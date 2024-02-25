@@ -38,7 +38,8 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const schemaInRedux = useSelector((state: RootState) => state.schema)
   const dispatch = useDispatch()
 
-  dispatch(updateSchema(data))
+  //! Way to set initial state
+  // dispatch(updateSchema(data))
 
   return (
     <SchemaProvider>
