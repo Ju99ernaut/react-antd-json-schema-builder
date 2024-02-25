@@ -1,7 +1,9 @@
 import React from 'react'
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { connect } from 'react-redux'
-import { RootState, AppDispatch } from '../../store'
+import { RootState } from '../../store'
+import { Button, Tooltip, Space } from 'antd'
+import { UndoOutlined, RedoOutlined } from '@ant-design/icons'
 
 const UndoRedoUI = ({
   canUndo,
@@ -14,14 +16,24 @@ const UndoRedoUI = ({
   onUndo: () => {}
   onRedo: () => {}
 }) => (
-  <p>
-    <button onClick={onUndo} disabled={!canUndo}>
-      Undo
-    </button>
-    <button onClick={onRedo} disabled={!canRedo}>
-      Redo
-    </button>
-  </p>
+  <Space id="schema-state-control">
+    <Tooltip title="Undo">
+      <Button
+        title="Undo"
+        icon={<UndoOutlined />}
+        onClick={onUndo}
+        disabled={!canUndo}
+      />
+    </Tooltip>
+    <Tooltip title="Redo">
+      <Button
+        title="Redo"
+        icon={<RedoOutlined />}
+        onClick={onRedo}
+        disabled={!canRedo}
+      />
+    </Tooltip>
+  </Space>
 )
 
 const mapStateToProps = (state: RootState) => ({

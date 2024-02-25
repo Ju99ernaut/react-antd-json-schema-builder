@@ -8,8 +8,8 @@ import UndoRedo from './ui/undo-redo'
 const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   return (
     <Provider store={store}>
-      <JSONSchemaBuilder data={data} onChange={onChange} />
       <UndoRedo />
+      <JSONSchemaBuilder data={data} onChange={onChange} />
     </Provider>
   )
 }

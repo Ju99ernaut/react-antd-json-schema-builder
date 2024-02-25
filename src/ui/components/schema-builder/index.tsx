@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
@@ -38,8 +38,9 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   const schemaInRedux = useSelector((state: RootState) => state.schema)
   const dispatch = useDispatch()
 
-  //! Way to set initial state
-  // dispatch(updateSchema(data))
+  useEffect(() => {
+    dispatch(updateSchema(data))
+  }, [data])
 
   return (
     <SchemaProvider>
