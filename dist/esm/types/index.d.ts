@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 export type Schema = Record<string, unknown>;
 export type SchemaType = 'string' | 'number' | 'object' | 'collection' | 'array' | 'boolean' | 'currency' | 'percent' | 'date';
 export type SchemaTypeOption = {
@@ -9,6 +10,9 @@ export type JSONSchemaEditor = {
     data: Schema;
     onChange: (...args: any[]) => void;
     initializeWithIds?: boolean;
+    undoRedo?: ReactNode;
+    dispatch?: (...args: any[]) => void;
+    updateSchema?: (...args: any[]) => any;
 };
 export type CommonSchemaField = 'description' | 'disabled';
 export type StringSchemaField = CommonSchemaField | 'enum' | 'minLength' | 'maxLength' | 'pattern' | 'format';
