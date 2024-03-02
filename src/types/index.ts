@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export type Schema = Record<string, unknown>
 
 export type SchemaType =
@@ -11,12 +13,19 @@ export type SchemaType =
   | 'percent'
   | 'date'
 
-export type SchemaTypeOption = { value: SchemaType; label: string, description: string }
+export type SchemaTypeOption = {
+  value: SchemaType
+  label: string
+  description: string
+}
 
 export type JSONSchemaEditor = {
   data: Schema
   onChange: (...args: any[]) => void
   initializeWithIds?: boolean
+  undoRedo?: ReactNode
+  dispatch?: (...args: any[]) => void
+  updateSchema?: (...args: any[]) => any
 }
 
 export type CommonSchemaField = 'description' | 'disabled'
@@ -29,7 +38,11 @@ export type StringSchemaField =
   | 'pattern'
   | 'format'
 
-export type NumberSchemaField = CommonSchemaField | 'minimum' | 'maximum' | 'step'
+export type NumberSchemaField =
+  | CommonSchemaField
+  | 'minimum'
+  | 'maximum'
+  | 'step'
 
 export type ArraySchemaField =
   | CommonSchemaField
@@ -37,7 +50,13 @@ export type ArraySchemaField =
   | 'minItems'
   | 'maxItems'
 
-export type CommonValidSchemaField = CommonSchemaField | 'title' | 'type' | 'id' | 'uuid' | 'items'
+export type CommonValidSchemaField =
+  | CommonSchemaField
+  | 'title'
+  | 'type'
+  | 'id'
+  | 'uuid'
+  | 'items'
 
 export type StringValidSchemaField = StringSchemaField | CommonValidSchemaField
 

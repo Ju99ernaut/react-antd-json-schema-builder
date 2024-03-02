@@ -1,16 +1,24 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import { store } from './store'
 import JSONSchemaBuilder from './ui/components/schema-builder'
 import { JSONSchemaEditor } from './types'
-import UndoRedo from './ui/undo-redo'
 
-const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
+const SchemaBuilder = ({
+  data,
+  onChange,
+  undoRedo,
+  dispatch,
+  updateSchema,
+}: JSONSchemaEditor) => {
   return (
-    <Provider store={store}>
-      <UndoRedo />
-      <JSONSchemaBuilder data={data} onChange={onChange} />
-    </Provider>
+    <>
+      {undoRedo}
+      <JSONSchemaBuilder
+        data={data}
+        onChange={onChange}
+        dispatch={dispatch}
+        updateSchema={updateSchema}
+      />
+    </>
   )
 }
 

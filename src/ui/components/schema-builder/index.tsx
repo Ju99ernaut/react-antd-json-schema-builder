@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
 import { Row, Col } from 'antd'
-import { useSelector, useDispatch } from 'react-redux'
-import { updateSchema } from '../../../reducers/schema'
-import { RootState } from '../../../store'
 
-const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
+const SchemaBuilder = ({
+  data,
+  onChange,
+  dispatch,
+  updateSchema,
+}: JSONSchemaEditor) => {
   const css = `
   .rsc-controls-root {}
 
@@ -35,13 +37,6 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
   }
 `
 
-  const schemaInRedux = useSelector((state: RootState) => state.schema)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(updateSchema(data))
-  }, [data])
-
   return (
     <SchemaProvider>
       <style>{css}</style>
@@ -59,10 +54,10 @@ const SchemaBuilder = ({ data, onChange }: JSONSchemaEditor) => {
         <Col xs={2} xl={1}></Col>
       </Row>
       <SchemaCreator
-        schema={schemaInRedux.present.schema}
+        schema={(data as any)?.present?.schema || data}
         onChange={schema => {
           onChange(schema)
-          dispatch(updateSchema(schema))
+          dispatch && updateSchema && dispatch(updateSchema(schema))
         }}
       />
     </SchemaProvider>
