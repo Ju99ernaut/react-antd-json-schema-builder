@@ -266,8 +266,13 @@ var SchemaContext = React__default["default"].createContext({
 var SchemaProvider = function (_a) {
     var children = _a.children;
     var _b = React.useState([]), changes = _b[0], setChanges = _b[1];
-    var handlePushToChanges = React.useCallback(function (id) { return setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); }); }, [setChanges]);
+    console.log('Schema provider');
+    var handlePushToChanges = React.useCallback(function (id) {
+        console.log('handle push to change');
+        setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); });
+    }, [setChanges]);
     var handleChangesIdKey = React.useCallback(function (oldkey, newKey) {
+        console.log('handle changesIdKey');
         var isExist = changes.includes(oldkey);
         if (!isExist)
             return;
@@ -277,6 +282,7 @@ var SchemaProvider = function (_a) {
         });
     }, [changes, setChanges]);
     var handleGetIsInChanges = React.useCallback(function (id) {
+        console.log('handle getIsInChanges');
         var isInChanges = changes.includes(id);
         if (!isInChanges)
             return false;
@@ -660,6 +666,23 @@ var Icon = function (_a) {
     }
 };
 
+var NewPropertyButton = function (props) {
+    var onAdd = props.onAdd;
+    var _a = React.useState(false), hover = _a[0], setHover = _a[1];
+    return (React__default["default"].createElement(antd.Button, { type: "link", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: __assign({ 
+            // width: '100%',
+            // backgroundColor: 'transparent',
+            // borderColor: 'black',
+            // color: 'black',
+            borderRadius: '6px' }, (hover
+            ? {
+                borderColor: '#009BFF',
+                color: '#009BFF',
+                outline: '1px solid #29b0ff',
+            }
+            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); } }, "+ Add field"));
+};
+
 var Title = antd.Typography.Title, Text = antd.Typography.Text;
 var doNothing = function () { };
 var CommonControls = function (_a) {
@@ -669,7 +692,7 @@ var CommonControls = function (_a) {
     var isColl = controlType === 'collection';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
-    var _c = React.useState(false), hover = _c[0], setHover = _c[1];
+    var _c = React.useState(false); _c[0]; _c[1];
     return (React__default["default"].createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
     })),
@@ -685,19 +708,7 @@ var CommonControls = function (_a) {
                                 width: '100%',
                                 borderRadius: '0px',
                                 borderLeft: '0px',
-                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false },
-                            React__default["default"].createElement(antd.Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes
-                                .slice(0, 3)
-                                .map(function (_a, i) {
-                                var value = _a.value, label = _a.label, description = _a.description;
-                                return (React__default["default"].createElement(antd.Select.Option, { value: value, key: i },
-                                    React__default["default"].createElement("div", null,
-                                        React__default["default"].createElement(Title, { level: 5, style: { fontSize: '15px' } },
-                                            React__default["default"].createElement(Icon, { types: value }),
-                                            " ",
-                                            label),
-                                        React__default["default"].createElement(Text, { style: { paddingLeft: '10px' } }, description))));
-                            })),
+                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false, listHeight: 500 },
                             React__default["default"].createElement(antd.Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes
                                 .slice(3)
                                 .map(function (_a, i) {
@@ -709,17 +720,21 @@ var CommonControls = function (_a) {
                                             " ",
                                             label),
                                         React__default["default"].createElement(Text, { style: { paddingLeft: '10px' } }, description))));
+                            })),
+                            React__default["default"].createElement(antd.Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes
+                                .slice(0, 3)
+                                .map(function (_a, i) {
+                                var value = _a.value, label = _a.label, description = _a.description;
+                                return (React__default["default"].createElement(antd.Select.Option, { value: value, key: i },
+                                    React__default["default"].createElement("div", null,
+                                        React__default["default"].createElement(Title, { level: 5, style: { fontSize: '15px' } },
+                                            React__default["default"].createElement(Icon, { types: value }),
+                                            " ",
+                                            label),
+                                        React__default["default"].createElement(Text, { style: { paddingLeft: '10px' } }, description))));
                             })))),
-                    React__default["default"].createElement(antd.Tooltip, { title: "Delete" },
-                        React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 },
-                            React__default["default"].createElement(antd.Button, { type: "text", style: { width: '100%' }, onClick: isParentArray() || rootNode ? doNothing : onDelete, icon: React__default["default"].createElement(icons.DeleteOutlined, { style: isParentArray() || rootNode
-                                        ? {
-                                            color: 'rgba(0, 0, 0, 0.25)',
-                                            cursor: 'not-allowed',
-                                        }
-                                        : {
-                                            color: '#e53e3e',
-                                        } }) }))))),
+                    React__default["default"].createElement(antd.Col, { xs: 2, xl: 1 }, !isParentArray() && !rootNode && (React__default["default"].createElement(antd.Tooltip, { title: "Delete" },
+                        React__default["default"].createElement(antd.Button, { type: "ghost", onClick: isParentArray() || rootNode ? doNothing : onDelete, disabled: isParentArray() || rootNode, className: "property--delete-btn", icon: React__default["default"].createElement(icons.DeleteOutlined, null) })))))),
             React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React__default["default"].createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -734,13 +749,7 @@ var CommonControls = function (_a) {
                             React__default["default"].createElement(antd.Row, null,
                                 React__default["default"].createElement(antd.Col, { span: 1 }),
                                 React__default["default"].createElement(antd.Col, { span: 23 },
-                                    React__default["default"].createElement(antd.Button, { type: "dashed", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover
-                                            ? {
-                                                borderColor: '#009BFF',
-                                                color: '#009BFF',
-                                                outline: '1px solid #29b0ff',
-                                            }
-                                            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React__default["default"].createElement(icons.PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
+                                    React__default["default"].createElement(NewPropertyButton, { onAdd: onAdd })))))))),
             isColl && show && (React__default["default"].createElement(React__default["default"].Fragment, null,
                 React__default["default"].createElement(CommonSubCollection, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) {
                         return onChange(setSchemaProperty(key)(newSchema, schema));
@@ -753,13 +762,7 @@ var CommonControls = function (_a) {
                             React__default["default"].createElement(antd.Row, null,
                                 React__default["default"].createElement(antd.Col, { span: 1 }),
                                 React__default["default"].createElement(antd.Col, { span: 23 },
-                                    React__default["default"].createElement(antd.Button, { type: "dashed", disabled: !lodash.isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover
-                                            ? {
-                                                borderColor: '#009BFF',
-                                                color: '#009BFF',
-                                                outline: '1px solid #29b0ff',
-                                            }
-                                            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React__default["default"].createElement(icons.PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
+                                    React__default["default"].createElement(NewPropertyButton, { onAdd: onAdd })))))))),
             isArray && (React__default["default"].createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
@@ -820,7 +823,7 @@ var SchemaCreator = function (_a) {
 var SchemaBuilder$1 = function (_a) {
     var _b;
     var data = _a.data, onChange = _a.onChange, dispatch = _a.dispatch, updateSchema = _a.updateSchema;
-    var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border: solid 1px rgba(0, 0, 0, 0.07);\n    background-color: rgba(0, 0, 0, 0.03);\n    border-radius: 10px;\n    padding: 16px 0 16px 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n  \n  .rsc-controls-control-select-box .ant-select-selector {\n    border-radius: 0!important;\n  }\n";
+    var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border-radius: 10px;\n    padding: 0px 0 16px 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n";
     return (React__default["default"].createElement(SchemaProvider, null,
         React__default["default"].createElement("style", null, css),
         React__default["default"].createElement(antd.Row, { align: "middle", style: { padding: '16px' } },

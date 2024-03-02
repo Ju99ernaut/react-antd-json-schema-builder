@@ -6,6 +6,9 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 import packageJSON from '../../package.json'
 
+import css from 'rollup-plugin-css-only'
+import postcss from 'rollup-plugin-postcss'
+
 export default [
   {
     input: 'src/index.ts',
@@ -32,6 +35,16 @@ export default [
           './src/**/*.spec.ts',
           './src/**/*.stories.ts',
         ],
+      }),
+      css({ output: 'bundle.css' }),
+      postcss({
+        // Configure PostCSS if necessary
+        // For example, to use autoprefixer:
+        plugins: [require('autoprefixer')],
+        // Extract CSS to a separate file
+        extract: true,
+        // Minify CSS
+        minimize: true,
       }),
     ],
   },
