@@ -23,6 +23,7 @@ import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
 import CommonSubCollection from './common-sub-collection'
 import Icon from '../type-icons'
+import NewPropertyButton from './new-property-button'
 
 const { Title, Text } = Typography
 const doNothing = () => {}
@@ -108,13 +109,14 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   disabled={rootNode}
                   onChange={onChangeFieldType}
                   filterOption={false}
+                  listHeight={500}
                 >
-                  <Select.OptGroup key="complex" label="Complex">
+                  <Select.OptGroup key="primitive" label="Primitive">
                     {schemaTypes
-                      .slice(0, 3)
+                      .slice(3)
                       .map(({ value, label, description }, i) => {
                         return (
-                          <Select.Option value={value} key={i}>
+                          <Select.Option value={value} key={i + 2}>
                             <div>
                               <Title level={5} style={{ fontSize: '15px' }}>
                                 <Icon types={value} /> {label}
@@ -127,12 +129,12 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         )
                       })}
                   </Select.OptGroup>
-                  <Select.OptGroup key="primitive" label="Primitive">
+                  <Select.OptGroup key="complex" label="Complex">
                     {schemaTypes
-                      .slice(3)
+                      .slice(0, 3)
                       .map(({ value, label, description }, i) => {
                         return (
-                          <Select.Option value={value} key={i + 2}>
+                          <Select.Option value={value} key={i}>
                             <div>
                               <Title level={5} style={{ fontSize: '15px' }}>
                                 <Icon types={value} /> {label}
@@ -165,29 +167,21 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   />
                 </Col>
               </Tooltip>*/}
-              <Tooltip title="Delete">
-                <Col xs={2} xl={1}>
-                  <Button
-                    type="text"
-                    style={{ width: '100%' }}
-                    onClick={isParentArray() || rootNode ? doNothing : onDelete}
-                    icon={
-                      <DeleteOutlined
-                        style={
-                          isParentArray() || rootNode
-                            ? {
-                                color: 'rgba(0, 0, 0, 0.25)',
-                                cursor: 'not-allowed',
-                              }
-                            : {
-                                color: '#e53e3e',
-                              }
-                        }
-                      />
-                    }
-                  />
-                </Col>
-              </Tooltip>
+              <Col xs={2} xl={1}>
+                {!isParentArray() && !rootNode && (
+                  <Tooltip title="Delete">
+                    <Button
+                      type="ghost"
+                      onClick={
+                        isParentArray() || rootNode ? doNothing : onDelete
+                      }
+                      disabled={isParentArray() || rootNode}
+                      className="property--delete-btn"
+                      icon={<DeleteOutlined />}
+                    />
+                  </Tooltip>
+                )}
+              </Col>
             </Row>
           </Input.Group>
           <SchemaOptions
@@ -219,30 +213,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
-                        <Button
-                          type="dashed"
-                          disabled={!isFunction(onAdd)}
-                          onClick={onAdd}
-                          style={{
-                            width: '100%',
-                            backgroundColor: 'transparent',
-                            borderColor: 'black',
-                            color: 'black',
-                            borderRadius: '3px',
-                            ...(hover
-                              ? {
-                                  borderColor: '#009BFF',
-                                  color: '#009BFF',
-                                  outline: '1px solid #29b0ff',
-                                }
-                              : {}),
-                          }}
-                          onMouseEnter={() => setHover(true)}
-                          onMouseLeave={() => setHover(false)}
-                          icon={
-                            <PlusSquareOutlined style={{ color: 'inherit' }} />
-                          }
-                        />
+                        <NewPropertyButton onAdd={onAdd} />
                       </Col>
                     </Row>
                   </Col>
@@ -268,30 +239,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
-                        <Button
-                          type="dashed"
-                          disabled={!isFunction(onAdd)}
-                          onClick={onAdd}
-                          style={{
-                            width: '100%',
-                            backgroundColor: 'transparent',
-                            borderColor: 'black',
-                            color: 'black',
-                            borderRadius: '3px',
-                            ...(hover
-                              ? {
-                                  borderColor: '#009BFF',
-                                  color: '#009BFF',
-                                  outline: '1px solid #29b0ff',
-                                }
-                              : {}),
-                          }}
-                          onMouseEnter={() => setHover(true)}
-                          onMouseLeave={() => setHover(false)}
-                          icon={
-                            <PlusSquareOutlined style={{ color: 'inherit' }} />
-                          }
-                        />
+                        <NewPropertyButton onAdd={onAdd} />
                       </Col>
                     </Row>
                   </Col>
