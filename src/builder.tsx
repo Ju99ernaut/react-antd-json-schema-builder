@@ -1,6 +1,7 @@
 import React from 'react'
 import JSONSchemaBuilder from './ui/components/schema-builder'
 import { JSONSchemaEditor } from './types'
+import './style.css'
 
 const SchemaBuilder = ({
   data,

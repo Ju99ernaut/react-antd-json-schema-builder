@@ -3,7 +3,7 @@ import SchemaProvider from '../../../context/schema-context'
 import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
 import { Row, Col } from 'antd'
-import './style.css'
+
 const SchemaBuilder = ({
   data,
   onChange,

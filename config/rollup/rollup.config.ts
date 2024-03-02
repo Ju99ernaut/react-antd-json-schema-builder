@@ -36,7 +36,7 @@ export default [
           './src/**/*.stories.ts',
         ],
       }),
-      css({ output: 'bundle.css' }),
+      css({ output: 'style.css' }),
       postcss({
         // Configure PostCSS if necessary
         // For example, to use autoprefixer:
