@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useContext, useMemo } from 'react';
 import noop from 'lodash/noop';
 import assign from 'lodash/fp/assign';
 import entries from 'lodash/fp/entries';
@@ -246,10 +246,8 @@ var SchemaContext = React.createContext({
 var SchemaProvider = function (_a) {
     var children = _a.children;
     var _b = useState([]), changes = _b[0], setChanges = _b[1];
-    var handlePushToChanges = function (id) {
-        return setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); });
-    };
-    var handleChangesIdKey = function (oldkey, newKey) {
+    var handlePushToChanges = useCallback(function (id) { return setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); }); }, [setChanges]);
+    var handleChangesIdKey = useCallback(function (oldkey, newKey) {
         var isExist = changes.includes(oldkey);
         if (!isExist)
             return;
@@ -257,14 +255,14 @@ var SchemaProvider = function (_a) {
             var removeExisting = value.filter(function (item) { return item !== oldkey; });
             return __spreadArray(__spreadArray([], removeExisting, true), [newKey], false);
         });
-    };
-    var handleGetIsInChanges = function (id) {
+    }, [changes, setChanges]);
+    var handleGetIsInChanges = useCallback(function (id) {
         var isInChanges = changes.includes(id);
         if (!isInChanges)
             return false;
         setChanges(function (value) { return value.filter(function (item) { return item !== id; }); });
         return true;
-    };
+    }, [changes, setChanges]);
     return (React.createElement(SchemaContext.Provider, { value: {
             changes: changes,
             handlePushToChanges: handlePushToChanges,
@@ -519,6 +517,7 @@ var useDecodeSchema = function (schema) {
     };
 };
 
+var collectionTypes = ['object', 'array', 'collection'];
 var useControls = function (_a) {
     var schema = _a.schema, _b = _a.schemaKey, schemaKey = _b === void 0 ? '' : _b, onChange = _a.onChange, onChangeKey = _a.onChangeKey, rootNode = _a.rootNode;
     var _c = useSchemaContext(), handlePushToChanges = _c.handlePushToChanges, handleChangesIdKey = _c.handleChangesIdKey, handleGetIsInChanges = _c.handleGetIsInChanges;
@@ -526,21 +525,22 @@ var useControls = function (_a) {
     var _d = useState(rootNode || autoExpand), show = _d[0], setShow = _d[1];
     var _e = useState(false), showModal = _e[0], setShowModal = _e[1];
     var schemaType = useDecodeSchema(schema).schemaType;
-    var handleShow = function () { return setShow(function (state) { return !state; }); };
+    var handleShow = useCallback(function () { return setShow(function (state) { return !state; }); }, [setShow]);
     var getTypeOptions = findOption(getSchemaType(schema))(schemaTypes);
-    var openModal = function () { return setShowModal(true); };
-    var closeModal = function () { return setShowModal(false); };
-    var onChangeFieldName = function (event) {
+    var openModal = useCallback(function () { return setShowModal(true); }, [setShowModal]);
+    var closeModal = useCallback(function () { return setShowModal(false); }, [setShowModal]);
+    var onChangeFieldName = useCallback(function (event) {
         handlePushToChanges(schemaKey);
         handleChangesIdKey(schemaKey, event.target.value);
         onChangeKey(event.target.value);
-    };
-    var onChangeFieldType = function (option) {
-        var collectionTypes = ['object', 'array', 'collection'];
+    }, [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]);
+    var onChangeFieldType = useCallback(function (option) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
-        option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
-        option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
-    };
+        option === 'array' &&
+            onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
+        option !== 'array' &&
+            onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
+    }, [handlePushToChanges, onChange, schema, schemaKey]);
     var isParentArray = function () { return schemaKey === 'items'; };
     return {
         schemaType: schemaType,
@@ -556,34 +556,34 @@ var useControls = function (_a) {
     };
 };
 
+var getDefaultValue = function (props) {
+    return getSchemaField(props.option.value, props.schema);
+};
+var onChangeText = function (props) { return function (event) {
+    return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
+}; };
+var onChangeNumber = function (props) { return function (event) {
+    return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
+}; };
+var onChangeBoolean = function (props) { return function (checked) {
+    return props.onChange(setSchemaField(props.option.value, checked, props.schema));
+}; };
+var onChangeSelect = function (props) { return function (value) {
+    return props.onChange(setSchemaField(props.option.value, value, props.schema));
+}; };
+var typeToField = {
+    text: function (props) { return (React.createElement(Input, { defaultValue: getDefaultValue(props), onBlur: onChangeText(props) })); },
+    number: function (props) { return (React.createElement(InputNumber, { defaultValue: getDefaultValue(props), onBlur: onChangeNumber(props) })); },
+    boolean: function (props) { return (React.createElement(Switch, { defaultChecked: getDefaultValue(props), onClick: onChangeBoolean(props) })); },
+    multi: function (props) {
+        return (React.createElement(Select, { mode: "tags", allowClear: true, placeholder: "Please select options", tokenSeparators: [','], defaultValue: getDefaultValue(props), onChange: onChangeSelect(props) }));
+    },
+    select: function (props) { return (React.createElement(Select, { defaultValue: getDefaultValue(props), placeholder: "Please select option", options: props.option.optionList, onChange: onChangeSelect(props) })); },
+};
 var SchemaOptions = function (_a) {
     var showModal = _a.showModal, onClose = _a.onClose, schema = _a.schema, schemaKey = _a.schemaKey, onChange = _a.onChange;
     var type = getSchemaType(schema);
     var allOptions = useMemo(function () { return getSchemaMenuOptions(type); }, [type]);
-    var getDefaultValue = function (props) {
-        return getSchemaField(props.option.value, props.schema);
-    };
-    var onChangeText = function (props) { return function (event) {
-        return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
-    }; };
-    var onChangeNumber = function (props) { return function (event) {
-        return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
-    }; };
-    var onChangeBoolean = function (props) { return function (checked) {
-        return props.onChange(setSchemaField(props.option.value, checked, props.schema));
-    }; };
-    var onChangeSelect = function (props) { return function (value) {
-        return props.onChange(setSchemaField(props.option.value, value, props.schema));
-    }; };
-    var typeToField = {
-        text: function (props) { return (React.createElement(Input, { defaultValue: getDefaultValue(props), onBlur: onChangeText(props) })); },
-        number: function (props) { return (React.createElement(InputNumber, { defaultValue: getDefaultValue(props), onBlur: onChangeNumber(props) })); },
-        boolean: function (props) { return (React.createElement(Switch, { defaultChecked: getDefaultValue(props), onClick: onChangeBoolean(props) })); },
-        multi: function (props) {
-            return (React.createElement(Select, { mode: "tags", allowClear: true, placeholder: "Please select options", tokenSeparators: [','], defaultValue: getDefaultValue(props), onChange: onChangeSelect(props) }));
-        },
-        select: function (props) { return (React.createElement(Select, { defaultValue: getDefaultValue(props), placeholder: "Please select option", options: props.option.optionList, onChange: onChangeSelect(props) })); },
-    };
     return (React.createElement(Modal, { title: "Field Settings", visible: showModal, onOk: onClose, onCancel: onClose },
         React.createElement(Form, { name: "initialSettings", labelCol: { span: 6 }, wrapperCol: { span: 18 } }, allOptions &&
             allOptions.map(function (option, index) {
@@ -599,7 +599,7 @@ var CommonSubArray = function (_a) {
 var CommonSubObject = function (_a) {
     var schema = _a.schema, onDelete = _a.onDelete, onChangeKey = _a.onChangeKey, onChange = _a.onChange;
     var schemaProperties = useDecodeSchema(schema).schemaProperties;
-    var schemaEntries = entries$1(schemaProperties);
+    var schemaEntries = useMemo(function () { return entries$1(schemaProperties); }, [schemaProperties]);
     return (React.createElement(React.Fragment, null, schemaEntries.map(function (_a) {
         var key = _a[0], properties = _a[1];
         return (React.createElement(SchemaCreator, { key: key, schema: properties, schemaKey: key, onDelete: onDelete, onChangeKey: function (newKey) { return onChangeKey(key, newKey); }, onChange: function (newSchema) { return onChange(key, newSchema); } }));
@@ -609,7 +609,7 @@ var CommonSubObject = function (_a) {
 var CommonSubCollection = function (_a) {
     var schema = _a.schema, onDelete = _a.onDelete, onChangeKey = _a.onChangeKey, onChange = _a.onChange;
     var schemaProperties = useDecodeSchema(schema).schemaProperties;
-    var schemaEntries = entries$1(schemaProperties);
+    var schemaEntries = useMemo(function () { return entries$1(schemaProperties); }, [schemaProperties]);
     return (React.createElement(React.Fragment, null, schemaEntries.map(function (_a) {
         var key = _a[0], properties = _a[1];
         return (React.createElement(SchemaCreator, { key: key, schema: properties, schemaKey: key, onDelete: onDelete, onChangeKey: function (newKey) { return onChangeKey(key, newKey); }, onChange: function (newSchema) { return onChange(key, newSchema); } }));
@@ -641,6 +641,7 @@ var Icon = function (_a) {
 };
 
 var Title = Typography.Title, Text = Typography.Text;
+var doNothing = function () { };
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
     var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
@@ -648,7 +649,6 @@ var CommonControls = function (_a) {
     var isColl = controlType === 'collection';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
-    var doNothing = function () { };
     var _c = useState(false), hover = _c[0], setHover = _c[1];
     return (React.createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
@@ -666,34 +666,40 @@ var CommonControls = function (_a) {
                                 borderRadius: '0px',
                                 borderLeft: '0px',
                             }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false },
-                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 3).map(function (_a, i) {
+                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes
+                                .slice(0, 3)
+                                .map(function (_a, i) {
                                 var value = _a.value, label = _a.label, description = _a.description;
                                 return (React.createElement(Select.Option, { value: value, key: i },
                                     React.createElement("div", null,
-                                        React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
+                                        React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
                                             React.createElement(Icon, { types: value }),
                                             " ",
                                             label),
-                                        React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
+                                        React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
                             })),
-                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(3).map(function (_a, i) {
+                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes
+                                .slice(3)
+                                .map(function (_a, i) {
                                 var value = _a.value, label = _a.label, description = _a.description;
                                 return (React.createElement(Select.Option, { value: value, key: i + 2 },
                                     React.createElement("div", null,
-                                        React.createElement(Title, { level: 5, style: { fontSize: "15px" } },
+                                        React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
                                             React.createElement(Icon, { types: value }),
                                             " ",
                                             label),
-                                        React.createElement(Text, { style: { paddingLeft: "10px" } }, description))));
+                                        React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
                             })))),
-                    React.createElement(Tooltip, { title: 'Delete' },
+                    React.createElement(Tooltip, { title: "Delete" },
                         React.createElement(Col, { xs: 2, xl: 1 },
-                            React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: isParentArray() || rootNode ? doNothing : onDelete, icon: React.createElement(DeleteOutlined, { style: isParentArray() || rootNode ? {
-                                        color: 'rgba(0, 0, 0, 0.25)',
-                                        cursor: 'not-allowed',
-                                    } : {
-                                        color: '#e53e3e'
-                                    } }) }))))),
+                            React.createElement(Button, { type: "text", style: { width: '100%' }, onClick: isParentArray() || rootNode ? doNothing : onDelete, icon: React.createElement(DeleteOutlined, { style: isParentArray() || rootNode
+                                        ? {
+                                            color: 'rgba(0, 0, 0, 0.25)',
+                                            cursor: 'not-allowed',
+                                        }
+                                        : {
+                                            color: '#e53e3e',
+                                        } }) }))))),
             React.createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React.createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React.createElement(React.Fragment, null,
@@ -708,7 +714,13 @@ var CommonControls = function (_a) {
                             React.createElement(Row, null,
                                 React.createElement(Col, { span: 1 }),
                                 React.createElement(Col, { span: 23 },
-                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React.createElement(PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
+                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover
+                                            ? {
+                                                borderColor: '#009BFF',
+                                                color: '#009BFF',
+                                                outline: '1px solid #29b0ff',
+                                            }
+                                            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React.createElement(PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
             isColl && show && (React.createElement(React.Fragment, null,
                 React.createElement(CommonSubCollection, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) {
                         return onChange(setSchemaProperty(key)(newSchema, schema));
@@ -721,7 +733,13 @@ var CommonControls = function (_a) {
                             React.createElement(Row, null,
                                 React.createElement(Col, { span: 1 }),
                                 React.createElement(Col, { span: 23 },
-                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React.createElement(PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
+                                    React.createElement(Button, { type: "dashed", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ width: '100%', backgroundColor: 'transparent', borderColor: 'black', color: 'black', borderRadius: '3px' }, (hover
+                                            ? {
+                                                borderColor: '#009BFF',
+                                                color: '#009BFF',
+                                                outline: '1px solid #29b0ff',
+                                            }
+                                            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); }, icon: React.createElement(PlusSquareOutlined, { style: { color: 'inherit' } }) })))))))),
             isArray && (React.createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
                     return onChange(setSchemaItems(oldSchema, schema));
                 } }))))));
@@ -762,9 +780,11 @@ var typeToControl = {
 var SchemaCreator = function (_a) {
     var schema = _a.schema, _b = _a.schemaKey, schemaKey = _b === void 0 ? ROOT_KEY : _b, disabledInput = _a.disabledInput, _c = _a.onChange, onChange = _c === void 0 ? noop : _c, _d = _a.onDelete, onDelete = _d === void 0 ? noop : _d, _e = _a.onChangeKey, onChangeKey = _e === void 0 ? noop : _e;
     var schemaType = useDecodeSchema(schema).schemaType;
-    var onAdd = isSchemaObject(schema)
-        ? function () { return onChange(addSchemaProperty(schema)); }
-        : undefined;
+    var onAdd = useMemo(function () {
+        return isSchemaObject(schema)
+            ? function () { return onChange(addSchemaProperty(schema)); }
+            : undefined;
+    }, [schema, onChange]);
     return typeToControl[schemaType || 'default']({
         schema: schema,
         schemaKey: schemaKey,
