@@ -25,6 +25,7 @@ import CommonSubCollection from './common-sub-collection'
 import Icon from '../type-icons'
 
 const { Title, Text } = Typography
+const doNothing = () => {}
 
 const CommonControls: React.FC<CommonControlsProps> = ({
   schema,
@@ -54,8 +55,6 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const isColl = controlType === 'collection'
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
-  
-  const doNothing = () => {}
 
   const [hover, setHover] = useState(false)
 
@@ -111,28 +110,40 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   filterOption={false}
                 >
                   <Select.OptGroup key="complex" label="Complex">
-                    {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
-                      return (
-                        <Select.Option value={value} key={i}>
-                          <div>
-                            <Title level={5} style={{ fontSize: "15px" }}><Icon types={value} /> {label}</Title>
-                            <Text style={{ paddingLeft: "10px" }}>{description}</Text>
-                          </div>
-                        </Select.Option>
-                      )
-                    })}
+                    {schemaTypes
+                      .slice(0, 3)
+                      .map(({ value, label, description }, i) => {
+                        return (
+                          <Select.Option value={value} key={i}>
+                            <div>
+                              <Title level={5} style={{ fontSize: '15px' }}>
+                                <Icon types={value} /> {label}
+                              </Title>
+                              <Text style={{ paddingLeft: '10px' }}>
+                                {description}
+                              </Text>
+                            </div>
+                          </Select.Option>
+                        )
+                      })}
                   </Select.OptGroup>
                   <Select.OptGroup key="primitive" label="Primitive">
-                    {schemaTypes.slice(3).map(({ value, label, description }, i) => {
-                      return (
-                        <Select.Option value={value} key={i + 2}>
-                          <div>
-                            <Title level={5} style={{ fontSize: "15px" }}><Icon types={value} /> {label}</Title>
-                            <Text style={{ paddingLeft: "10px" }}>{description}</Text>
-                          </div>
-                        </Select.Option>
-                      )
-                    })}
+                    {schemaTypes
+                      .slice(3)
+                      .map(({ value, label, description }, i) => {
+                        return (
+                          <Select.Option value={value} key={i + 2}>
+                            <div>
+                              <Title level={5} style={{ fontSize: '15px' }}>
+                                <Icon types={value} /> {label}
+                              </Title>
+                              <Text style={{ paddingLeft: '10px' }}>
+                                {description}
+                              </Text>
+                            </div>
+                          </Select.Option>
+                        )
+                      })}
                   </Select.OptGroup>
                 </Select>
               </Col>
@@ -154,20 +165,24 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   />
                 </Col>
               </Tooltip>*/}
-              <Tooltip title='Delete'>
+              <Tooltip title="Delete">
                 <Col xs={2} xl={1}>
                   <Button
                     type="text"
                     style={{ width: '100%' }}
                     onClick={isParentArray() || rootNode ? doNothing : onDelete}
                     icon={
-                      <DeleteOutlined 
-                        style={isParentArray() || rootNode ? {
-                          color: 'rgba(0, 0, 0, 0.25)',
-                          cursor: 'not-allowed',
-                        } : {
-                          color: '#e53e3e'
-                        }}
+                      <DeleteOutlined
+                        style={
+                          isParentArray() || rootNode
+                            ? {
+                                color: 'rgba(0, 0, 0, 0.25)',
+                                cursor: 'not-allowed',
+                              }
+                            : {
+                                color: '#e53e3e',
+                              }
+                        }
                       />
                     }
                   />
@@ -214,11 +229,19 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                             borderColor: 'black',
                             color: 'black',
                             borderRadius: '3px',
-                            ...(hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})
+                            ...(hover
+                              ? {
+                                  borderColor: '#009BFF',
+                                  color: '#009BFF',
+                                  outline: '1px solid #29b0ff',
+                                }
+                              : {}),
                           }}
-                          onMouseEnter={() => setHover(true)} 
+                          onMouseEnter={() => setHover(true)}
                           onMouseLeave={() => setHover(false)}
-                          icon={<PlusSquareOutlined style={{ color: 'inherit' }} />}
+                          icon={
+                            <PlusSquareOutlined style={{ color: 'inherit' }} />
+                          }
                         />
                       </Col>
                     </Row>
@@ -255,11 +278,19 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                             borderColor: 'black',
                             color: 'black',
                             borderRadius: '3px',
-                            ...(hover ? { borderColor: '#009BFF', color: '#009BFF', outline: '1px solid #29b0ff' } : {})
+                            ...(hover
+                              ? {
+                                  borderColor: '#009BFF',
+                                  color: '#009BFF',
+                                  outline: '1px solid #29b0ff',
+                                }
+                              : {}),
                           }}
-                          onMouseEnter={() => setHover(true)} 
+                          onMouseEnter={() => setHover(true)}
                           onMouseLeave={() => setHover(false)}
-                          icon={<PlusSquareOutlined style={{ color: 'inherit' }} />}
+                          icon={
+                            <PlusSquareOutlined style={{ color: 'inherit' }} />
+                          }
                         />
                       </Col>
                     </Row>

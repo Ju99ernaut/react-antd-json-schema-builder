@@ -1,5 +1,5 @@
 import noop from 'lodash/noop'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ROOT_KEY } from '../../../helpers/constants'
 import { addSchemaProperty, isSchemaObject } from '../../../helpers/schema'
 import useDecodeSchema from '../../../hooks/useDecodeSchema'
@@ -34,9 +34,13 @@ const SchemaCreator: React.FC<SchemaCreatorProps> = ({
 }) => {
   const { schemaType } = useDecodeSchema(schema)
 
-  const onAdd = isSchemaObject(schema)
-    ? () => onChange(addSchemaProperty(schema))
-    : undefined
+  const onAdd = useMemo(
+    () =>
+      isSchemaObject(schema)
+        ? () => onChange(addSchemaProperty(schema))
+        : undefined,
+    [schema, onChange]
+  )
 
   return typeToControl[schemaType || 'default']({
     schema,

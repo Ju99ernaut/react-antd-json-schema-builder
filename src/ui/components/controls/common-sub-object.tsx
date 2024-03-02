@@ -1,6 +1,6 @@
 import useDecodeSchema from 'hooks/useDecodeSchema'
 import entries from 'lodash/entries'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { CommonSubObjectProps, Schema } from '../../../types'
 import SchemaCreator from '../schema-creator'
 
@@ -11,7 +11,10 @@ const CommonSubObject = ({
   onChange,
 }: CommonSubObjectProps) => {
   const { schemaProperties } = useDecodeSchema(schema)
-  const schemaEntries = entries(schemaProperties)
+  const schemaEntries = useMemo(
+    () => entries(schemaProperties),
+    [schemaProperties]
+  )
 
   return (
     <>

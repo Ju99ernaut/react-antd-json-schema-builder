@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useSchemaContext } from '../context/schema-context'
 import { schemaTypes } from '../helpers/constants'
 import {
@@ -18,6 +18,8 @@ interface UseControlProps {
   rootNode?: boolean
 }
 
+const collectionTypes = ['object', 'array', 'collection']
+
 const useControls = ({
   schema,
   schemaKey = '',
@@ -32,28 +34,35 @@ const useControls = ({
   const [showModal, setShowModal] = useState(false)
   const { schemaType } = useDecodeSchema(schema)
 
-  const handleShow = () => setShow(state => !state)
+  const handleShow = useCallback(() => setShow(state => !state), [setShow])
 
   const getTypeOptions = findOption(getSchemaType(schema))(
     schemaTypes
   ) as unknown as string
 
-  const openModal = () => setShowModal(true)
+  const openModal = useCallback(() => setShowModal(true), [setShowModal])
 
-  const closeModal = () => setShowModal(false)
+  const closeModal = useCallback(() => setShowModal(false), [setShowModal])
 
-  const onChangeFieldName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handlePushToChanges(schemaKey)
-    handleChangesIdKey(schemaKey, event.target.value)
-    onChangeKey(event.target.value)
-  }
+  const onChangeFieldName = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      handlePushToChanges(schemaKey)
+      handleChangesIdKey(schemaKey, event.target.value)
+      onChangeKey(event.target.value)
+    },
+    [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]
+  )
 
-  const onChangeFieldType = (option: string) => {
-    const collectionTypes = ['object', 'array', 'collection']
-    collectionTypes.includes(option) && handlePushToChanges(schemaKey)
-    option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
-    option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
-  }
+  const onChangeFieldType = useCallback(
+    (option: string) => {
+      collectionTypes.includes(option) && handlePushToChanges(schemaKey)
+      option === 'array' &&
+        onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
+      option !== 'array' &&
+        onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
+    },
+    [handlePushToChanges, onChange, schema, schemaKey]
+  )
 
   const isParentArray = () => schemaKey === 'items'
 

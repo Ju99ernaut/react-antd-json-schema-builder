@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useContext, useState } from 'react'
+import React, {
+  PropsWithChildren,
+  useContext,
+  useState,
+  useCallback,
+} from 'react'
 
 export const SchemaContext = React.createContext<{
   changes: string[]
@@ -15,24 +20,32 @@ export const SchemaContext = React.createContext<{
 const SchemaProvider = ({ children }: PropsWithChildren) => {
   const [changes, setChanges] = useState<string[]>([])
 
-  const handlePushToChanges = (id: string) =>
-    setChanges(value => [...value, id])
+  const handlePushToChanges = useCallback(
+    (id: string) => setChanges(value => [...value, id]),
+    [setChanges]
+  )
 
-  const handleChangesIdKey = (oldkey: string, newKey: string) => {
-    const isExist = changes.includes(oldkey)
-    if (!isExist) return
-    setChanges(value => {
-      const removeExisting = value.filter(item => item !== oldkey)
-      return [...removeExisting, newKey]
-    })
-  }
+  const handleChangesIdKey = useCallback(
+    (oldkey: string, newKey: string) => {
+      const isExist = changes.includes(oldkey)
+      if (!isExist) return
+      setChanges(value => {
+        const removeExisting = value.filter(item => item !== oldkey)
+        return [...removeExisting, newKey]
+      })
+    },
+    [changes, setChanges]
+  )
 
-  const handleGetIsInChanges = (id: string) => {
-    const isInChanges = changes.includes(id)
-    if (!isInChanges) return false
-    setChanges(value => value.filter(item => item !== id))
-    return true
-  }
+  const handleGetIsInChanges = useCallback(
+    (id: string) => {
+      const isInChanges = changes.includes(id)
+      if (!isInChanges) return false
+      setChanges(value => value.filter(item => item !== id))
+      return true
+    },
+    [changes, setChanges]
+  )
 
   return (
     <SchemaContext.Provider
