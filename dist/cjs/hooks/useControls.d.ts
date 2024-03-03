@@ -7,7 +7,7 @@ interface UseControlProps {
     onChangeKey?: any;
     rootNode?: boolean;
 }
-declare const useControls: ({ schema, schemaKey, onChange, onChangeKey, rootNode, }: UseControlProps) => {
+declare const useControls: ({ schema, schemaKey, onChange, onChangeKey, rootNode }: UseControlProps) => {
     schemaType: import("../types").SchemaType;
     getTypeOptions: string;
     show: boolean;

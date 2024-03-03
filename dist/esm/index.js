@@ -250,7 +250,7 @@ var SchemaProvider = function (_a) {
     var handlePushToChanges = useCallback(function (id) {
         console.log('handle push to change');
         setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); });
-    }, [setChanges]);
+    }, []);
     var handleChangesIdKey = useCallback(function (oldkey, newKey) {
         console.log('handle changesIdKey');
         var isExist = changes.includes(oldkey);
@@ -260,7 +260,7 @@ var SchemaProvider = function (_a) {
             var removeExisting = value.filter(function (item) { return item !== oldkey; });
             return __spreadArray(__spreadArray([], removeExisting, true), [newKey], false);
         });
-    }, [changes, setChanges]);
+    }, [changes]);
     var handleGetIsInChanges = useCallback(function (id) {
         console.log('handle getIsInChanges');
         var isInChanges = changes.includes(id);
@@ -268,7 +268,7 @@ var SchemaProvider = function (_a) {
             return false;
         setChanges(function (value) { return value.filter(function (item) { return item !== id; }); });
         return true;
-    }, [changes, setChanges]);
+    }, [changes]);
     return (React.createElement(SchemaContext.Provider, { value: {
             changes: changes,
             handlePushToChanges: handlePushToChanges,
@@ -531,10 +531,10 @@ var useControls = function (_a) {
     var _d = useState(rootNode || autoExpand), show = _d[0], setShow = _d[1];
     var _e = useState(false), showModal = _e[0], setShowModal = _e[1];
     var schemaType = useDecodeSchema(schema).schemaType;
-    var handleShow = useCallback(function () { return setShow(function (state) { return !state; }); }, [setShow]);
+    var handleShow = useCallback(function () { return setShow(function (state) { return !state; }); }, []);
     var getTypeOptions = findOption(getSchemaType(schema))(schemaTypes);
-    var openModal = useCallback(function () { return setShowModal(true); }, [setShowModal]);
-    var closeModal = useCallback(function () { return setShowModal(false); }, [setShowModal]);
+    var openModal = useCallback(function () { return setShowModal(true); }, []);
+    var closeModal = useCallback(function () { return setShowModal(false); }, []);
     var onChangeFieldName = useCallback(function (event) {
         handlePushToChanges(schemaKey);
         handleChangesIdKey(schemaKey, event.target.value);
@@ -542,10 +542,8 @@ var useControls = function (_a) {
     }, [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]);
     var onChangeFieldType = useCallback(function (option) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
-        option === 'array' &&
-            onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
-        option !== 'array' &&
-            onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
+        option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema));
+        option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
     }, [handlePushToChanges, onChange, schema, schemaKey]);
     var isParentArray = function () { return schemaKey === 'items'; };
     return {
