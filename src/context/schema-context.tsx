@@ -14,15 +14,12 @@ export const SchemaContext = React.createContext<{
 
 const SchemaProvider = ({ children }: PropsWithChildren) => {
   const [changes, setChanges] = useState<string[]>([])
-  console.log('Schema provider')
   const handlePushToChanges = useCallback((id: string) => {
-    console.log('handle push to change')
     setChanges(value => [...value, id])
   }, [])
 
   const handleChangesIdKey = useCallback(
     (oldkey: string, newKey: string) => {
-      console.log('handle changesIdKey')
       const isExist = changes.includes(oldkey)
       if (!isExist) return
       setChanges(value => {
@@ -35,7 +32,6 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
 
   const handleGetIsInChanges = useCallback(
     (id: string) => {
-      console.log('handle getIsInChanges')
       const isInChanges = changes.includes(id)
       if (!isInChanges) return false
       setChanges(value => value.filter(item => item !== id))

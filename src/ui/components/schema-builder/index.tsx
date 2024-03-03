@@ -34,7 +34,7 @@ const SchemaBuilder = ({
   return (
     <SchemaProvider>
       <style>{css}</style>
-      <Row align="middle" style={{ padding: '16px' }}>
+      <Row align="middle" style={{ padding: '16px', backgroundColor: '#eaf0fd' }}>
         <Col xs={10} xl={11}>
           <Row justify="space-around" align="middle">
             <Col span={2}></Col>

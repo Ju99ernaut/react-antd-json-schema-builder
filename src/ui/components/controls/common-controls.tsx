@@ -1,15 +1,15 @@
-import {
-  CaretDownFilled,
-  CaretRightFilled,
-  DeleteOutlined,
-  PlusSquareOutlined,
-  // SettingOutlined,
-} from '@ant-design/icons'
+import React from 'react'
+import { CaretDownFilled, CaretRightFilled, DeleteOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import React, { useState } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
-import { deleteSchemaProperty, getSchemaItems, renameSchemaProperty, setSchemaItems, setSchemaProperty } from '../../../helpers/schema'
+import {
+  deleteSchemaProperty,
+  getSchemaItems,
+  renameSchemaProperty,
+  setSchemaItems,
+  setSchemaProperty,
+} from '../../../helpers/schema'
 import useControls from '../../../hooks/useControls'
 import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
@@ -22,8 +22,29 @@ import NewPropertyButton from './new-property-button'
 const { Title, Text } = Typography
 const doNothing = () => {}
 
-const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, rootNode, controlType, disabledInput, onAdd, onDelete, onChange, onChangeKey }) => {
-  const { getTypeOptions, show, showModal, schemaType, openModal, closeModal, handleShow, onChangeFieldName, onChangeFieldType, isParentArray } = useControls({
+const CommonControls: React.FC<CommonControlsProps> = ({
+  schema,
+  schemaKey,
+  rootNode,
+  controlType,
+  disabledInput,
+  onAdd,
+  onDelete,
+  onChange,
+  onChangeKey,
+}) => {
+  const {
+    getTypeOptions,
+    show,
+    showModal,
+    schemaType,
+    openModal,
+    closeModal,
+    handleShow,
+    onChangeFieldName,
+    onChangeFieldType,
+    isParentArray,
+  } = useControls({
     schema,
     schemaKey,
     rootNode,
@@ -36,7 +57,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, root
   const isObject = controlType === 'object'
   const isArray = controlType === 'array'
 
-  const [hover, setHover] = useState(false)
+  const nameColProps = { xs: 16, xl: 16 }
+  const typeColProps = { xs: 6, xl: 6 }
+  const actionColProps = { xs: 2, xl: 2 }
 
   return (
     <div
@@ -50,72 +73,81 @@ const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, root
     >
       {!rootNode && (
         <>
-          <Input.Group>
-            <Row align="middle">
-              <Col xs={10} xl={11}>
-                <Row justify="space-around" align="middle">
-                  <Col span={2}>
-                    {isCollection && (
-                      <Button type="text" onClick={handleShow} style={{ width: '100%' }} icon={show ? <CaretDownFilled /> : <CaretRightFilled />} />
-                    )}
-                  </Col>
-                  <Col span={22}>
-                    {isFunction(onChangeKey) && (
-                      <Input
-                        style={{ borderRadius: '0px', borderRight: '0px' }}
-                        defaultValue={schemaKey}
-                        disabled={rootNode || disabledInput}
-                        onBlur={onChangeFieldName}
-                      />
-                    )}
-                  </Col>
-                </Row>
-              </Col>
-              <Col xs={12} xl={12}>
-                <Select
-                  style={{
-                    width: '100%',
-                    borderRadius: '0px',
-                    borderLeft: '0px',
-                  }}
-                  className="rsc-controls-control-select-box"
-                  value={getTypeOptions}
-                  disabled={rootNode}
-                  onChange={onChangeFieldType}
-                  filterOption={false}
-                  listHeight={500}
-                >
-                  <Select.OptGroup key="primitive" label="Primitive">
-                    {schemaTypes.slice(3).map(({ value, label, description }, i) => {
-                      return (
-                        <Select.Option value={value} key={i + 2}>
-                          <div>
-                            <Title level={5} style={{ fontSize: '15px' }}>
-                              <Icon types={value} /> {label}
-                            </Title>
-                            <Text style={{ paddingLeft: '10px' }}>{description}</Text>
-                          </div>
-                        </Select.Option>
-                      )
-                    })}
-                  </Select.OptGroup>
-                  <Select.OptGroup key="complex" label="Complex">
-                    {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
-                      return (
-                        <Select.Option value={value} key={i}>
-                          <div>
-                            <Title level={5} style={{ fontSize: '15px' }}>
-                              <Icon types={value} /> {label}
-                            </Title>
-                            <Text style={{ paddingLeft: '10px' }}>{description}</Text>
-                          </div>
-                        </Select.Option>
-                      )
-                    })}
-                  </Select.OptGroup>
-                </Select>
-              </Col>
-              {/*<Tooltip title='Field Settings'>
+          <Row align="middle" gutter={5}>
+            {/* NAME COLUMN */}
+            <Col {...nameColProps}>
+              <div style={{ display: 'flex' }}>
+                {/* EXPAND/COLLAPSE BUTTON */}
+                <div style={{ flex: '0 0 30px' }}>
+                  {isCollection && (
+                    <Button
+                      type="text"
+                      onClick={handleShow}
+                      style={{ width: '100%', backgroundColor: '#fff' }}
+                      icon={
+                        show ? (
+                          <CaretDownFilled style={{ color: '#777' }} />
+                        ) : (
+                          <CaretRightFilled style={{ color: '#777' }} />
+                        )
+                      }
+                    />
+                  )}
+                </div>
+
+                {/* FIELD NAME */}
+                <div style={{ flex: '1 1 auto' }}>
+                  {isFunction(onChangeKey) && (
+                    <Input defaultValue={schemaKey} disabled={rootNode || disabledInput} onBlur={onChangeFieldName} />
+                  )}
+                </div>
+              </div>
+            </Col>
+            {/* TYPE COLUMN */}
+            <Col {...typeColProps}>
+              <Select
+                style={{
+                  width: '100%',
+                }}
+                className="rsc-controls-control-select-box"
+                value={getTypeOptions}
+                disabled={rootNode}
+                onChange={onChangeFieldType}
+                filterOption={false}
+                listHeight={500}
+                dropdownMatchSelectWidth={false}
+              >
+                <Select.OptGroup key="primitive" label="Primitive">
+                  {schemaTypes.slice(3).map(({ value, label, description }, i) => {
+                    return (
+                      <Select.Option value={value} key={i + 2}>
+                        <div>
+                          <Title level={5} style={{ fontSize: '15px' }}>
+                            <Icon types={value} /> {label}
+                          </Title>
+                          <Text style={{ paddingLeft: '10px' }}>{description}</Text>
+                        </div>
+                      </Select.Option>
+                    )
+                  })}
+                </Select.OptGroup>
+                <Select.OptGroup key="complex" label="Complex">
+                  {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
+                    return (
+                      <Select.Option value={value} key={i}>
+                        <div>
+                          <Title level={5} style={{ fontSize: '15px' }}>
+                            <Icon types={value} /> {label}
+                          </Title>
+                          <Text style={{ paddingLeft: '10px' }}>{description}</Text>
+                        </div>
+                      </Select.Option>
+                    )
+                  })}
+                </Select.OptGroup>
+              </Select>
+            </Col>
+            {/*<Tooltip title='Field Settings'>
                 <Col xs={2} xl={1}>
                   <Button
                     type="text"
@@ -133,22 +165,28 @@ const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, root
                   />
                 </Col>
               </Tooltip>*/}
-              <Col xs={2} xl={1}>
-                {!isParentArray() && !rootNode && (
-                  <Tooltip title="Delete">
-                    <Button
-                      type="ghost"
-                      onClick={isParentArray() || rootNode ? doNothing : onDelete}
-                      disabled={isParentArray() || rootNode}
-                      className="property--delete-btn"
-                      icon={<DeleteOutlined />}
-                    />
-                  </Tooltip>
-                )}
-              </Col>
-            </Row>
-          </Input.Group>
-          <SchemaOptions showModal={showModal} onClose={closeModal} schema={schema} schemaKey={schemaKey} onChange={onChange} />
+            <Col {...actionColProps}>
+              {!isParentArray() && !rootNode && (
+                <Tooltip title="Delete">
+                  <Button
+                    type="ghost"
+                    onClick={isParentArray() || rootNode ? doNothing : onDelete}
+                    disabled={isParentArray() || rootNode}
+                    className="property--delete-btn"
+                    icon={<DeleteOutlined />}
+                  />
+                </Tooltip>
+              )}
+            </Col>
+          </Row>
+
+          <SchemaOptions
+            showModal={showModal}
+            onClose={closeModal}
+            schema={schema}
+            schemaKey={schemaKey}
+            onChange={onChange}
+          />
         </>
       )}
       {isCollection && show && (
@@ -163,18 +201,14 @@ const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, root
                   onChange(renameSchemaProperty(oldKey, newKey, schema))
                 }}
               />
-              <div className="rsc-controls-add-button">
-                <Row>
-                  <Col xs={22} xl={23}>
-                    <Row>
-                      <Col span={1}></Col>
-                      <Col span={23}>
-                        <NewPropertyButton onAdd={onAdd} type={rootNode ? 'primary' : undefined} label={rootNode ? '+ Add Field' : '+ Add Object Field'} />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
+              {/* ADD NEW BUTTON */}
+              <AddButtonRow>
+                <NewPropertyButton
+                  onAdd={onAdd}
+                  type={rootNode ? 'primary' : undefined}
+                  label={rootNode ? '+ Add Field' : '+ Add Object Field'}
+                />
+              </AddButtonRow>
             </>
           )}
           {isColl && show && (
@@ -187,23 +221,30 @@ const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, root
                   onChange(renameSchemaProperty(oldKey, newKey, schema))
                 }}
               />
-              <div className="rsc-controls-add-button">
-                <Row>
-                  <Col xs={22} xl={23}>
-                    <Row>
-                      <Col span={1}></Col>
-                      <Col span={23}>
-                        <NewPropertyButton onAdd={onAdd} label="+ Add Collection Field" />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
+              <AddButtonRow>
+                <NewPropertyButton onAdd={onAdd} label="+ Add Collection Field" />
+              </AddButtonRow>
             </>
           )}
-          {isArray && <CommonSubArray schema={getSchemaItems(schema)} onChange={oldSchema => onChange(setSchemaItems(oldSchema, schema))} />}
+          {isArray && (
+            <CommonSubArray
+              schema={getSchemaItems(schema)}
+              onChange={oldSchema => onChange(setSchemaItems(oldSchema, schema))}
+            />
+          )}
         </div>
       )}
+    </div>
+  )
+}
+
+function AddButtonRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rsc-controls-add-button">
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: '0 0 30px' }}></div>
+        <div style={{ flex: '1 1 auto' }}>{children}</div>
+      </div>
     </div>
   )
 }

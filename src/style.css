@@ -1,13 +1,6 @@
-.rsc-controls-child .ant-input-group .ant-select .ant-select-selector,
-.rsc-controls-child .ant-input-group input.ant-input {
+.rsc-controls-child .ant-select .ant-select-selector,
+.rsc-controls-child input.ant-input {
   border-radius: 6px !important;
-}
-
-.rsc-controls-child .ant-input-group > .ant-row > .ant-col {
-  padding: 0 5px;
-}
-.rsc-controls-child .ant-input-group input.ant-input {
-  border-right: solid 1px #ddd !important;
 }
 
 /* BUTTONS */
@@ -39,11 +32,11 @@
 .rsc-controls-root .rsc-controls-control-box .rsc-controls-child:not([data-schema-type='array']) > .rsc-controls-control-box:before {
   content: '';
   display: block;
-  border-left: solid 1px #EEE;
+  border-left: solid 1px #ddd;
   position: absolute;
   top: -25px;
   bottom: 17px;
-  left: 21px;
+  left: 14px;
 }
 
 .ant-btn {
@@ -51,37 +44,39 @@
 }
 
 /* TREE BRANCHES */
-.rsc-controls-root .rsc-controls-child .rsc-controls-child .ant-input-group:before,
-.rsc-controls-root [data-schema-type='object'] .rsc-controls-add-button > .ant-row:before,
-.rsc-controls-root [data-schema-type='collection'] .rsc-controls-add-button > .ant-row:before {
+.rsc-controls-root
+  .rsc-controls-child
+  .rsc-controls-child:not([data-schema-type='object']):not([data-schema-type='collection']):not([data-schema-type='array']):before,
+.rsc-controls-root [data-schema-type='object'] .rsc-controls-add-button > div:before,
+.rsc-controls-root [data-schema-type='collection'] .rsc-controls-add-button > div:before {
   content: '';
   display: inline;
   position: absolute;
   width: 20px;
-  left: 5px;
+  left: -2px;
   top: calc(-50% - 7px);
   bottom: 50%;
-  border-bottom: solid 0.5px #EEE;
+  border-bottom: solid 0.5px #ddd;
   z-index: 0;
 }
 
 /* TREE BRANCHES - Array fix */
-.rsc-controls-root .rsc-controls-child[data-schema-type='array'] .rsc-controls-child .ant-input-group:before {
-  border-left: solid 0.5px #EEE;
+.rsc-controls-root .rsc-controls-child[data-schema-type='array'] .rsc-controls-child:before {
+  border-left: solid 0.5px #ddd;
 }
 
 /* TREE BRANCHES - Target collections, objects & arrays */
-.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='object'] > .ant-input-group:before,
-.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='collection'] > .ant-input-group:before,
-.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='array'] > .ant-input-group:before {
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='object'] > div:before,
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='collection'] > div:before,
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='array'] > div:before {
   width: 10px;
 }
 
 /* TYPES - SELECTS */
 [data-schema-type='object'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: #fff4eb;
-  color: #e09053;
-  border-color: #e09053;
+  background-color: rgb(253, 244, 250);
+  color: rgb(221, 98, 186);
+  border-color: rgb(221, 98, 186);
 }
 
 [data-schema-type='collection'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -92,24 +87,24 @@
 
 [data-schema-type='number'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   color: #33afff;
-  background-color: #eaf0fd;
+  background-color: #f8faff;
   border-color: #33afff;
 }
 
 [data-schema-type='date'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: rgb(242, 254, 242);
+  background-color: #f9fff9;
   color: rgb(88, 192, 88);
   border-color: rgb(88, 192, 88);
 }
 
 [data-schema-type='boolean'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: rgb(253, 244, 250);
-  color: rgb(221, 98, 186);
-  border-color: rgb(221, 98, 186);
+  background-color: #fefaf7;
+  color: #e08953;
+  border-color: #e08953;
 }
 
 [data-schema-type='string'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: #fffcf2;
-  color: #e6b402;
-  border-color: #ebbd10;
+  background-color: #fffdf8;
+  color: #efbb00;
+  border-color: #ffc800;
 }
