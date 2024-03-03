@@ -18,6 +18,11 @@
   color: rgb(255, 91, 91) !important;
 }
 
+.rsc-controls-root .rsc-controls-child .rsc-controls-add-button button {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 /* TYPES */
 [data-schema-type],
 .rsc-controls-control-box,
