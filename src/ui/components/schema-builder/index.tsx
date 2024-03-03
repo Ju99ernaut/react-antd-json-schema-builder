@@ -4,12 +4,7 @@ import { JSONSchemaEditor } from '../../../types'
 import SchemaCreator from '../schema-creator'
 import { Row, Col } from 'antd'
 
-const SchemaBuilder = ({
-  data,
-  onChange,
-  dispatch,
-  updateSchema,
-}: JSONSchemaEditor) => {
+const SchemaBuilder = ({ data, onChange, dispatch, updateSchema }: JSONSchemaEditor) => {
   const css = `
   .rsc-controls-root {}
 
@@ -34,18 +29,9 @@ const SchemaBuilder = ({
   return (
     <SchemaProvider>
       <style>{css}</style>
-      <Row align="middle" style={{ padding: '16px', backgroundColor: '#eaf0fd' }}>
-        <Col xs={10} xl={11}>
-          <Row justify="space-around" align="middle">
-            <Col span={2}></Col>
-            <Col span={22}>Name</Col>
-          </Row>
-        </Col>
-        <Col xs={10} xl={11}>
-          Type
-        </Col>
-        <Col xs={2} xl={1}></Col>
-        <Col xs={2} xl={1}></Col>
+      <Row align="middle" style={{ padding: '16px', borderBottom: 'solid 1px #D3DDF2' }}>
+        <Col xs={{ span: 15, offset: 1 }}>Name</Col>
+        <Col xs={8}>Type</Col>
       </Row>
       <SchemaCreator
         schema={(data as any)?.present?.schema || data}
