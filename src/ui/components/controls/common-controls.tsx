@@ -9,13 +9,7 @@ import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
 import React, { useState } from 'react'
 import { schemaTypes } from '../../../helpers/constants'
-import {
-  deleteSchemaProperty,
-  getSchemaItems,
-  renameSchemaProperty,
-  setSchemaItems,
-  setSchemaProperty,
-} from '../../../helpers/schema'
+import { deleteSchemaProperty, getSchemaItems, renameSchemaProperty, setSchemaItems, setSchemaProperty } from '../../../helpers/schema'
 import useControls from '../../../hooks/useControls'
 import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
@@ -28,29 +22,14 @@ import NewPropertyButton from './new-property-button'
 const { Title, Text } = Typography
 const doNothing = () => {}
 
-const CommonControls: React.FC<CommonControlsProps> = ({
-  schema,
-  schemaKey,
-  rootNode,
-  controlType,
-  disabledInput,
-  onAdd,
-  onDelete,
-  onChange,
-  onChangeKey,
-}) => {
-  const {
-    getTypeOptions,
-    show,
-    showModal,
-    schemaType,
-    openModal,
-    closeModal,
-    handleShow,
-    onChangeFieldName,
-    onChangeFieldType,
-    isParentArray,
-  } = useControls({ schema, schemaKey, rootNode, onChange, onChangeKey })
+const CommonControls: React.FC<CommonControlsProps> = ({ schema, schemaKey, rootNode, controlType, disabledInput, onAdd, onDelete, onChange, onChangeKey }) => {
+  const { getTypeOptions, show, showModal, schemaType, openModal, closeModal, handleShow, onChangeFieldName, onChangeFieldType, isParentArray } = useControls({
+    schema,
+    schemaKey,
+    rootNode,
+    onChange,
+    onChangeKey,
+  })
 
   const isCollection = controlType !== 'primitive'
   const isColl = controlType === 'collection'
@@ -77,12 +56,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 <Row justify="space-around" align="middle">
                   <Col span={2}>
                     {isCollection && (
-                      <Button
-                        type="text"
-                        onClick={handleShow}
-                        style={{ width: '100%' }}
-                        icon={show ? <CaretDownFilled /> : <CaretRightFilled />}
-                      />
+                      <Button type="text" onClick={handleShow} style={{ width: '100%' }} icon={show ? <CaretDownFilled /> : <CaretRightFilled />} />
                     )}
                   </Col>
                   <Col span={22}>
@@ -112,40 +86,32 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   listHeight={500}
                 >
                   <Select.OptGroup key="primitive" label="Primitive">
-                    {schemaTypes
-                      .slice(3)
-                      .map(({ value, label, description }, i) => {
-                        return (
-                          <Select.Option value={value} key={i + 2}>
-                            <div>
-                              <Title level={5} style={{ fontSize: '15px' }}>
-                                <Icon types={value} /> {label}
-                              </Title>
-                              <Text style={{ paddingLeft: '10px' }}>
-                                {description}
-                              </Text>
-                            </div>
-                          </Select.Option>
-                        )
-                      })}
+                    {schemaTypes.slice(3).map(({ value, label, description }, i) => {
+                      return (
+                        <Select.Option value={value} key={i + 2}>
+                          <div>
+                            <Title level={5} style={{ fontSize: '15px' }}>
+                              <Icon types={value} /> {label}
+                            </Title>
+                            <Text style={{ paddingLeft: '10px' }}>{description}</Text>
+                          </div>
+                        </Select.Option>
+                      )
+                    })}
                   </Select.OptGroup>
                   <Select.OptGroup key="complex" label="Complex">
-                    {schemaTypes
-                      .slice(0, 3)
-                      .map(({ value, label, description }, i) => {
-                        return (
-                          <Select.Option value={value} key={i}>
-                            <div>
-                              <Title level={5} style={{ fontSize: '15px' }}>
-                                <Icon types={value} /> {label}
-                              </Title>
-                              <Text style={{ paddingLeft: '10px' }}>
-                                {description}
-                              </Text>
-                            </div>
-                          </Select.Option>
-                        )
-                      })}
+                    {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
+                      return (
+                        <Select.Option value={value} key={i}>
+                          <div>
+                            <Title level={5} style={{ fontSize: '15px' }}>
+                              <Icon types={value} /> {label}
+                            </Title>
+                            <Text style={{ paddingLeft: '10px' }}>{description}</Text>
+                          </div>
+                        </Select.Option>
+                      )
+                    })}
                   </Select.OptGroup>
                 </Select>
               </Col>
@@ -172,9 +138,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   <Tooltip title="Delete">
                     <Button
                       type="ghost"
-                      onClick={
-                        isParentArray() || rootNode ? doNothing : onDelete
-                      }
+                      onClick={isParentArray() || rootNode ? doNothing : onDelete}
                       disabled={isParentArray() || rootNode}
                       className="property--delete-btn"
                       icon={<DeleteOutlined />}
@@ -184,13 +148,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               </Col>
             </Row>
           </Input.Group>
-          <SchemaOptions
-            showModal={showModal}
-            onClose={closeModal}
-            schema={schema}
-            schemaKey={schemaKey}
-            onChange={onChange}
-          />
+          <SchemaOptions showModal={showModal} onClose={closeModal} schema={schema} schemaKey={schemaKey} onChange={onChange} />
         </>
       )}
       {isCollection && show && (
@@ -200,9 +158,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               <CommonSubObject
                 schema={schema}
                 onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
-                onChange={(key, newSchema) =>
-                  onChange(setSchemaProperty(key)(newSchema, schema))
-                }
+                onChange={(key, newSchema) => onChange(setSchemaProperty(key)(newSchema, schema))}
                 onChangeKey={(oldKey, newKey) => {
                   onChange(renameSchemaProperty(oldKey, newKey, schema))
                 }}
@@ -213,7 +169,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
-                        <NewPropertyButton onAdd={onAdd} />
+                        <NewPropertyButton onAdd={onAdd} type={rootNode ? 'primary' : undefined} label={rootNode ? '+ Add Field' : '+ Add Object Field'} />
                       </Col>
                     </Row>
                   </Col>
@@ -226,9 +182,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               <CommonSubCollection
                 schema={schema}
                 onDelete={key => onChange(deleteSchemaProperty(key)(schema))}
-                onChange={(key, newSchema) =>
-                  onChange(setSchemaProperty(key)(newSchema, schema))
-                }
+                onChange={(key, newSchema) => onChange(setSchemaProperty(key)(newSchema, schema))}
                 onChangeKey={(oldKey, newKey) => {
                   onChange(renameSchemaProperty(oldKey, newKey, schema))
                 }}
@@ -239,7 +193,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                     <Row>
                       <Col span={1}></Col>
                       <Col span={23}>
-                        <NewPropertyButton onAdd={onAdd} />
+                        <NewPropertyButton onAdd={onAdd} label="+ Add Collection Field" />
                       </Col>
                     </Row>
                   </Col>
@@ -247,14 +201,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               </div>
             </>
           )}
-          {isArray && (
-            <CommonSubArray
-              schema={getSchemaItems(schema)}
-              onChange={oldSchema =>
-                onChange(setSchemaItems(oldSchema, schema))
-              }
-            />
-          )}
+          {isArray && <CommonSubArray schema={getSchemaItems(schema)} onChange={oldSchema => onChange(setSchemaItems(oldSchema, schema))} />}
         </div>
       )}
     </div>

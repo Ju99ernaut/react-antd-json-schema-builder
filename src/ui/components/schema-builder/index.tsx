@@ -23,7 +23,7 @@ const SchemaBuilder = ({
   .rsc-controls-control-box {
     margin: 6px 0;
     border-radius: 10px;
-    padding: 0px 0 16px 16px;
+    padding: 0 0 0 16px;
   }
 
   .rsc-controls-child {
