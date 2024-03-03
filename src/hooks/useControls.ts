@@ -1,12 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useSchemaContext } from '../context/schema-context'
 import { schemaTypes } from '../helpers/constants'
-import {
-  findOption,
-  getSchemaType,
-  setSchemaTypeAndRemoveWrongFields,
-  setSchemaTypeAndSetItemsAndRemoveWrongFields,
-} from '../helpers/schema'
+import { findOption, getSchemaType, setSchemaTypeAndRemoveWrongFields, setSchemaTypeAndSetItemsAndRemoveWrongFields } from '../helpers/schema'
 import { Schema } from '../types'
 import useDecodeSchema from './useDecodeSchema'
 
@@ -20,29 +15,20 @@ interface UseControlProps {
 
 const collectionTypes = ['object', 'array', 'collection']
 
-const useControls = ({
-  schema,
-  schemaKey = '',
-  onChange,
-  onChangeKey,
-  rootNode,
-}: UseControlProps) => {
-  const { handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } =
-    useSchemaContext()
+const useControls = ({ schema, schemaKey = '', onChange, onChangeKey, rootNode }: UseControlProps) => {
+  const { handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } = useSchemaContext()
   const autoExpand = handleGetIsInChanges(schemaKey)
   const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
   const { schemaType } = useDecodeSchema(schema)
 
-  const handleShow = useCallback(() => setShow(state => !state), [setShow])
+  const handleShow = useCallback(() => setShow(state => !state), [])
 
-  const getTypeOptions = findOption(getSchemaType(schema))(
-    schemaTypes
-  ) as unknown as string
+  const getTypeOptions = findOption(getSchemaType(schema))(schemaTypes) as unknown as string
 
-  const openModal = useCallback(() => setShowModal(true), [setShowModal])
+  const openModal = useCallback(() => setShowModal(true), [])
 
-  const closeModal = useCallback(() => setShowModal(false), [setShowModal])
+  const closeModal = useCallback(() => setShowModal(false), [])
 
   const onChangeFieldName = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,10 +42,8 @@ const useControls = ({
   const onChangeFieldType = useCallback(
     (option: string) => {
       collectionTypes.includes(option) && handlePushToChanges(schemaKey)
-      option === 'array' &&
-        onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
-      option !== 'array' &&
-        onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
+      option === 'array' && onChange(setSchemaTypeAndSetItemsAndRemoveWrongFields(option, schema))
+      option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema))
     },
     [handlePushToChanges, onChange, schema, schemaKey]
   )

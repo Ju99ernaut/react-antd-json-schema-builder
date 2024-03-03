@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useContext,
-  useState,
-  useCallback,
-} from 'react'
+import React, { PropsWithChildren, useContext, useState, useCallback } from 'react'
 
 export const SchemaContext = React.createContext<{
   changes: string[]
@@ -20,13 +15,10 @@ export const SchemaContext = React.createContext<{
 const SchemaProvider = ({ children }: PropsWithChildren) => {
   const [changes, setChanges] = useState<string[]>([])
   console.log('Schema provider')
-  const handlePushToChanges = useCallback(
-    (id: string) => {
-      console.log('handle push to change')
-      setChanges(value => [...value, id])
-    },
-    [setChanges]
-  )
+  const handlePushToChanges = useCallback((id: string) => {
+    console.log('handle push to change')
+    setChanges(value => [...value, id])
+  }, [])
 
   const handleChangesIdKey = useCallback(
     (oldkey: string, newKey: string) => {
@@ -38,7 +30,7 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
         return [...removeExisting, newKey]
       })
     },
-    [changes, setChanges]
+    [changes]
   )
 
   const handleGetIsInChanges = useCallback(
@@ -49,7 +41,7 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
       setChanges(value => value.filter(item => item !== id))
       return true
     },
-    [changes, setChanges]
+    [changes]
   )
 
   return (
