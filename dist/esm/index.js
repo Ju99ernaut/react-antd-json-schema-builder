@@ -649,12 +649,7 @@ var Icon = function (_a) {
 var NewPropertyButton = function (props) {
     var onAdd = props.onAdd;
     var _a = useState(false), hover = _a[0], setHover = _a[1];
-    return (React.createElement(Button, { type: "link", disabled: !isFunction(onAdd), onClick: onAdd, style: __assign({ 
-            // width: '100%',
-            // backgroundColor: 'transparent',
-            // borderColor: 'black',
-            // color: 'black',
-            borderRadius: '6px' }, (hover
+    return (React.createElement(Button, { type: "link", disabled: !isFunction(onAdd), onClick: onAdd, className: "new-property-btn", style: __assign({ borderRadius: '6px' }, (hover
             ? {
                 borderColor: '#009BFF',
                 color: '#009BFF',
@@ -819,6 +814,36 @@ var SchemaBuilder$1 = function (_a) {
                 dispatch && updateSchema && dispatch(updateSchema(schema));
             } })));
 };
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = "";
+styleInject(css_248z);
 
 var SchemaBuilder = function (_a) {
     var data = _a.data, onChange = _a.onChange, undoRedo = _a.undoRedo, dispatch = _a.dispatch, updateSchema = _a.updateSchema;

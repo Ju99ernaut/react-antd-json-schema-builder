@@ -7,6 +7,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import packageJSON from '../../package.json'
 
 import css from 'rollup-plugin-css-only'
+import autoprefixer from 'autoprefixer'
 import postcss from 'rollup-plugin-postcss'
 
 export default [
@@ -30,21 +31,14 @@ export default [
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
-        exclude: [
-          './src/**/*.spec.tsx',
-          './src/**/*.spec.ts',
-          './src/**/*.stories.ts',
-        ],
+        exclude: ['./src/**/*.spec.tsx', './src/**/*.spec.ts', './src/**/*.stories.ts'],
       }),
       css({ output: 'style.css' }),
       postcss({
-        // Configure PostCSS if necessary
-        // For example, to use autoprefixer:
-        plugins: [require('autoprefixer')],
-        // Extract CSS to a separate file
-        extract: true,
-        // Minify CSS
-        minimize: true,
+        plugins: [autoprefixer()],
+        inject: true, // Inject CSS into the output bundle
+        // If you want to extract CSS to a separate file, set extract to true
+        // extract: true,
       }),
     ],
   },

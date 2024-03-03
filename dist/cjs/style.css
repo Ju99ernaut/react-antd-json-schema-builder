@@ -13,7 +13,7 @@
 /* BUTTONS */
 .property--delete-btn {
   border-radius: 6px;
-  transition: none!important;
+  transition: none !important;
 }
 
 .property--delete-btn:hover {
@@ -21,54 +21,94 @@
   border-color: rgb(255, 91, 91);
   background-color: rgb(254, 244, 244);
 }
-.property--delete-btn:hover .anticon{
-  color: rgb(255, 91, 91)!important;
+.property--delete-btn:hover .anticon {
+  color: rgb(255, 91, 91) !important;
+}
+
+/* TYPES */
+[data-schema-type],
+.rsc-controls-control-box,
+.rsc-controls-add-button {
+  position: relative;
+}
+
+.rsc-controls-root .rsc-controls-child {
+  position: relative;
+}
+
+.rsc-controls-root .rsc-controls-control-box .rsc-controls-child:not([data-schema-type='array']) > .rsc-controls-control-box:before {
+  content: '';
+  display: block;
+  border-left: solid 1px #EEE;
+  position: absolute;
+  top: -25px;
+  bottom: 33px;
+  left: 21px;
+}
+
+.ant-btn {
+  z-index: 10;
+}
+
+/* TREE BRANCHES */
+.rsc-controls-root .rsc-controls-child .rsc-controls-child .ant-input-group:before,
+.rsc-controls-root [data-schema-type='object'] .rsc-controls-add-button > .ant-row:before,
+.rsc-controls-root [data-schema-type='collection'] .rsc-controls-add-button > .ant-row:before {
+  content: '';
+  display: inline;
+  position: absolute;
+  width: 20px;
+  left: 5px;
+  top: calc(-50% - 7px);
+  bottom: 50%;
+  border-bottom: solid 0.5px #EEE;
+  z-index: 0;
+}
+
+/* TREE BRANCHES - Array fix */
+.rsc-controls-root .rsc-controls-child[data-schema-type='array'] .rsc-controls-child .ant-input-group:before {
+  border-left: solid 0.5px #EEE;
+}
+
+/* TREE BRANCHES - Target collections, objects & arrays */
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='object'] > .ant-input-group:before,
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='collection'] > .ant-input-group:before,
+.rsc-controls-root .rsc-controls-child .rsc-controls-child[data-schema-type='array'] > .ant-input-group:before {
+  width: 10px;
 }
 
 /* TYPES - SELECTS */
-[data-schema-type='object']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='object'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   background-color: #fff4eb;
   color: #e09053;
   border-color: #e09053;
 }
 
-[data-schema-type='collection']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='collection'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   background-color: #f6ebff;
   color: #6553e0;
   border-color: #6553e0;
 }
 
-[data-schema-type='number']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='number'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   color: #33afff;
   background-color: #eaf0fd;
   border-color: #33afff;
 }
 
-[data-schema-type='date']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='date'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   background-color: rgb(242, 254, 242);
   color: rgb(88, 192, 88);
   border-color: rgb(88, 192, 88);
 }
 
-[data-schema-type='boolean']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='boolean'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   background-color: rgb(253, 244, 250);
   color: rgb(221, 98, 186);
   border-color: rgb(221, 98, 186);
 }
 
-[data-schema-type='string']
-  .ant-select:not(.ant-select-customize-input)
-  .ant-select-selector {
+[data-schema-type='string'] .ant-select:not(.ant-select-customize-input) .ant-select-selector {
   background-color: #fffcf2;
   color: #e6b402;
   border-color: #ebbd10;

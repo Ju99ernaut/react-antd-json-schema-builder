@@ -14,11 +14,8 @@ const NewPropertyButton = (props: Props) => {
       type="link"
       disabled={!isFunction(onAdd)}
       onClick={onAdd}
+      className="new-property-btn"
       style={{
-        // width: '100%',
-        // backgroundColor: 'transparent',
-        // borderColor: 'black',
-        // color: 'black',
         borderRadius: '6px',
         ...(hover
           ? {
