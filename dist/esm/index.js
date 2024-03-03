@@ -246,13 +246,10 @@ var SchemaContext = React.createContext({
 var SchemaProvider = function (_a) {
     var children = _a.children;
     var _b = useState([]), changes = _b[0], setChanges = _b[1];
-    console.log('Schema provider');
     var handlePushToChanges = useCallback(function (id) {
-        console.log('handle push to change');
         setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); });
     }, []);
     var handleChangesIdKey = useCallback(function (oldkey, newKey) {
-        console.log('handle changesIdKey');
         var isExist = changes.includes(oldkey);
         if (!isExist)
             return;
@@ -262,7 +259,6 @@ var SchemaProvider = function (_a) {
         });
     }, [changes]);
     var handleGetIsInChanges = useCallback(function (id) {
-        console.log('handle getIsInChanges');
         var isInChanges = changes.includes(id);
         if (!isInChanges)
             return false;
@@ -645,101 +641,89 @@ var Icon = function (_a) {
 };
 
 var NewPropertyButton = function (props) {
-    var onAdd = props.onAdd;
-    var _a = useState(false), hover = _a[0], setHover = _a[1];
-    return (React.createElement(Button, { type: "link", disabled: !isFunction(onAdd), onClick: onAdd, className: "new-property-btn", style: __assign({ borderRadius: '6px' }, (hover
-            ? {
-                borderColor: '#009BFF',
-                color: '#009BFF',
-                outline: '1px solid #29b0ff',
-            }
-            : {})), onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); } }, "+ Add field"));
+    var onAdd = props.onAdd, _a = props.label, label = _a === void 0 ? '+ Add Field' : _a, _b = props.type, type = _b === void 0 ? 'link' : _b, rest = __rest(props, ["onAdd", "label", "type"]);
+    var _c = useState(false); _c[0]; var setHover = _c[1];
+    return (React.createElement(Button, __assign({}, rest, { type: type, disabled: !isFunction(onAdd), onClick: onAdd, className: "new-property-btn", style: {
+            borderRadius: '6px',
+        }, onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); } }), label));
 };
 
 var Title = Typography.Title, Text = Typography.Text;
 var doNothing = function () { };
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
-    var _b = useControls({ schema: schema, schemaKey: schemaKey, rootNode: rootNode, onChange: onChange, onChangeKey: onChangeKey }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    var _b = useControls({
+        schema: schema,
+        schemaKey: schemaKey,
+        rootNode: rootNode,
+        onChange: onChange,
+        onChangeKey: onChangeKey,
+    }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var isCollection = controlType !== 'primitive';
     var isColl = controlType === 'collection';
     var isObject = controlType === 'object';
     var isArray = controlType === 'array';
-    var _c = useState(false); _c[0]; _c[1];
+    var nameColProps = { xs: 16, xl: 16 };
+    var typeColProps = { xs: 6, xl: 6 };
+    var actionColProps = { xs: 2, xl: 2 };
     return (React.createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
     })),
         !rootNode && (React.createElement(React.Fragment, null,
-            React.createElement(Input.Group, null,
-                React.createElement(Row, { align: "middle" },
-                    React.createElement(Col, { xs: 10, xl: 11 },
-                        React.createElement(Row, { justify: "space-around", align: "middle" },
-                            React.createElement(Col, { span: 2 }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%' }, icon: show ? React.createElement(CaretDownFilled, null) : React.createElement(CaretRightFilled, null) }))),
-                            React.createElement(Col, { span: 22 }, isFunction(onChangeKey) && (React.createElement(Input, { style: { borderRadius: '0px', borderRight: '0px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
-                    React.createElement(Col, { xs: 12, xl: 12 },
-                        React.createElement(Select, { style: {
-                                width: '100%',
-                                borderRadius: '0px',
-                                borderLeft: '0px',
-                            }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false, listHeight: 500 },
-                            React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes
-                                .slice(3)
-                                .map(function (_a, i) {
-                                var value = _a.value, label = _a.label, description = _a.description;
-                                return (React.createElement(Select.Option, { value: value, key: i + 2 },
-                                    React.createElement("div", null,
-                                        React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
-                                            React.createElement(Icon, { types: value }),
-                                            " ",
-                                            label),
-                                        React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
-                            })),
-                            React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes
-                                .slice(0, 3)
-                                .map(function (_a, i) {
-                                var value = _a.value, label = _a.label, description = _a.description;
-                                return (React.createElement(Select.Option, { value: value, key: i },
-                                    React.createElement("div", null,
-                                        React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
-                                            React.createElement(Icon, { types: value }),
-                                            " ",
-                                            label),
-                                        React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
-                            })))),
-                    React.createElement(Col, { xs: 2, xl: 1 }, !isParentArray() && !rootNode && (React.createElement(Tooltip, { title: "Delete" },
-                        React.createElement(Button, { type: "ghost", onClick: isParentArray() || rootNode ? doNothing : onDelete, disabled: isParentArray() || rootNode, className: "property--delete-btn", icon: React.createElement(DeleteOutlined, null) })))))),
+            React.createElement(Row, { align: "middle", gutter: 5 },
+                React.createElement(Col, __assign({}, nameColProps),
+                    React.createElement("div", { style: { display: 'flex' } },
+                        React.createElement("div", { style: { flex: '0 0 30px' } }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%', backgroundColor: '#fff' }, icon: show ? (React.createElement(CaretDownFilled, { style: { color: '#777' } })) : (React.createElement(CaretRightFilled, { style: { color: '#777' } })) }))),
+                        React.createElement("div", { style: { flex: '1 1 auto' } }, isFunction(onChangeKey) && (React.createElement(Input, { defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
+                React.createElement(Col, __assign({}, typeColProps),
+                    React.createElement(Select, { style: {
+                            width: '100%',
+                        }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false, listHeight: 500, dropdownMatchSelectWidth: false },
+                        React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(3).map(function (_a, i) {
+                            var value = _a.value, label = _a.label, description = _a.description;
+                            return (React.createElement(Select.Option, { value: value, key: i + 2 },
+                                React.createElement("div", null,
+                                    React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
+                                        React.createElement(Icon, { types: value }),
+                                        " ",
+                                        label),
+                                    React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
+                        })),
+                        React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 3).map(function (_a, i) {
+                            var value = _a.value, label = _a.label, description = _a.description;
+                            return (React.createElement(Select.Option, { value: value, key: i },
+                                React.createElement("div", null,
+                                    React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
+                                        React.createElement(Icon, { types: value }),
+                                        " ",
+                                        label),
+                                    React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
+                        })))),
+                React.createElement(Col, __assign({}, actionColProps), !isParentArray() && !rootNode && (React.createElement(Tooltip, { title: "Delete" },
+                    React.createElement(Button, { type: "ghost", onClick: isParentArray() || rootNode ? doNothing : onDelete, disabled: isParentArray() || rootNode, className: "property--delete-btn", icon: React.createElement(DeleteOutlined, null) }))))),
             React.createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
         isCollection && show && (React.createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React.createElement(React.Fragment, null,
-                React.createElement(CommonSubObject, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) {
-                        return onChange(setSchemaProperty(key)(newSchema, schema));
-                    }, onChangeKey: function (oldKey, newKey) {
+                React.createElement(CommonSubObject, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) { return onChange(setSchemaProperty(key)(newSchema, schema)); }, onChangeKey: function (oldKey, newKey) {
                         onChange(renameSchemaProperty(oldKey, newKey, schema));
                     } }),
-                React.createElement("div", { className: "rsc-controls-add-button" },
-                    React.createElement(Row, null,
-                        React.createElement(Col, { xs: 22, xl: 23 },
-                            React.createElement(Row, null,
-                                React.createElement(Col, { span: 1 }),
-                                React.createElement(Col, { span: 23 },
-                                    React.createElement(NewPropertyButton, { onAdd: onAdd })))))))),
+                React.createElement(AddButtonRow, null,
+                    React.createElement(NewPropertyButton, { onAdd: onAdd, type: rootNode ? 'primary' : undefined, label: rootNode ? '+ Add Field' : '+ Add Object Field' })))),
             isColl && show && (React.createElement(React.Fragment, null,
-                React.createElement(CommonSubCollection, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) {
-                        return onChange(setSchemaProperty(key)(newSchema, schema));
-                    }, onChangeKey: function (oldKey, newKey) {
+                React.createElement(CommonSubCollection, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) { return onChange(setSchemaProperty(key)(newSchema, schema)); }, onChangeKey: function (oldKey, newKey) {
                         onChange(renameSchemaProperty(oldKey, newKey, schema));
                     } }),
-                React.createElement("div", { className: "rsc-controls-add-button" },
-                    React.createElement(Row, null,
-                        React.createElement(Col, { xs: 22, xl: 23 },
-                            React.createElement(Row, null,
-                                React.createElement(Col, { span: 1 }),
-                                React.createElement(Col, { span: 23 },
-                                    React.createElement(NewPropertyButton, { onAdd: onAdd })))))))),
-            isArray && (React.createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) {
-                    return onChange(setSchemaItems(oldSchema, schema));
-                } }))))));
+                React.createElement(AddButtonRow, null,
+                    React.createElement(NewPropertyButton, { onAdd: onAdd, label: "+ Add Collection Field" })))),
+            isArray && (React.createElement(CommonSubArray, { schema: getSchemaItems(schema), onChange: function (oldSchema) { return onChange(setSchemaItems(oldSchema, schema)); } }))))));
 };
+function AddButtonRow(_a) {
+    var children = _a.children;
+    return (React.createElement("div", { className: "rsc-controls-add-button" },
+        React.createElement("div", { style: { display: 'flex' } },
+            React.createElement("div", { style: { flex: '0 0 30px' } }),
+            React.createElement("div", { style: { flex: '1 1 auto' } }, children))));
+}
 
 var CollectionControls = function (_a) {
     var props = __rest(_a, []);
@@ -796,17 +780,12 @@ var SchemaCreator = function (_a) {
 var SchemaBuilder$1 = function (_a) {
     var _b;
     var data = _a.data, onChange = _a.onChange, dispatch = _a.dispatch, updateSchema = _a.updateSchema;
-    var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border-radius: 10px;\n    padding: 0px 0 16px 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n";
+    var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border-radius: 10px;\n    padding: 0 0 0 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n";
     return (React.createElement(SchemaProvider, null,
         React.createElement("style", null, css),
-        React.createElement(Row, { align: "middle", style: { padding: '16px' } },
-            React.createElement(Col, { xs: 10, xl: 11 },
-                React.createElement(Row, { justify: "space-around", align: "middle" },
-                    React.createElement(Col, { span: 2 }),
-                    React.createElement(Col, { span: 22 }, "Name"))),
-            React.createElement(Col, { xs: 10, xl: 11 }, "Type"),
-            React.createElement(Col, { xs: 2, xl: 1 }),
-            React.createElement(Col, { xs: 2, xl: 1 })),
+        React.createElement(Row, { align: "middle", style: { padding: '16px', borderBottom: 'solid 1px #D3DDF2' } },
+            React.createElement(Col, { xs: { span: 15, offset: 1 } }, "Name"),
+            React.createElement(Col, { xs: 8 }, "Type")),
         React.createElement(SchemaCreator, { schema: ((_b = data === null || data === void 0 ? void 0 : data.present) === null || _b === void 0 ? void 0 : _b.schema) || data, onChange: function (schema) {
                 onChange(schema);
                 dispatch && updateSchema && dispatch(updateSchema(schema));
