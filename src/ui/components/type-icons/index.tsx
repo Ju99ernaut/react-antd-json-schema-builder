@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 
 import {
   BarsOutlined,
@@ -10,9 +10,14 @@ import {
   CalendarOutlined,
   ClockCircleOutlined,
   AppstoreOutlined,
+  GroupOutlined,
 } from '@ant-design/icons'
 
-const Icon: React.FC<{ types: string }> = ({ types, ...props }) => {
+interface ITypeIcon extends HTMLAttributes<HTMLSpanElement> {
+  types: string
+}
+
+const Icon: React.FC<ITypeIcon> = ({ types, ...props }) => {
   switch (types) {
     case 'array':
       return <BarsOutlined {...props} />
@@ -30,6 +35,8 @@ const Icon: React.FC<{ types: string }> = ({ types, ...props }) => {
       return <ClockCircleOutlined {...props} />
     case 'object':
       return <AppstoreOutlined {...props} />
+    case 'collection':
+      return <GroupOutlined {...props} />
     default:
       return <FontSizeOutlined {...props} />
   }

@@ -96,9 +96,17 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 </div>
 
                 {/* FIELD NAME */}
-                <div style={{ flex: '1 1 auto' }}>
+                <div style={{ flex: '1 1 auto', position: 'relative' }}>
                   {isFunction(onChangeKey) && (
-                    <Input defaultValue={schemaKey} disabled={rootNode || disabledInput} onBlur={onChangeFieldName} />
+                    <>
+                      <Icon types={schemaType} style={{ position: 'absolute', top: '9px', left: '9px', zIndex: '1' }} />
+                      <Input
+                        style={{ padding: '4px 11px 4px 30px' }}
+                        defaultValue={schemaKey}
+                        disabled={rootNode || disabledInput}
+                        onBlur={onChangeFieldName}
+                      />
+                    </>
                   )}
                 </div>
               </div>
