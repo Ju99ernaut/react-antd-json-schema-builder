@@ -5,14 +5,24 @@ export const SchemaContext = React.createContext<{
   handlePushToChanges: (id: string) => void
   handleGetIsInChanges: (id: string) => boolean
   handleChangesIdKey: (oldKey: string, newKey: string) => void
+  expandCollapseAll: string
+  setExpandCollapseAll: (id: string) => void
+  search: string
+  setSearch: (query: string) => void
 }>({
   changes: [],
   handlePushToChanges: _id => {},
   handleGetIsInChanges: _id => false,
   handleChangesIdKey: (_old, _new) => {},
+  expandCollapseAll: '',
+  setExpandCollapseAll: _id => {},
+  search: '',
+  setSearch: _query => {},
 })
 
 const SchemaProvider = ({ children }: PropsWithChildren) => {
+  const [expandCollapseAll, setExpandCollapseAll] = useState<string>('')
+  const [search, setSearch] = useState<string>('')
   const [changes, setChanges] = useState<string[]>([])
   const handlePushToChanges = useCallback((id: string) => {
     setChanges(value => [...value, id])
@@ -47,6 +57,10 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
         handlePushToChanges,
         handleChangesIdKey,
         handleGetIsInChanges,
+        expandCollapseAll,
+        setExpandCollapseAll,
+        search,
+        setSearch,
       }}
     >
       {children}

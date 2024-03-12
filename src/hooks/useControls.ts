@@ -1,7 +1,12 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useSchemaContext } from '../context/schema-context'
 import { schemaTypes } from '../helpers/constants'
-import { findOption, getSchemaType, setSchemaTypeAndRemoveWrongFields, setSchemaTypeAndSetItemsAndRemoveWrongFields } from '../helpers/schema'
+import {
+  findOption,
+  getSchemaType,
+  setSchemaTypeAndRemoveWrongFields,
+  setSchemaTypeAndSetItemsAndRemoveWrongFields,
+} from '../helpers/schema'
 import { Schema } from '../types'
 import useDecodeSchema from './useDecodeSchema'
 
@@ -16,7 +21,8 @@ interface UseControlProps {
 const collectionTypes = ['object', 'array', 'collection']
 
 const useControls = ({ schema, schemaKey = '', onChange, onChangeKey, rootNode }: UseControlProps) => {
-  const { handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } = useSchemaContext()
+  const { expandCollapseAll, setExpandCollapseAll, handlePushToChanges, handleChangesIdKey, handleGetIsInChanges } =
+    useSchemaContext()
   const autoExpand = handleGetIsInChanges(schemaKey)
   const [show, setShow] = useState(rootNode || autoExpand)
   const [showModal, setShowModal] = useState(false)
@@ -49,6 +55,12 @@ const useControls = ({ schema, schemaKey = '', onChange, onChangeKey, rootNode }
   )
 
   const isParentArray = () => schemaKey === 'items'
+
+  useEffect(() => {
+    if (expandCollapseAll.startsWith('expand')) setShow(true)
+    else if (!rootNode && expandCollapseAll.startsWith('collapse')) setShow(false)
+    return setExpandCollapseAll('')
+  }, [expandCollapseAll])
 
   return {
     schemaType,

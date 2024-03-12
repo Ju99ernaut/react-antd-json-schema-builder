@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { CaretDownFilled, CaretRightFilled, DeleteOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
@@ -9,8 +9,10 @@ import {
   renameSchemaProperty,
   setSchemaItems,
   setSchemaProperty,
+  getAllSchemaKeys,
 } from '../../../helpers/schema'
 import useControls from '../../../hooks/useControls'
+import { useSchemaContext } from '../../../context/schema-context'
 import { CommonControlsProps } from '../../../types'
 import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
@@ -21,6 +23,12 @@ import NewPropertyButton from './new-property-button'
 
 const { Title, Text } = Typography
 const doNothing = () => {}
+
+// const findMatchingChildNode = (properties: Record<string, unknown>, query: string) => {
+//   const keys = getAllSchemaKeys(properties)
+//   if (keys.some((k) => k.includes(query))) true
+//   if ()
+// }
 
 const CommonControls: React.FC<CommonControlsProps> = ({
   schema,
@@ -51,6 +59,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
     onChange,
     onChangeKey,
   })
+  const { search } = useSchemaContext()
 
   const isCollection = controlType !== 'primitive'
   const isColl = controlType === 'collection'
@@ -61,6 +70,16 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const typeColProps = { xs: 6, xl: 6 }
   const actionColProps = { xs: 2, xl: 2 }
 
+  const isNodeVisible = useMemo(
+    () => !search || Boolean(!schema.properties && schema.id && (schema.id as string).includes(search)),
+    // @ts-ignore
+    // pickSchemaProperties(search)(schema),
+    [schema, search]
+  )
+
+  // @ts-ignore
+  schema.properties && console.log({ search, schema, found: getAllSchemaKeys(schema.properties) })
+
   return (
     <div
       data-schema-type={schemaType}
@@ -70,6 +89,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
       {...(rootNode && {
         'data-root-node': rootNode,
       })}
+      style={{ display: rootNode || isNodeVisible ? 'block' : 'block' }}
     >
       {!rootNode && (
         <>
@@ -105,6 +125,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         defaultValue={schemaKey}
                         disabled={rootNode || disabledInput}
                         onBlur={onChangeFieldName}
+                        autoFocus
                       />
                     </>
                   )}
