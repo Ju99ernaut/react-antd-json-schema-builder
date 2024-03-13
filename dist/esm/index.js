@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useContext, useMemo } from 'react';
+import { Modal, Form, Input, InputNumber, Switch, Select, Button, Tooltip, Typography, Row, Col, Space } from 'antd';
+import { FontSizeOutlined, GroupOutlined, AppstoreOutlined, ClockCircleOutlined, CalendarOutlined, DollarOutlined, PercentageOutlined, NumberOutlined, CheckOutlined, BarsOutlined, CaretDownFilled, CaretRightFilled, DeleteOutlined, SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import noop from 'lodash/noop';
 import assign from 'lodash/fp/assign';
 import entries from 'lodash/fp/entries';
@@ -10,11 +12,11 @@ import 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import 'lodash/fp/noop';
 import pick from 'lodash/fp/pick';
+import 'lodash/fp/pickBy';
+import 'lodash/fp/includes';
 import reduce from 'lodash/fp/reduce';
 import set from 'lodash/fp/set';
 import unset from 'lodash/fp/unset';
-import { FontSizeOutlined, AppstoreOutlined, ClockCircleOutlined, CalendarOutlined, DollarOutlined, PercentageOutlined, NumberOutlined, CheckOutlined, BarsOutlined, CaretDownFilled, CaretRightFilled, DeleteOutlined } from '@ant-design/icons';
-import { Modal, Form, Input, InputNumber, Switch, Select, Button, Typography, Row, Col, Tooltip } from 'antd';
 import { isFunction } from 'lodash';
 import entries$1 from 'lodash/entries';
 
@@ -242,10 +244,16 @@ var SchemaContext = React.createContext({
     handlePushToChanges: function (_id) { },
     handleGetIsInChanges: function (_id) { return false; },
     handleChangesIdKey: function (_old, _new) { },
+    expandCollapseAll: '',
+    setExpandCollapseAll: function (_id) { },
+    search: '',
+    setSearch: function (_query) { },
 });
 var SchemaProvider = function (_a) {
     var children = _a.children;
-    var _b = useState([]), changes = _b[0], setChanges = _b[1];
+    var _b = useState(''), expandCollapseAll = _b[0], setExpandCollapseAll = _b[1];
+    var _c = useState(''), search = _c[0], setSearch = _c[1];
+    var _d = useState([]), changes = _d[0], setChanges = _d[1];
     var handlePushToChanges = useCallback(function (id) {
         setChanges(function (value) { return __spreadArray(__spreadArray([], value, true), [id], false); });
     }, []);
@@ -270,6 +278,10 @@ var SchemaProvider = function (_a) {
             handlePushToChanges: handlePushToChanges,
             handleChangesIdKey: handleChangesIdKey,
             handleGetIsInChanges: handleGetIsInChanges,
+            expandCollapseAll: expandCollapseAll,
+            setExpandCollapseAll: setExpandCollapseAll,
+            search: search,
+            setSearch: setSearch,
         } }, children));
 };
 var useSchemaContext = function () { return useContext(SchemaContext); };
@@ -447,9 +459,7 @@ var setSchemaType = setSchemaField('type');
 setSchemaField('title');
 setSchemaField('id');
 var setSchemaProperties = setSchemaField('properties');
-var setSchemaProperty = function (key) {
-    return setSchemaField(['properties', key]);
-};
+var setSchemaProperty = function (key) { return setSchemaField(['properties', key]); };
 var setSchemaItems = function (oldSchema, schema) {
     return setSchemaField('items')(__assign({ uuid: uuidv4(), type: 'string' }, oldSchema), schema);
 };
@@ -458,9 +468,7 @@ var setSchemaTempItems = function (schema) {
     return setSchemaField('items')(__assign({ uuid: uuidv4(), type: 'string' }, schemaItems), schema);
 };
 var deleteSchemaField = unset;
-var deleteSchemaProperty = function (key) {
-    return deleteSchemaField(['properties', key]);
-};
+var deleteSchemaProperty = function (key) { return deleteSchemaField(['properties', key]); };
 var addSchemaProperty = function (schema) {
     return setSchemaProperty(uniqueId('field_', schema))({ uuid: uuidv4(), type: 'string' }, schema);
 };
@@ -478,11 +486,7 @@ var renameSchemaField = function (oldKey, newKey) {
     ]);
 };
 var renameSchemaProperty = function (oldKey, newKey, schema) {
-    return flow([
-        getSchemaProperties,
-        renameSchemaField(oldKey, newKey),
-        function (p) { return setSchemaProperties(p, schema); },
-    ])(schema);
+    return flow([getSchemaProperties, renameSchemaField(oldKey, newKey), function (p) { return setSchemaProperties(p, schema); }])(schema);
 };
 var isSchemaObject = function (schema) {
     return getSchemaType(schema) === 'object' || getSchemaType(schema) === 'collection';
@@ -494,18 +498,9 @@ var removeWrongFields = function (schema) {
     var fields = getValidFields(type);
     return getSchemaFields(fields, schema);
 };
-var getSchemaMenuOptions = function (type) {
-    return get(type, typeToOptions);
-};
-var setSchemaTypeAndRemoveWrongFields = flow([
-    setSchemaType,
-    removeWrongFields,
-]);
-var setSchemaTypeAndSetItemsAndRemoveWrongFields = flow([
-    setSchemaType,
-    setSchemaTempItems,
-    removeWrongFields,
-]);
+var getSchemaMenuOptions = function (type) { return get(type, typeToOptions); };
+var setSchemaTypeAndRemoveWrongFields = flow([setSchemaType, removeWrongFields]);
+var setSchemaTypeAndSetItemsAndRemoveWrongFields = flow([setSchemaType, setSchemaTempItems, removeWrongFields]);
 map(function (s) { return ({ label: s, value: s }); });
 
 var useDecodeSchema = function (schema) {
@@ -522,7 +517,7 @@ var useDecodeSchema = function (schema) {
 var collectionTypes = ['object', 'array', 'collection'];
 var useControls = function (_a) {
     var schema = _a.schema, _b = _a.schemaKey, schemaKey = _b === void 0 ? '' : _b, onChange = _a.onChange, onChangeKey = _a.onChangeKey, rootNode = _a.rootNode;
-    var _c = useSchemaContext(), handlePushToChanges = _c.handlePushToChanges, handleChangesIdKey = _c.handleChangesIdKey, handleGetIsInChanges = _c.handleGetIsInChanges;
+    var _c = useSchemaContext(), expandCollapseAll = _c.expandCollapseAll, setExpandCollapseAll = _c.setExpandCollapseAll, handlePushToChanges = _c.handlePushToChanges, handleChangesIdKey = _c.handleChangesIdKey, handleGetIsInChanges = _c.handleGetIsInChanges;
     var autoExpand = handleGetIsInChanges(schemaKey);
     var _d = useState(rootNode || autoExpand), show = _d[0], setShow = _d[1];
     var _e = useState(false), showModal = _e[0], setShowModal = _e[1];
@@ -542,6 +537,13 @@ var useControls = function (_a) {
         option !== 'array' && onChange(setSchemaTypeAndRemoveWrongFields(option, schema));
     }, [handlePushToChanges, onChange, schema, schemaKey]);
     var isParentArray = function () { return schemaKey === 'items'; };
+    useEffect(function () {
+        if (expandCollapseAll.startsWith('expand'))
+            setShow(true);
+        else if (!rootNode && expandCollapseAll.startsWith('collapse'))
+            setShow(false);
+        return setExpandCollapseAll('');
+    }, [expandCollapseAll]);
     return {
         schemaType: schemaType,
         getTypeOptions: getTypeOptions,
@@ -635,6 +637,8 @@ var Icon = function (_a) {
             return React.createElement(ClockCircleOutlined, __assign({}, props));
         case 'object':
             return React.createElement(AppstoreOutlined, __assign({}, props));
+        case 'collection':
+            return React.createElement(GroupOutlined, __assign({}, props));
         default:
             return React.createElement(FontSizeOutlined, __assign({}, props));
     }
@@ -642,14 +646,27 @@ var Icon = function (_a) {
 
 var NewPropertyButton = function (props) {
     var onAdd = props.onAdd, _a = props.label, label = _a === void 0 ? '+ Add Field' : _a, _b = props.type, type = _b === void 0 ? 'link' : _b, rest = __rest(props, ["onAdd", "label", "type"]);
-    var _c = useState(false); _c[0]; var setHover = _c[1];
-    return (React.createElement(Button, __assign({}, rest, { type: type, disabled: !isFunction(onAdd), onClick: onAdd, className: "new-property-btn", style: {
+    var search = useSchemaContext().search;
+    var disabled = useMemo(function () { return !isFunction(onAdd) || !!search; }, [onAdd, search]);
+    var button = (React.createElement(Button, __assign({}, rest, { type: type, disabled: disabled, onClick: onAdd, className: "new-property-btn", style: {
             borderRadius: '6px',
-        }, onMouseEnter: function () { return setHover(true); }, onMouseLeave: function () { return setHover(false); } }), label));
+        } }), label));
+    return disabled ? (React.createElement(Tooltip, { title: "Clear Search", placement: "bottom" }, button)) : (button);
 };
 
 var Title = Typography.Title, Text = Typography.Text;
 var doNothing = function () { };
+function findMatchingChildNode(schema, query) {
+    if (!query)
+        return true;
+    var foundNodes = [];
+    jsonSchemaTraverse.exports(schema, {}, function (_schema, _parent, _root, _parentJSONParent, _parentKeyword, _parentSchema, keyIndex) {
+        if (!keyIndex)
+            return;
+        String(keyIndex).includes(query) && foundNodes.push(String(keyIndex));
+    });
+    return foundNodes.length > 0;
+}
 var CommonControls = function (_a) {
     var schema = _a.schema, schemaKey = _a.schemaKey, rootNode = _a.rootNode, controlType = _a.controlType, disabledInput = _a.disabledInput, onAdd = _a.onAdd, onDelete = _a.onDelete, onChange = _a.onChange, onChangeKey = _a.onChangeKey;
     var _b = useControls({
@@ -659,6 +676,7 @@ var CommonControls = function (_a) {
         onChange: onChange,
         onChangeKey: onChangeKey,
     }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    var search = useSchemaContext().search;
     var isCollection = controlType !== 'primitive';
     var isColl = controlType === 'collection';
     var isObject = controlType === 'object';
@@ -666,22 +684,30 @@ var CommonControls = function (_a) {
     var nameColProps = { xs: 16, xl: 16 };
     var typeColProps = { xs: 6, xl: 6 };
     var actionColProps = { xs: 2, xl: 2 };
+    var isNodeVisible = useMemo(function () {
+        return !search ||
+            !schema.id ||
+            Boolean(schema.id && schema.id.includes(search)) ||
+            findMatchingChildNode(schema, search);
+    }, [schema, search]);
     return (React.createElement("div", __assign({ "data-schema-type": schemaType, "data-schema-title": schemaKey, "data-schema-id": schemaKey, className: rootNode ? 'rsc-controls-root' : 'rsc-controls-child' }, (rootNode && {
         'data-root-node': rootNode,
-    })),
+    }), { style: { display: rootNode || isNodeVisible ? 'block' : 'none' } }),
         !rootNode && (React.createElement(React.Fragment, null,
             React.createElement(Row, { align: "middle", gutter: 5 },
                 React.createElement(Col, __assign({}, nameColProps),
                     React.createElement("div", { style: { display: 'flex' } },
                         React.createElement("div", { style: { flex: '0 0 30px' } }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%', backgroundColor: '#fff' }, icon: show ? (React.createElement(CaretDownFilled, { style: { color: '#777' } })) : (React.createElement(CaretRightFilled, { style: { color: '#777' } })) }))),
-                        React.createElement("div", { style: { flex: '1 1 auto' } }, isFunction(onChangeKey) && (React.createElement(Input, { defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName }))))),
+                        React.createElement("div", { style: { flex: '1 1 auto', position: 'relative' } }, isFunction(onChangeKey) && (React.createElement(React.Fragment, null,
+                            React.createElement(Icon, { types: schemaType, style: { position: 'absolute', top: '9px', left: '9px', zIndex: '1' } }),
+                            React.createElement(Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName, autoFocus: true })))))),
                 React.createElement(Col, __assign({}, typeColProps),
                     React.createElement(Select, { style: {
                             width: '100%',
                         }, className: "rsc-controls-control-select-box", value: getTypeOptions, disabled: rootNode, onChange: onChangeFieldType, filterOption: false, listHeight: 500, dropdownMatchSelectWidth: false },
-                        React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(3).map(function (_a, i) {
+                        React.createElement(Select.OptGroup, { key: "primitive", label: "Primitive" }, schemaTypes.slice(3).map(function (_a) {
                             var value = _a.value, label = _a.label, description = _a.description;
-                            return (React.createElement(Select.Option, { value: value, key: i + 2 },
+                            return (React.createElement(Select.Option, { value: value, key: value },
                                 React.createElement("div", null,
                                     React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
                                         React.createElement(Icon, { types: value }),
@@ -689,9 +715,9 @@ var CommonControls = function (_a) {
                                         label),
                                     React.createElement(Text, { style: { paddingLeft: '10px' } }, description))));
                         })),
-                        React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 3).map(function (_a, i) {
+                        React.createElement(Select.OptGroup, { key: "complex", label: "Complex" }, schemaTypes.slice(0, 3).map(function (_a) {
                             var value = _a.value, label = _a.label, description = _a.description;
-                            return (React.createElement(Select.Option, { value: value, key: i },
+                            return (React.createElement(Select.Option, { value: value, key: value },
                                 React.createElement("div", null,
                                     React.createElement(Title, { level: 5, style: { fontSize: '15px' } },
                                         React.createElement(Icon, { types: value }),
@@ -779,10 +805,22 @@ var SchemaCreator = function (_a) {
 
 var SchemaBuilder$1 = function (_a) {
     var _b;
-    var data = _a.data, onChange = _a.onChange, dispatch = _a.dispatch, updateSchema = _a.updateSchema;
+    var data = _a.data, onChange = _a.onChange, dispatch = _a.dispatch, updateSchema = _a.updateSchema, undoRedo = _a.undoRedo;
+    var _c = useSchemaContext(), setExpandCollapseAll = _c.setExpandCollapseAll, setSearch = _c.setSearch;
     var css = "\n  .rsc-controls-root {}\n\n  .rsc-controls-root > div.rsc-controls-control-box {\n    padding: 16px;\n    margin: 0;\n    border: none;\n    background-color: none;\n  }\n\n  .rsc-controls-control-box {\n    margin: 6px 0;\n    border-radius: 10px;\n    padding: 0 0 0 16px;\n  }\n\n  .rsc-controls-child {\n    margin: 6px 0;\n  }\n";
-    return (React.createElement(SchemaProvider, null,
+    return (React.createElement(React.Fragment, null,
         React.createElement("style", null, css),
+        React.createElement(Space, { style: { justifyContent: 'space-between', width: '100%' } },
+            React.createElement(Space, { className: "schema-builder-search", style: { flex: '1 1 auto', position: 'relative' } },
+                React.createElement(SearchOutlined, { style: { position: 'absolute', top: '9px', left: '15px', zIndex: '2' } }),
+                React.createElement(Input, { style: { padding: '4px 11px 4px 30px' }, placeholder: "Search", allowClear: true, onChange: function (e) { return setSearch(e.target.value); } })),
+            React.createElement(Space, null,
+                undoRedo,
+                React.createElement(Space, { className: "collapse-expand" },
+                    React.createElement(Tooltip, { title: "Expand All" },
+                        React.createElement(Button, { title: "Exapand All", icon: React.createElement(DownOutlined, null), onClick: function () { return setExpandCollapseAll("expand-".concat(crypto.randomUUID())); } })),
+                    React.createElement(Tooltip, { title: "Collapse All" },
+                        React.createElement(Button, { title: "Collapse All", icon: React.createElement(UpOutlined, null), onClick: function () { return setExpandCollapseAll("collapse-".concat(crypto.randomUUID())); } }))))),
         React.createElement(Row, { align: "middle", style: { padding: '16px', borderBottom: 'solid 1px #D3DDF2' } },
             React.createElement(Col, { xs: { span: 15, offset: 1 } }, "Name"),
             React.createElement(Col, { xs: 8 }, "Type")),
@@ -824,9 +862,8 @@ styleInject(css_248z);
 
 var SchemaBuilder = function (_a) {
     var data = _a.data, onChange = _a.onChange, undoRedo = _a.undoRedo, dispatch = _a.dispatch, updateSchema = _a.updateSchema;
-    return (React.createElement(React.Fragment, null,
-        undoRedo,
-        React.createElement(SchemaBuilder$1, { data: data, onChange: onChange, dispatch: dispatch, updateSchema: updateSchema })));
+    return (React.createElement(SchemaProvider, null,
+        React.createElement(SchemaBuilder$1, { data: data, undoRedo: undoRedo, onChange: onChange, dispatch: dispatch, updateSchema: updateSchema })));
 };
 
 export { SchemaBuilder as JSONSchemaBuilder, addIdsToSchema, defaultSchema, useUnsavedChanges };
