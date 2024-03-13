@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import traverse from 'json-schema-traverse'
 import { CaretDownFilled, CaretRightFilled, DeleteOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Select, Typography, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
@@ -9,7 +10,6 @@ import {
   renameSchemaProperty,
   setSchemaItems,
   setSchemaProperty,
-  getAllSchemaKeys,
 } from '../../../helpers/schema'
 import useControls from '../../../hooks/useControls'
 import { useSchemaContext } from '../../../context/schema-context'
@@ -20,15 +20,23 @@ import CommonSubObject from './common-sub-object'
 import CommonSubCollection from './common-sub-collection'
 import Icon from '../type-icons'
 import NewPropertyButton from './new-property-button'
+import { Schema } from '../../../types'
 
 const { Title, Text } = Typography
 const doNothing = () => {}
 
-// const findMatchingChildNode = (properties: Record<string, unknown>, query: string) => {
-//   const keys = getAllSchemaKeys(properties)
-//   if (keys.some((k) => k.includes(query))) true
-//   if ()
-// }
+export function findMatchingChildNode(schema: Schema, query: string) {
+  if (!query) return true
+
+  const foundNodes: string[] = []
+  traverse(schema, {}, (_schema, _parent, _root, _parentJSONParent, _parentKeyword, _parentSchema, keyIndex) => {
+    if (!keyIndex) return
+
+    String(keyIndex).includes(query) && foundNodes.push(String(keyIndex))
+  })
+
+  return foundNodes.length > 0
+}
 
 const CommonControls: React.FC<CommonControlsProps> = ({
   schema,
@@ -71,14 +79,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
   const actionColProps = { xs: 2, xl: 2 }
 
   const isNodeVisible = useMemo(
-    () => !search || Boolean(!schema.properties && schema.id && (schema.id as string).includes(search)),
-    // @ts-ignore
-    // pickSchemaProperties(search)(schema),
+    () =>
+      !search ||
+      !schema.id ||
+      Boolean(schema.id && (schema.id as string).includes(search)) ||
+      findMatchingChildNode(schema, search),
     [schema, search]
   )
-
-  // @ts-ignore
-  schema.properties && console.log({ search, schema, found: getAllSchemaKeys(schema.properties) })
 
   return (
     <div
@@ -89,7 +96,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
       {...(rootNode && {
         'data-root-node': rootNode,
       })}
-      style={{ display: rootNode || isNodeVisible ? 'block' : 'block' }}
+      style={{ display: rootNode || isNodeVisible ? 'block' : 'none' }}
     >
       {!rootNode && (
         <>
@@ -147,9 +154,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 dropdownMatchSelectWidth={false}
               >
                 <Select.OptGroup key="primitive" label="Primitive">
-                  {schemaTypes.slice(3).map(({ value, label, description }, i) => {
+                  {schemaTypes.slice(3).map(({ value, label, description }) => {
                     return (
-                      <Select.Option value={value} key={i + 2}>
+                      <Select.Option value={value} key={value}>
                         <div>
                           <Title level={5} style={{ fontSize: '15px' }}>
                             <Icon types={value} /> {label}
@@ -161,9 +168,9 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                   })}
                 </Select.OptGroup>
                 <Select.OptGroup key="complex" label="Complex">
-                  {schemaTypes.slice(0, 3).map(({ value, label, description }, i) => {
+                  {schemaTypes.slice(0, 3).map(({ value, label, description }) => {
                     return (
-                      <Select.Option value={value} key={i}>
+                      <Select.Option value={value} key={value}>
                         <div>
                           <Title level={5} style={{ fontSize: '15px' }}>
                             <Icon types={value} /> {label}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { Button } from 'antd'
+import React, { useMemo } from 'react'
+import { Button, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
+import { useSchemaContext } from '../../../context/schema-context'
 
 import type { BaseButtonProps } from 'antd/lib/button/button.d.ts'
 
@@ -10,23 +11,30 @@ interface Props extends BaseButtonProps {
 }
 const NewPropertyButton = (props: Props) => {
   const { onAdd, label = '+ Add Field', type = 'link', ...rest } = props
-  const [hover, setHover] = useState(false)
+  const { search } = useSchemaContext()
+  const disabled = useMemo(() => !isFunction(onAdd) || !!search, [onAdd, search])
 
-  return (
+  const button = (
     <Button
       {...rest}
       type={type}
-      disabled={!isFunction(onAdd)}
+      disabled={disabled}
       onClick={onAdd}
       className="new-property-btn"
       style={{
         borderRadius: '6px',
       }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
     >
       {label}
     </Button>
+  )
+
+  return disabled ? (
+    <Tooltip title="Clear Search" placement="bottom">
+      {button}
+    </Tooltip>
+  ) : (
+    button
   )
 }
 

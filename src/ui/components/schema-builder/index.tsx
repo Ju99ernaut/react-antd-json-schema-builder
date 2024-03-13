@@ -32,33 +32,36 @@ const SchemaBuilder = ({ data, onChange, dispatch, updateSchema, undoRedo }: JSO
   return (
     <>
       <style>{css}</style>
-      <Space>
-        {undoRedo}
-        <Space className="collapse-expand">
-          <Tooltip title="Expand All">
-            <Button
-              title="Exapand All"
-              icon={<DownOutlined />}
-              onClick={() => setExpandCollapseAll(`expand-${crypto.randomUUID()}`)}
-            />
-          </Tooltip>
-          <Tooltip title="Collapse All">
-            <Button
-              title="Collapse All"
-              icon={<UpOutlined />}
-              onClick={() => setExpandCollapseAll(`collapse-${crypto.randomUUID()}`)}
-            />
-          </Tooltip>
+      <Space style={{ justifyContent: 'space-between', width: '100%' }}>
+        <Space className="schema-builder-search" style={{ flex: '1 1 auto', position: 'relative' }}>
+          <SearchOutlined style={{ position: 'absolute', top: '9px', left: '15px', zIndex: '2' }} />
+          <Input
+            style={{ padding: '4px 11px 4px 30px' }}
+            placeholder="Search"
+            allowClear
+            onChange={e => setSearch(e.target.value)}
+          />
+        </Space>
+        <Space>
+          {undoRedo}
+          <Space className="collapse-expand">
+            <Tooltip title="Expand All">
+              <Button
+                title="Exapand All"
+                icon={<DownOutlined />}
+                onClick={() => setExpandCollapseAll(`expand-${crypto.randomUUID()}`)}
+              />
+            </Tooltip>
+            <Tooltip title="Collapse All">
+              <Button
+                title="Collapse All"
+                icon={<UpOutlined />}
+                onClick={() => setExpandCollapseAll(`collapse-${crypto.randomUUID()}`)}
+              />
+            </Tooltip>
+          </Space>
         </Space>
       </Space>
-      <div style={{ flex: '1 1 auto', position: 'relative', width: '50%', padding: '4px 0 0 0' }}>
-        <SearchOutlined style={{ position: 'absolute', top: '13px', left: '9px', zIndex: '1' }} />
-        <Input
-          style={{ padding: '4px 11px 4px 30px' }}
-          placeholder="Search"
-          onChange={e => setSearch(e.target.value)}
-        />
-      </div>
       <Row align="middle" style={{ padding: '16px', borderBottom: 'solid 1px #D3DDF2' }}>
         <Col xs={{ span: 15, offset: 1 }}>Name</Col>
         <Col xs={8}>Type</Col>
