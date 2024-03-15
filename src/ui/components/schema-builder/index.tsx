@@ -33,8 +33,8 @@ const SchemaBuilder = ({ data, onChange, dispatch, updateSchema, undoRedo }: JSO
     <>
       <style>{css}</style>
       <Space style={{ justifyContent: 'space-between', width: '100%' }}>
-        <Space className="schema-builder-search" style={{ flex: '1 1 auto', position: 'relative' }}>
-          <SearchOutlined style={{ position: 'absolute', top: '9px', left: '15px', zIndex: '2' }} />
+        <Space size={0} className="schema-builder-search" style={{ position: 'relative' }}>
+          <SearchOutlined style={{ position: 'absolute', top: '9px', left: '10px', zIndex: '2' }} />
           <Input
             style={{ padding: '4px 11px 4px 30px' }}
             placeholder="Search"
