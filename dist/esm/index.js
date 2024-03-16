@@ -515,9 +515,11 @@ var useControls = function (_a) {
     var openModal = useCallback(function () { return setShowModal(true); }, []);
     var closeModal = useCallback(function () { return setShowModal(false); }, []);
     var onChangeFieldName = useCallback(function (event) {
-        handlePushToChanges(schemaKey);
-        handleChangesIdKey(schemaKey, event.target.value);
-        onChangeKey(event.target.value);
+        if (schemaKey !== event.target.value) {
+            handlePushToChanges(schemaKey);
+            handleChangesIdKey(schemaKey, event.target.value);
+            onChangeKey(event.target.value);
+        }
     }, [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]);
     var onChangeFieldType = useCallback(function (option) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
@@ -653,7 +655,7 @@ var CommonControls = function (_a) {
                         React.createElement("div", { style: { flex: '0 0 30px' } }, isCollection && (React.createElement(Button, { type: "text", onClick: handleShow, style: { width: '100%', backgroundColor: '#fff' }, icon: show ? (React.createElement(CaretDownFilled, { style: { color: '#777' } })) : (React.createElement(CaretRightFilled, { style: { color: '#777' } })) }))),
                         React.createElement("div", { style: { flex: '1 1 auto', position: 'relative' } }, isFunction(onChangeKey) && (React.createElement(React.Fragment, null,
                             React.createElement(Icon, { types: schemaType, style: { position: 'absolute', top: '9px', left: '9px', zIndex: '1' } }),
-                            React.createElement(Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onChange: onChangeFieldName, autoFocus: true })))))),
+                            React.createElement(Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName, autoFocus: true })))))),
                 React.createElement(Col, __assign({}, typeColProps),
                     React.createElement(Select, { style: {
                             width: '100%',

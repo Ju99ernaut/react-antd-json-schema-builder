@@ -535,9 +535,11 @@ var useControls = function (_a) {
     var openModal = React.useCallback(function () { return setShowModal(true); }, []);
     var closeModal = React.useCallback(function () { return setShowModal(false); }, []);
     var onChangeFieldName = React.useCallback(function (event) {
-        handlePushToChanges(schemaKey);
-        handleChangesIdKey(schemaKey, event.target.value);
-        onChangeKey(event.target.value);
+        if (schemaKey !== event.target.value) {
+            handlePushToChanges(schemaKey);
+            handleChangesIdKey(schemaKey, event.target.value);
+            onChangeKey(event.target.value);
+        }
     }, [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]);
     var onChangeFieldType = React.useCallback(function (option) {
         collectionTypes.includes(option) && handlePushToChanges(schemaKey);
@@ -673,7 +675,7 @@ var CommonControls = function (_a) {
                         React__default["default"].createElement("div", { style: { flex: '0 0 30px' } }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%', backgroundColor: '#fff' }, icon: show ? (React__default["default"].createElement(icons.CaretDownFilled, { style: { color: '#777' } })) : (React__default["default"].createElement(icons.CaretRightFilled, { style: { color: '#777' } })) }))),
                         React__default["default"].createElement("div", { style: { flex: '1 1 auto', position: 'relative' } }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(React__default["default"].Fragment, null,
                             React__default["default"].createElement(Icon, { types: schemaType, style: { position: 'absolute', top: '9px', left: '9px', zIndex: '1' } }),
-                            React__default["default"].createElement(antd.Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onChange: onChangeFieldName, autoFocus: true })))))),
+                            React__default["default"].createElement(antd.Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName, autoFocus: true })))))),
                 React__default["default"].createElement(antd.Col, __assign({}, typeColProps),
                     React__default["default"].createElement(antd.Select, { style: {
                             width: '100%',
