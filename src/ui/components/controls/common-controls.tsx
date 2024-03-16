@@ -131,7 +131,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         style={{ padding: '4px 11px 4px 30px' }}
                         defaultValue={schemaKey}
                         disabled={rootNode || disabledInput}
-                        onChange={onChangeFieldName}
+                        onBlur={onChangeFieldName}
                         autoFocus
                       />
                     </>

@@ -38,9 +38,11 @@ const useControls = ({ schema, schemaKey = '', onChange, onChangeKey, rootNode }
 
   const onChangeFieldName = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      handlePushToChanges(schemaKey)
-      handleChangesIdKey(schemaKey, event.target.value)
-      onChangeKey(event.target.value)
+      if (schemaKey !== event.target.value) {
+        handlePushToChanges(schemaKey)
+        handleChangesIdKey(schemaKey, event.target.value)
+        onChangeKey(event.target.value)
+      }
     },
     [handlePushToChanges, handleChangesIdKey, onChangeKey, schemaKey]
   )
