@@ -14,7 +14,7 @@ import {
 import useControls from '../../../hooks/useControls'
 import { useSchemaContext } from '../../../context/schema-context'
 import { CommonControlsProps } from '../../../types'
-import SchemaOptions from '../schema-options'
+// import SchemaOptions from '../schema-options'
 import CommonSubArray from './common-sub-array'
 import CommonSubObject from './common-sub-object'
 import CommonSubCollection from './common-sub-collection'
@@ -131,7 +131,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                         style={{ padding: '4px 11px 4px 30px' }}
                         defaultValue={schemaKey}
                         disabled={rootNode || disabledInput}
-                        onBlur={onChangeFieldName}
+                        onChange={onChangeFieldName}
                         autoFocus
                       />
                     </>
@@ -216,13 +216,13 @@ const CommonControls: React.FC<CommonControlsProps> = ({
             </Col>
           </Row>
 
-          <SchemaOptions
+          {/*<SchemaOptions
             showModal={showModal}
             onClose={closeModal}
             schema={schema}
             schemaKey={schemaKey}
             onChange={onChange}
-          />
+              />*/}
         </>
       )}
       {isCollection && show && (

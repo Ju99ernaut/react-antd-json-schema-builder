@@ -1,27 +1,15 @@
 import { Form, Input, InputNumber, Modal, Select, Switch } from 'antd'
 import React, { PropsWithChildren, useMemo } from 'react'
-import {
-  getSchemaField,
-  getSchemaMenuOptions,
-  getSchemaType,
-  setSchemaField,
-} from '../../../helpers/schema'
+import { getSchemaField, getSchemaMenuOptions, getSchemaType, setSchemaField } from '../../../helpers/schema'
 import { SchemaFieldOptionType, SchemaOptionsProps } from '../../../types'
 
-const getDefaultValue = (props: PropsWithChildren<any>) =>
-  getSchemaField(props.option.value, props.schema) as string
+const getDefaultValue = (props: PropsWithChildren<any>) => getSchemaField(props.option.value, props.schema) as string
 
-const onChangeText =
-  (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
-    props.onChange(
-      setSchemaField(props.option.value, event.target.value, props.schema)
-    )
+const onChangeText = (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
+  props.onChange(setSchemaField(props.option.value, event.target.value, props.schema))
 
-const onChangeNumber =
-  (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
-    props.onChange(
-      setSchemaField(props.option.value, event.target.value, props.schema)
-    )
+const onChangeNumber = (props: any) => (event: React.FocusEvent<HTMLInputElement>) =>
+  props.onChange(setSchemaField(props.option.value, event.target.value, props.schema))
 
 const onChangeBoolean = (props: any) => (checked: boolean) =>
   props.onChange(setSchemaField(props.option.value, checked, props.schema))
@@ -30,20 +18,10 @@ const onChangeSelect = (props: any) => (value: string) =>
   props.onChange(setSchemaField(props.option.value, value, props.schema))
 
 const typeToField: Record<SchemaFieldOptionType, React.FC<any>> = {
-  text: props => (
-    <Input defaultValue={getDefaultValue(props)} onBlur={onChangeText(props)} />
-  ),
-  number: props => (
-    <InputNumber
-      defaultValue={getDefaultValue(props)}
-      onBlur={onChangeNumber(props)}
-    />
-  ),
+  text: props => <Input defaultValue={getDefaultValue(props)} onBlur={onChangeText(props)} />,
+  number: props => <InputNumber defaultValue={getDefaultValue(props)} onBlur={onChangeNumber(props)} />,
   boolean: props => (
-    <Switch
-      defaultChecked={getDefaultValue(props) as unknown as boolean}
-      onClick={onChangeBoolean(props)}
-    />
+    <Switch defaultChecked={getDefaultValue(props) as unknown as boolean} onClick={onChangeBoolean(props)} />
   ),
   multi: props => {
     return (
@@ -67,35 +45,17 @@ const typeToField: Record<SchemaFieldOptionType, React.FC<any>> = {
   ),
 }
 
-const SchemaOptions = ({
-  showModal,
-  onClose,
-  schema,
-  schemaKey,
-  onChange,
-}: SchemaOptionsProps) => {
+const SchemaOptions = ({ showModal, onClose, schema, schemaKey, onChange }: SchemaOptionsProps) => {
   const type = getSchemaType(schema)
   const allOptions = useMemo(() => getSchemaMenuOptions(type), [type])
 
   return (
-    <Modal
-      title="Field Settings"
-      visible={showModal}
-      onOk={onClose}
-      onCancel={onClose}
-    >
-      <Form
-        name="initialSettings"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-      >
+    <Modal title="Field Settings" visible={showModal} onOk={onClose} onCancel={onClose}>
+      <Form name="initialSettings" labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
         {allOptions &&
           allOptions.map((option, index) => {
             return (
-              <Form.Item
-                key={`${schemaKey}${option.value}${index}`}
-                label={option.label}
-              >
+              <Form.Item key={`${schemaKey}${option.value}${index}`} label={option.label}>
                 {[typeToField[option.type]({ option, schema, onChange })]}
               </Form.Item>
             )
