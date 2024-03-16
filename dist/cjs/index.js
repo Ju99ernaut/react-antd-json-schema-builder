@@ -418,7 +418,7 @@ var commonSchemaOptions = [
     { value: 'description', label: 'Description', type: 'text' },
     { value: 'disabled', label: 'Disabled', type: 'boolean' },
 ];
-var stringSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+__spreadArray(__spreadArray([], commonSchemaOptions, true), [
     { value: 'minLength', label: 'Min Length', type: 'number' },
     { value: 'maxLength', label: 'Max Length', type: 'number' },
     { value: 'enum', label: 'Options', type: 'multi' },
@@ -435,27 +435,16 @@ var numberSchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, t
     { value: 'maximum', label: 'Max Number', type: 'number' },
     { value: 'step', label: 'Step', type: 'number' },
 ], false);
-var boolSchemaOptions = __spreadArray([], commonSchemaOptions, true);
-var objectSchemaOptions = __spreadArray([], commonSchemaOptions, true);
-var arraySchemaOptions = __spreadArray(__spreadArray([], commonSchemaOptions, true), [
+__spreadArray([], commonSchemaOptions, true);
+__spreadArray([], commonSchemaOptions, true);
+__spreadArray(__spreadArray([], commonSchemaOptions, true), [
     { value: 'minItems', label: 'Min Items', type: 'number' },
     { value: 'maxItems', label: 'Max Items', type: 'number' },
     { value: 'uniqueItems', label: 'Unique Items', type: 'boolean' },
 ], false);
-var currencySchemaOptions = __spreadArray([], numberSchemaOptions, true);
-var percentSchemaOptions = __spreadArray([], numberSchemaOptions, true);
-var dateSchemaOptions = __spreadArray([], commonSchemaOptions, true);
-var typeToOptions = {
-    string: stringSchemaOptions,
-    number: numberSchemaOptions,
-    boolean: boolSchemaOptions,
-    collection: arraySchemaOptions,
-    array: arraySchemaOptions,
-    object: objectSchemaOptions,
-    percent: percentSchemaOptions,
-    currency: currencySchemaOptions,
-    date: dateSchemaOptions,
-};
+__spreadArray([], numberSchemaOptions, true);
+__spreadArray([], numberSchemaOptions, true);
+__spreadArray([], commonSchemaOptions, true);
 var typeToValidFields = {
     string: stringValidSchemaProperties,
     number: numberValidSchemaProperties,
@@ -518,7 +507,6 @@ var removeWrongFields = function (schema) {
     var fields = getValidFields(type);
     return getSchemaFields(fields, schema);
 };
-var getSchemaMenuOptions = function (type) { return get__default["default"](type, typeToOptions); };
 var setSchemaTypeAndRemoveWrongFields = flow__default["default"]([setSchemaType, removeWrongFields]);
 var setSchemaTypeAndSetItemsAndRemoveWrongFields = flow__default["default"]([setSchemaType, setSchemaTempItems, removeWrongFields]);
 map__default["default"](function (s) { return ({ label: s, value: s }); });
@@ -576,41 +564,6 @@ var useControls = function (_a) {
         onChangeFieldType: onChangeFieldType,
         isParentArray: isParentArray,
     };
-};
-
-var getDefaultValue = function (props) {
-    return getSchemaField(props.option.value, props.schema);
-};
-var onChangeText = function (props) { return function (event) {
-    return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
-}; };
-var onChangeNumber = function (props) { return function (event) {
-    return props.onChange(setSchemaField(props.option.value, event.target.value, props.schema));
-}; };
-var onChangeBoolean = function (props) { return function (checked) {
-    return props.onChange(setSchemaField(props.option.value, checked, props.schema));
-}; };
-var onChangeSelect = function (props) { return function (value) {
-    return props.onChange(setSchemaField(props.option.value, value, props.schema));
-}; };
-var typeToField = {
-    text: function (props) { return (React__default["default"].createElement(antd.Input, { defaultValue: getDefaultValue(props), onBlur: onChangeText(props) })); },
-    number: function (props) { return (React__default["default"].createElement(antd.InputNumber, { defaultValue: getDefaultValue(props), onBlur: onChangeNumber(props) })); },
-    boolean: function (props) { return (React__default["default"].createElement(antd.Switch, { defaultChecked: getDefaultValue(props), onClick: onChangeBoolean(props) })); },
-    multi: function (props) {
-        return (React__default["default"].createElement(antd.Select, { mode: "tags", allowClear: true, placeholder: "Please select options", tokenSeparators: [','], defaultValue: getDefaultValue(props), onChange: onChangeSelect(props) }));
-    },
-    select: function (props) { return (React__default["default"].createElement(antd.Select, { defaultValue: getDefaultValue(props), placeholder: "Please select option", options: props.option.optionList, onChange: onChangeSelect(props) })); },
-};
-var SchemaOptions = function (_a) {
-    var showModal = _a.showModal, onClose = _a.onClose, schema = _a.schema, schemaKey = _a.schemaKey, onChange = _a.onChange;
-    var type = getSchemaType(schema);
-    var allOptions = React.useMemo(function () { return getSchemaMenuOptions(type); }, [type]);
-    return (React__default["default"].createElement(antd.Modal, { title: "Field Settings", visible: showModal, onOk: onClose, onCancel: onClose },
-        React__default["default"].createElement(antd.Form, { name: "initialSettings", labelCol: { span: 6 }, wrapperCol: { span: 18 } }, allOptions &&
-            allOptions.map(function (option, index) {
-                return (React__default["default"].createElement(antd.Form.Item, { key: "".concat(schemaKey).concat(option.value).concat(index), label: option.label }, [typeToField[option.type]({ option: option, schema: schema, onChange: onChange })]));
-            }))));
 };
 
 var CommonSubArray = function (_a) {
@@ -695,7 +648,7 @@ var CommonControls = function (_a) {
         rootNode: rootNode,
         onChange: onChange,
         onChangeKey: onChangeKey,
-    }), getTypeOptions = _b.getTypeOptions, show = _b.show, showModal = _b.showModal, schemaType = _b.schemaType, closeModal = _b.closeModal, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
+    }), getTypeOptions = _b.getTypeOptions, show = _b.show, schemaType = _b.schemaType, handleShow = _b.handleShow, onChangeFieldName = _b.onChangeFieldName, onChangeFieldType = _b.onChangeFieldType, isParentArray = _b.isParentArray;
     var search = useSchemaContext().search;
     var isCollection = controlType !== 'primitive';
     var isColl = controlType === 'collection';
@@ -720,7 +673,7 @@ var CommonControls = function (_a) {
                         React__default["default"].createElement("div", { style: { flex: '0 0 30px' } }, isCollection && (React__default["default"].createElement(antd.Button, { type: "text", onClick: handleShow, style: { width: '100%', backgroundColor: '#fff' }, icon: show ? (React__default["default"].createElement(icons.CaretDownFilled, { style: { color: '#777' } })) : (React__default["default"].createElement(icons.CaretRightFilled, { style: { color: '#777' } })) }))),
                         React__default["default"].createElement("div", { style: { flex: '1 1 auto', position: 'relative' } }, lodash.isFunction(onChangeKey) && (React__default["default"].createElement(React__default["default"].Fragment, null,
                             React__default["default"].createElement(Icon, { types: schemaType, style: { position: 'absolute', top: '9px', left: '9px', zIndex: '1' } }),
-                            React__default["default"].createElement(antd.Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onBlur: onChangeFieldName, autoFocus: true })))))),
+                            React__default["default"].createElement(antd.Input, { style: { padding: '4px 11px 4px 30px' }, defaultValue: schemaKey, disabled: rootNode || disabledInput, onChange: onChangeFieldName, autoFocus: true })))))),
                 React__default["default"].createElement(antd.Col, __assign({}, typeColProps),
                     React__default["default"].createElement(antd.Select, { style: {
                             width: '100%',
@@ -746,8 +699,7 @@ var CommonControls = function (_a) {
                                     React__default["default"].createElement(Text, { style: { paddingLeft: '10px' } }, description))));
                         })))),
                 React__default["default"].createElement(antd.Col, __assign({}, actionColProps), !isParentArray() && !rootNode && (React__default["default"].createElement(antd.Tooltip, { title: "Delete" },
-                    React__default["default"].createElement(antd.Button, { type: "ghost", onClick: isParentArray() || rootNode ? doNothing : onDelete, disabled: isParentArray() || rootNode, className: "property--delete-btn", icon: React__default["default"].createElement(icons.DeleteOutlined, null) }))))),
-            React__default["default"].createElement(SchemaOptions, { showModal: showModal, onClose: closeModal, schema: schema, schemaKey: schemaKey, onChange: onChange }))),
+                    React__default["default"].createElement(antd.Button, { type: "ghost", onClick: isParentArray() || rootNode ? doNothing : onDelete, disabled: isParentArray() || rootNode, className: "property--delete-btn", icon: React__default["default"].createElement(icons.DeleteOutlined, null) }))))))),
         isCollection && show && (React__default["default"].createElement("div", { className: "rsc-controls-control-box" },
             isObject && (React__default["default"].createElement(React__default["default"].Fragment, null,
                 React__default["default"].createElement(CommonSubObject, { schema: schema, onDelete: function (key) { return onChange(deleteSchemaProperty(key)(schema)); }, onChange: function (key, newSchema) { return onChange(setSchemaProperty(key)(newSchema, schema)); }, onChangeKey: function (oldKey, newKey) {
