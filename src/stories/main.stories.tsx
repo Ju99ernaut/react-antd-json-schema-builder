@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import 'antd/dist/antd.css'
 import React from 'react'
 import { JSONSchemaBuilder } from '../index'
 import { EMPTY_STATE } from './test/data'
