@@ -40,15 +40,7 @@ const SchemaProvider = ({ children }: PropsWithChildren) => {
     [changes]
   )
 
-  const handleGetIsInChanges = useCallback(
-    (id: string) => {
-      const isInChanges = changes.includes(id)
-      if (!isInChanges) return false
-      setChanges(value => value.filter(item => item !== id))
-      return true
-    },
-    [changes]
-  )
+  const handleGetIsInChanges = useCallback((id: string) => changes.includes(id), [changes])
 
   return (
     <SchemaContext.Provider

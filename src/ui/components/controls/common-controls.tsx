@@ -151,7 +151,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
                 onChange={onChangeFieldType}
                 filterOption={false}
                 listHeight={500}
-                dropdownMatchSelectWidth={false}
+                popupMatchSelectWidth={false}
               >
                 <Select.OptGroup key="primitive" label="Primitive">
                   {schemaTypes.slice(3).map(({ value, label, description }) => {
@@ -205,7 +205,7 @@ const CommonControls: React.FC<CommonControlsProps> = ({
               {!isParentArray() && !rootNode && (
                 <Tooltip title="Delete">
                   <Button
-                    type="ghost"
+                    type="text"
                     onClick={isParentArray() || rootNode ? doNothing : onDelete}
                     disabled={isParentArray() || rootNode}
                     className="property--delete-btn"

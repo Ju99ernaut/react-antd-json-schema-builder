@@ -23,12 +23,6 @@
     "build:only": "rm -rf dist && yarn rollup",
     "watch": "yarn storybook"
   },
-  "peerDependencies": {
-    "@ant-design/icons": ">=4.7.0",
-    "antd": ">=4.21.0",
-    "lodash": ">=4.17.21",
-    "react": ">=16"
-  },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@babel/core": "^7.18.10",
